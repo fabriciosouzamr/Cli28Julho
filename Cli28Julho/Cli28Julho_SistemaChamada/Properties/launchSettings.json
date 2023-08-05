@@ -1,0 +1,11 @@
+﻿{
+  "profiles": {
+    "Cli28Julho_SistemaChamada": {
+      "commandName": "Project",
+      "dotnetRunMessages": "true",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

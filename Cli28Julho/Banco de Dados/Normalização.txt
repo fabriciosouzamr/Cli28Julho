@@ -1,0 +1,37 @@
+﻿DADOS_TERCEIRADOS_CADASTRO
+ - Colocar se é júridica ou física
+NÃO TEM COMO.
+ - Colocar se masculino e feminino
+NÃO TEM COMO
+ - Colocar município
+COLOCA TUDO "ITABUNA"
+ - Se possível CPF ou CNPJ
+NÃO TEM NO CADASTRO
+
+DADOS_PACIENTES_ATENDIMENTOS
+ - O que é esse número de autorização
+NO NOSSO, SERÁ O CÓDIGO DA VENDA
+ - Qnd tiver "[FAVOR ANOTAR AQUI O HISTÓRICO DA CONSULTA]" não é para importar ou deixar assim
+SERVIA PARA QUANDO O MÉDICO ABRIR A TELA, SABER ONDE DIGITAR. IGNORA ISSO. DEIXAREI EM BRACNO. (NÃO IMPORTA ESSE CAMPO)
+ - Não tem o procedimento só o tipo de constulta
+PROCEDIMENTO = CONSULTA CLÍNICA(Só existe um tipo de procedimento e esse é chamado de "CONSULTA CLÍNICA") O RESTANTE SÃO EXAMES
+ - A data de Agendamento, Chegada, Saída, Inicio Atendimento e Fim atendimento será a mesma
+NESSA IMPORTAÇÃO, DEIXA APENAS.
+
+DADOS_MEDICOS_EXTERNOS
+ - Normalizar Especialidades (ALERGIS/CLINICA GERAL, Angiologista, angiologista________)
+OK
+ - Colocar se masculino e feminino
+NÃO TEM COMO
+ - Colocar município
+TEM ESSE CAMPO NA TABELA(Alguns em branco...dexa assim)
+
+DADOS_EXAMES_TERCEIRIZADOS_PRECOS
+ - Esse PRAZO é a qtde de dias de Repasse?
+SIM 
+
+DADOS_EXAMES_PROPRIOS_PRECOS
+ - Esse PRAZO é a qtde de dias de Repasse?
+SIM
+ - O que é esse FATURA?
+SE GERA FATURA OU NÃO. DEIXA SIM PARA TODOS

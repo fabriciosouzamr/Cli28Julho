@@ -1,0 +1,32 @@
+Criar: Menu Vendas e tira do Menu agendamento o que for de vendas
+
+[EXPLICAR MELHOR]
+Criar: Menu Atendimentos que servirá para consultas e relatórios relacionados aos atendimentos realizados.
+Não será confundido com o Médico, pq esse estará apenas no login do Médico
+
+Criar: Menu FINANCEIRO
+
+[DÚVIDAS - DEFINIR LAYOUT]
+Criar: Horário do Profissional x Agendados
+
+Ajuste:
+Consulta de Vendas: Filtros Datas, pacientes, não funcionam. Verificar os demais também.
+Consulta de Vendas: Inserir Total de Registros e Valor
+Consulta de Vendas: IDVENDA exibir (Esse é o código de autorização)
+
+Outras Consultas:
+Ao carregar a tela, trazer a data do Mês (Início e fim)
+
+Usuários:
+Vincular Contas Caixa/Financeiro aos usuários.
+
+[SERÁ FEITO NO FINAL]
+Médico: Habilitar o Login do Médico
+[SERÁ FEITO NO FINAL]
+Atendentes: Habilitar Login
+[SERÁ FEITO NO FINAL]
+Colocar o controle de usuários e permissões.
+
+
+Status:
+Definir Cores?

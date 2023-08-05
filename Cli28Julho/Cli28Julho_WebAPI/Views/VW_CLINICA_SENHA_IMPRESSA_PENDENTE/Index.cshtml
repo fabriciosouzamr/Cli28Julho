@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Cli28Julho_WebAPI.Model.VW_CLINICA_SENHA_IMPRESSA_PENDENTE>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID_EMPRESA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NR_CLINICA_SENHA)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID_EMPRESA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NR_CLINICA_SENHA)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SQ_CLINICA_SENHA">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SQ_CLINICA_SENHA">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SQ_CLINICA_SENHA">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</body>
+</html>
