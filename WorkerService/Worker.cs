@@ -203,7 +203,9 @@ namespace WorkerService
                          " LEFT JOIN TB_HISTORICO HISTO ON HISTO.ID_REGISTRO = AGEND.SQ_AGENDAMENTO" +
                                                      " AND HISTO.ID_OPT_ACAO = 101" +
                                                      " AND CAST(HISTO.DT_HISTORICO AS DATE) = CAST(GETDATE() AS DATE)" +
-                         " LEFT JOIN TB_CONSULTORIO CONSL ON CONSL.SQ_CONSULTORIO = AGEND.ID_CONSULTORIO" + 
+                         " LEFT JOIN TB_CONSULTORIO CONSL ON CONSL.SQ_CONSULTORIO = AGEND.ID_CONSULTORIO" +
+                         " LEFT JOIN TB_PESSOA_CONFIGURACAO PSCFG ON PSCFG.ID_PESSOA = AGEND.ID_PESSOA_PROFISSIONAL" +
+                                                      " AND PSCFG.ID_EMPRESA = 2" +
                        " WHERE AGEND.ID_OPT_STATUS IN (38)" +
                          " AND HISTO.SQ_HISTORICO IS NULL";
             oData = Util.Query(conn, sSqlText);
@@ -262,12 +264,14 @@ namespace WorkerService
                               "IIF(CAST(AGEND.DH_INLCUSAO AS DATE) = CAST(GETDATE() AS DATE), 'CONFIRMINC'," +
                                   "IIF(CAST(GETDATE() AS DATE) = CAST(DATEADD(DAY, -3, AGEND.DH_AGENDAMENTO) AS DATE), 'CONFIRM3D'," +
                                       "IIF(CAST(GETDATE() AS DATE) = CAST(DATEADD(DAY, -1, AGEND.DH_AGENDAMENTO) AS DATE), 'CONFIRM1D'," +
-                                          "IIF(CAST(GETDATE() AS DATE) = CAST(AGEND.DH_AGENDAMENTO AS DATE), 'CONFIRMND', '')))) CD_MODELO" +
+                                          "IIF(CAST(GETDATE() AS DATE) = CAST(AGEND.DH_AGENDAMENTO AS DATE), 'CONFIRMND', '')))) CD_MODELO," +
+                              "CONSL.NO_CONSULTORIO" +
                        " FROM TB_AGENDAMENTO AGEND" +
                         " INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = AGEND.ID_PESSOA" +
                         " INNER JOIN TB_PESSOA PSPRF ON PSPRF.SQ_PESSOA = AGEND.ID_PESSOA_PROFISSIONAL" +
                         " INNER JOIN TB_PESSOA EMPRE ON EMPRE.SQ_PESSOA = AGEND.ID_EMPRESA" +
                         " INNER JOIN (SELECT ID_PESSOA, IC_WHATSAPP, MAX(CD_NUMERO) CD_NUMERO FROM TB_PESSOA_TELEFONE WHERE IC_WHATSAPP = 'S' GROUP BY ID_PESSOA, IC_WHATSAPP) PSTEL ON PSTEL.ID_PESSOA = PESSO.SQ_PESSOA" +
+                         " LEFT JOIN TB_CONSULTORIO CONSL ON CONSL.SQ_CONSULTORIO = AGEND.ID_CONSULTORIO" +
                          " LEFT JOIN TB_PESSOA_HORARIO PSHHR ON PSHHR.SQ_PESSOA_HORARIO = AGEND.ID_PESSOA_HORARIO" +
                          " LEFT JOIN TB_HISTORICO HISTO ON HISTO.ID_REGISTRO = AGEND.SQ_AGENDAMENTO" +
                                                      " AND HISTO.ID_OPT_ACAO = 829" +
@@ -315,6 +319,7 @@ namespace WorkerService
                                  "PESSO.NO_PESSOA," +
                                  "PSPRF.NO_PESSOA," +
                                  "EMPRE.NO_PESSOA," +
+                                 "CONSL.NO_CONSULTORIO," +
                                  "CONVERT(CHAR, AGEND.DH_AGENDAMENTO, 103)," +
                                  "CONVERT(CHAR(5), AGEND.DH_AGENDAMENTO, 108)," +
                                  "dbo.FC_Formatar_NUMERO_WHATSAPP(PSTEL.CD_NUMERO)," +
@@ -363,6 +368,7 @@ namespace WorkerService
                   Texto = Texto.Replace("[Medico]", row["NO_PESSOA_PROFISSIONAL"].ToString());
                   Texto = Texto.Replace("[Unidade]", row["NO_EMPRESA"].ToString());
                   Texto = Texto.Replace("[EnderecoUnidade]", row["DS_ENDERECO"].ToString());
+                  Texto = Texto.Replace("[Consultorio]", row["NO_CONSULTORIO"].ToString());
 
                   await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", DS_PATH_IMAGEM, CD_USUARIO);
 
