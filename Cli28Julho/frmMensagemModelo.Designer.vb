@@ -51,10 +51,10 @@ Partial Class frmMensagemModelo
         Me.oConfirmacaoAgendaNoDias = New Cli28Julho.uscMensagemModelo()
         Me.tbsAniversarianteDia = New System.Windows.Forms.TabPage()
         Me.oAniversarianteDia = New Cli28Julho.uscMensagemModelo()
-        Me.cmdGravar = New System.Windows.Forms.Button()
-        Me.cmdFechar = New System.Windows.Forms.Button()
         Me.tbsCancelamentoAgendamento = New System.Windows.Forms.TabPage()
         Me.oCancelamentoAgendamento = New Cli28Julho.uscMensagemModelo()
+        Me.cmdGravar = New System.Windows.Forms.Button()
+        Me.cmdFechar = New System.Windows.Forms.Button()
         Me.TabControl1.SuspendLayout()
         Me.tbsConfiguracaoProfissional.SuspendLayout()
         CType(Me.grdProfssional, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -90,7 +90,7 @@ Partial Class frmMensagemModelo
         Me.tbsConfiguracaoProfissional.Controls.Add(Me.grdProfssional)
         Me.tbsConfiguracaoProfissional.Location = New System.Drawing.Point(4, 22)
         Me.tbsConfiguracaoProfissional.Name = "tbsConfiguracaoProfissional"
-        Me.tbsConfiguracaoProfissional.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tbsConfiguracaoProfissional.Padding = New System.Windows.Forms.Padding(3)
         Me.tbsConfiguracaoProfissional.Size = New System.Drawing.Size(1204, 500)
         Me.tbsConfiguracaoProfissional.TabIndex = 3
         Me.tbsConfiguracaoProfissional.Text = "Configuração do Profissional"
@@ -164,7 +164,7 @@ Partial Class frmMensagemModelo
         Me.tbsMensagemAgradecimento.Controls.Add(Me.oMensagemAgradecimento)
         Me.tbsMensagemAgradecimento.Location = New System.Drawing.Point(4, 22)
         Me.tbsMensagemAgradecimento.Name = "tbsMensagemAgradecimento"
-        Me.tbsMensagemAgradecimento.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tbsMensagemAgradecimento.Padding = New System.Windows.Forms.Padding(3)
         Me.tbsMensagemAgradecimento.Size = New System.Drawing.Size(1204, 500)
         Me.tbsMensagemAgradecimento.TabIndex = 0
         Me.tbsMensagemAgradecimento.Text = "Mensagem de agradecimento"
@@ -174,7 +174,7 @@ Partial Class frmMensagemModelo
         '
         Me.oMensagemAgradecimento.Dock = System.Windows.Forms.DockStyle.Fill
         Me.oMensagemAgradecimento.Location = New System.Drawing.Point(3, 3)
-        Me.oMensagemAgradecimento.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.oMensagemAgradecimento.Margin = New System.Windows.Forms.Padding(4)
         Me.oMensagemAgradecimento.Name = "oMensagemAgradecimento"
         Me.oMensagemAgradecimento.Size = New System.Drawing.Size(1198, 494)
         Me.oMensagemAgradecimento.TabIndex = 0
@@ -183,9 +183,9 @@ Partial Class frmMensagemModelo
         '
         Me.TabPage1.Controls.Add(Me.oMensagemAgradecimentoExame)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage1.Margin = New System.Windows.Forms.Padding(2)
         Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(2)
         Me.TabPage1.Size = New System.Drawing.Size(1204, 500)
         Me.TabPage1.TabIndex = 7
         Me.TabPage1.Text = "Mensagem de agradecimento c/ Exame"
@@ -195,7 +195,7 @@ Partial Class frmMensagemModelo
         '
         Me.oMensagemAgradecimentoExame.Dock = System.Windows.Forms.DockStyle.Fill
         Me.oMensagemAgradecimentoExame.Location = New System.Drawing.Point(2, 2)
-        Me.oMensagemAgradecimentoExame.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.oMensagemAgradecimentoExame.Margin = New System.Windows.Forms.Padding(4)
         Me.oMensagemAgradecimentoExame.Name = "oMensagemAgradecimentoExame"
         Me.oMensagemAgradecimentoExame.Size = New System.Drawing.Size(1200, 496)
         Me.oMensagemAgradecimentoExame.TabIndex = 1
@@ -205,7 +205,7 @@ Partial Class frmMensagemModelo
         Me.tbsConfirmacaoAgenda.Controls.Add(Me.oConfirmacaoAgendaInclusao)
         Me.tbsConfirmacaoAgenda.Location = New System.Drawing.Point(4, 22)
         Me.tbsConfirmacaoAgenda.Name = "tbsConfirmacaoAgenda"
-        Me.tbsConfirmacaoAgenda.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tbsConfirmacaoAgenda.Padding = New System.Windows.Forms.Padding(3)
         Me.tbsConfirmacaoAgenda.Size = New System.Drawing.Size(1204, 500)
         Me.tbsConfirmacaoAgenda.TabIndex = 1
         Me.tbsConfirmacaoAgenda.Text = "Confir. da agenda - Inclusão"
@@ -215,7 +215,7 @@ Partial Class frmMensagemModelo
         '
         Me.oConfirmacaoAgendaInclusao.Dock = System.Windows.Forms.DockStyle.Fill
         Me.oConfirmacaoAgendaInclusao.Location = New System.Drawing.Point(3, 3)
-        Me.oConfirmacaoAgendaInclusao.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.oConfirmacaoAgendaInclusao.Margin = New System.Windows.Forms.Padding(4)
         Me.oConfirmacaoAgendaInclusao.Name = "oConfirmacaoAgendaInclusao"
         Me.oConfirmacaoAgendaInclusao.Size = New System.Drawing.Size(1198, 494)
         Me.oConfirmacaoAgendaInclusao.TabIndex = 1
@@ -225,7 +225,7 @@ Partial Class frmMensagemModelo
         Me.tbsConfirmacaoAgenda3dias.Controls.Add(Me.oConfirmacaoAgenda3dias)
         Me.tbsConfirmacaoAgenda3dias.Location = New System.Drawing.Point(4, 22)
         Me.tbsConfirmacaoAgenda3dias.Name = "tbsConfirmacaoAgenda3dias"
-        Me.tbsConfirmacaoAgenda3dias.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tbsConfirmacaoAgenda3dias.Padding = New System.Windows.Forms.Padding(3)
         Me.tbsConfirmacaoAgenda3dias.Size = New System.Drawing.Size(1204, 500)
         Me.tbsConfirmacaoAgenda3dias.TabIndex = 4
         Me.tbsConfirmacaoAgenda3dias.Text = "Confir. da agenda - 3 dia(s)"
@@ -235,7 +235,7 @@ Partial Class frmMensagemModelo
         '
         Me.oConfirmacaoAgenda3dias.Dock = System.Windows.Forms.DockStyle.Fill
         Me.oConfirmacaoAgenda3dias.Location = New System.Drawing.Point(3, 3)
-        Me.oConfirmacaoAgenda3dias.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.oConfirmacaoAgenda3dias.Margin = New System.Windows.Forms.Padding(4)
         Me.oConfirmacaoAgenda3dias.Name = "oConfirmacaoAgenda3dias"
         Me.oConfirmacaoAgenda3dias.Size = New System.Drawing.Size(1198, 494)
         Me.oConfirmacaoAgenda3dias.TabIndex = 2
@@ -245,7 +245,7 @@ Partial Class frmMensagemModelo
         Me.TabPage2.Controls.Add(Me.oConfirmacaoAgenda1dias)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(1204, 500)
         Me.TabPage2.TabIndex = 5
         Me.TabPage2.Text = "Confir. da agenda - 1 dia(s)"
@@ -255,7 +255,7 @@ Partial Class frmMensagemModelo
         '
         Me.oConfirmacaoAgenda1dias.Dock = System.Windows.Forms.DockStyle.Fill
         Me.oConfirmacaoAgenda1dias.Location = New System.Drawing.Point(3, 3)
-        Me.oConfirmacaoAgenda1dias.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.oConfirmacaoAgenda1dias.Margin = New System.Windows.Forms.Padding(4)
         Me.oConfirmacaoAgenda1dias.Name = "oConfirmacaoAgenda1dias"
         Me.oConfirmacaoAgenda1dias.Size = New System.Drawing.Size(1198, 494)
         Me.oConfirmacaoAgenda1dias.TabIndex = 2
@@ -265,7 +265,7 @@ Partial Class frmMensagemModelo
         Me.tbsConfirmacaoAgendaNoDias.Controls.Add(Me.oConfirmacaoAgendaNoDias)
         Me.tbsConfirmacaoAgendaNoDias.Location = New System.Drawing.Point(4, 22)
         Me.tbsConfirmacaoAgendaNoDias.Name = "tbsConfirmacaoAgendaNoDias"
-        Me.tbsConfirmacaoAgendaNoDias.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tbsConfirmacaoAgendaNoDias.Padding = New System.Windows.Forms.Padding(3)
         Me.tbsConfirmacaoAgendaNoDias.Size = New System.Drawing.Size(1204, 500)
         Me.tbsConfirmacaoAgendaNoDias.TabIndex = 6
         Me.tbsConfirmacaoAgendaNoDias.Text = "Confir. da agenda - No dia(s)"
@@ -275,7 +275,7 @@ Partial Class frmMensagemModelo
         '
         Me.oConfirmacaoAgendaNoDias.Dock = System.Windows.Forms.DockStyle.Fill
         Me.oConfirmacaoAgendaNoDias.Location = New System.Drawing.Point(3, 3)
-        Me.oConfirmacaoAgendaNoDias.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.oConfirmacaoAgendaNoDias.Margin = New System.Windows.Forms.Padding(4)
         Me.oConfirmacaoAgendaNoDias.Name = "oConfirmacaoAgendaNoDias"
         Me.oConfirmacaoAgendaNoDias.Size = New System.Drawing.Size(1198, 494)
         Me.oConfirmacaoAgendaNoDias.TabIndex = 2
@@ -285,7 +285,7 @@ Partial Class frmMensagemModelo
         Me.tbsAniversarianteDia.Controls.Add(Me.oAniversarianteDia)
         Me.tbsAniversarianteDia.Location = New System.Drawing.Point(4, 22)
         Me.tbsAniversarianteDia.Name = "tbsAniversarianteDia"
-        Me.tbsAniversarianteDia.Padding = New System.Windows.Forms.Padding(3, 3, 3, 3)
+        Me.tbsAniversarianteDia.Padding = New System.Windows.Forms.Padding(3)
         Me.tbsAniversarianteDia.Size = New System.Drawing.Size(1204, 500)
         Me.tbsAniversarianteDia.TabIndex = 2
         Me.tbsAniversarianteDia.Text = "AniversarianteDia"
@@ -295,10 +295,30 @@ Partial Class frmMensagemModelo
         '
         Me.oAniversarianteDia.Dock = System.Windows.Forms.DockStyle.Fill
         Me.oAniversarianteDia.Location = New System.Drawing.Point(3, 3)
-        Me.oAniversarianteDia.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.oAniversarianteDia.Margin = New System.Windows.Forms.Padding(4)
         Me.oAniversarianteDia.Name = "oAniversarianteDia"
         Me.oAniversarianteDia.Size = New System.Drawing.Size(1198, 494)
         Me.oAniversarianteDia.TabIndex = 1
+        '
+        'tbsCancelamentoAgendamento
+        '
+        Me.tbsCancelamentoAgendamento.Controls.Add(Me.oCancelamentoAgendamento)
+        Me.tbsCancelamentoAgendamento.Location = New System.Drawing.Point(4, 22)
+        Me.tbsCancelamentoAgendamento.Name = "tbsCancelamentoAgendamento"
+        Me.tbsCancelamentoAgendamento.Padding = New System.Windows.Forms.Padding(3)
+        Me.tbsCancelamentoAgendamento.Size = New System.Drawing.Size(1204, 500)
+        Me.tbsCancelamentoAgendamento.TabIndex = 8
+        Me.tbsCancelamentoAgendamento.Text = "Cancelamento de Agendamento"
+        Me.tbsCancelamentoAgendamento.UseVisualStyleBackColor = True
+        '
+        'oCancelamentoAgendamento
+        '
+        Me.oCancelamentoAgendamento.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.oCancelamentoAgendamento.Location = New System.Drawing.Point(3, 3)
+        Me.oCancelamentoAgendamento.Margin = New System.Windows.Forms.Padding(4)
+        Me.oCancelamentoAgendamento.Name = "oCancelamentoAgendamento"
+        Me.oCancelamentoAgendamento.Size = New System.Drawing.Size(1198, 494)
+        Me.oCancelamentoAgendamento.TabIndex = 2
         '
         'cmdGravar
         '
@@ -321,26 +341,6 @@ Partial Class frmMensagemModelo
         Me.cmdFechar.TabIndex = 505
         Me.cmdFechar.Text = "  Fechar"
         Me.cmdFechar.UseVisualStyleBackColor = True
-        '
-        'tbsCancelamentoAgendamento
-        '
-        Me.tbsCancelamentoAgendamento.Controls.Add(Me.oCancelamentoAgendamento)
-        Me.tbsCancelamentoAgendamento.Location = New System.Drawing.Point(4, 22)
-        Me.tbsCancelamentoAgendamento.Name = "tbsCancelamentoAgendamento"
-        Me.tbsCancelamentoAgendamento.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbsCancelamentoAgendamento.Size = New System.Drawing.Size(1204, 500)
-        Me.tbsCancelamentoAgendamento.TabIndex = 8
-        Me.tbsCancelamentoAgendamento.Text = "Cancelamento de Agendamento"
-        Me.tbsCancelamentoAgendamento.UseVisualStyleBackColor = True
-        '
-        'oCancelamentoAgendamento
-        '
-        Me.oCancelamentoAgendamento.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.oCancelamentoAgendamento.Location = New System.Drawing.Point(3, 3)
-        Me.oCancelamentoAgendamento.Margin = New System.Windows.Forms.Padding(4)
-        Me.oCancelamentoAgendamento.Name = "oCancelamentoAgendamento"
-        Me.oCancelamentoAgendamento.Size = New System.Drawing.Size(1198, 494)
-        Me.oCancelamentoAgendamento.TabIndex = 2
         '
         'frmMensagemModelo
         '

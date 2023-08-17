@@ -16,14 +16,9 @@ Public Class frmConsultaHistorico_Registro
   Const const_GridListagem_CD_VERSAO_SISTEMA As Integer = 11
   Const const_GridListagem_NO_OPT_ERRO As Integer = 12
 
-  Public Class Registro
-    Public Nome As String
-    Public Valor As Integer
-  End Class
-
   Public iProcessso As Integer
   Public iID_REGISTRO As Integer
-  Public iID_REGISTROS As List(Of Registro)
+  Public iID_REGISTROS As List(Of Integer)
   Public iID_EMPRESA As Integer
 
   Dim oDBGrid As New UltraWinDataSource.UltraDataSource
@@ -51,27 +46,25 @@ Public Class frmConsultaHistorico_Registro
     Dim sSqlText As String = ""
 
     If Not iID_REGISTROS Is Nothing AndAlso iID_REGISTROS.Any() Then
-      For Each registro As Registro In iID_REGISTROS
-        FNC_Str_Adicionar(sSqlText, $"{registro.Nome} = {registro.Valor}", " and ")
-      Next
+      sSqlText = iID_REGISTROS.FirstOrDefault()
     Else
-      sSqlText = $"CAMPO = {iID_REGISTRO}"
+      sSqlText = iID_REGISTRO
     End If
 
     Select Case iProcessso
       Case enOpcoes.Processo_Historico_Clinica_Agendamento.GetHashCode()
-        sSqlText = $"SELECT 'Agendamento: ' + RTRIM(CD_AGENDAMENTO) + ' (' + RTRIM(NO_PESSOA) + ')' FROM VW_AGENDAMENTO WHERE {sSqlText.Replace("CAMPO", "SQ_AGENDAMENTO")}"
+        sSqlText = $"SELECT 'Agendamento: ' + RTRIM(CD_AGENDAMENTO) + ' (' + RTRIM(NO_PESSOA) + ')' FROM VW_AGENDAMENTO WHERE SQ_AGENDAMENTO = {sSqlText}"
       Case enOpcoes.Processo_Historico_Cadastro_CadastroDocumentoFiscal.GetHashCode()
-        sSqlText = $"SELECT NO_DOCUMENTOFISCAL_TIPO + ': ' + CD_DOCUMENTOFISCAL + ' (' + NO_NATUREZAOPERACAO + ')' FROM VW_DOCUMENTOFISCAL WHERE {sSqlText.Replace("CAMPO", "SQ_DOCUMENTOFISCAL")}"
+        sSqlText = $"SELECT NO_DOCUMENTOFISCAL_TIPO + ': ' + CD_DOCUMENTOFISCAL + ' (' + NO_NATUREZAOPERACAO + ')' FROM VW_DOCUMENTOFISCAL WHERE SQ_DOCUMENTOFISCAL = {sSqlText}"
       Case enOpcoes.Processo_Historico_Cadastro_CadastroPaciente.GetHashCode()
-        sSqlText = $"SELECT RTRIM(DBO.FC_FORMATARCPF_CNPJ(CD_CPF_CNPJ)) + ' - ' + NO_PESSOA FROM TB_PESSOA WHERE {sSqlText.Replace("CAMPO", "SQ_PESSOA")}"
+        sSqlText = $"SELECT RTRIM(DBO.FC_FORMATARCPF_CNPJ(CD_CPF_CNPJ)) + ' - ' + NO_PESSOA FROM TB_PESSOA WHERE SQ_PESSOA = {sSqlText}"
       Case enOpcoes.Processo_Historico_Financeiro_Voucher.GetHashCode()
         sSqlText = $"SELECT 'Voucher: ' + RTRIM(CD_VOUCHER) + ' (' + RTRIM(NO_PESSOA) + ')'
                      FROM TB_VOUCHER V
                       INNER JOIN TB_PESSOA P ON P.SQ_PESSOA = V.ID_PESSOA
-                     WHERE {sSqlText.Replace("CAMPO", "SQ_VOUCHER")}"
+                     WHERE SQ_VOUCHER = {sSqlText}"
       Case enOpcoes.Processo_Historico_Financeiro_LancamentoContasaReceber_Pagar.GetHashCode()
-        sSqlText = $"SELECT NO_OPT_TIPOMOVFINANCEIRA + ': ' + RTRIM(CD_MOVFINANCEIRA_PARCELA) + ' (' + RTRIM(NO_PESSOA) + ')' FROM VW_MOVFINANCEIRAPARCELA WHERE {sSqlText.Replace("CAMPO", "SQ_MOVFINANCEIRAPARCELA")}"
+        sSqlText = $"SELECT NO_OPT_TIPOMOVFINANCEIRA + ': ' + RTRIM(CD_MOVFINANCEIRA_PARCELA) + ' (' + RTRIM(NO_PESSOA) + ')' FROM VW_MOVFINANCEIRAPARCELA WHERE SQ_MOVFINANCEIRAPARCELA = {sSqlText}"
     End Select
 
     lblDescricao.Text = DBQuery_ValorUnico(sSqlText)
@@ -82,6 +75,16 @@ Public Class frmConsultaHistorico_Registro
   Private Sub CarregarDados()
     Dim sSqlText As String
     Dim sSqlText_WHere As String = ""
+    Dim sSqlText_Registro As String = ""
+
+    If Not iID_REGISTROS Is Nothing AndAlso iID_REGISTROS.Any() Then
+      For Each registro As Integer In iID_REGISTROS
+        FNC_Str_Adicionar(sSqlText_Registro, registro.ToString(), ", ")
+      Next
+    ElseIf iID_REGISTRO > 0 Then
+      sSqlText_Registro = iID_REGISTRO.ToString()
+    End If
+
 
     sSqlText = "SELECT SQ_HISTORICO," +
                       "ID_OPT_PROCESSO," +
@@ -101,8 +104,8 @@ Public Class frmConsultaHistorico_Registro
     If iID_EMPRESA > 0 Then
       FNC_Str_Adicionar(sSqlText_WHere, "ID_EMPRESA = " & iID_EMPRESA, " AND ")
     End If
-    If iID_REGISTRO > 0 Then
-      FNC_Str_Adicionar(sSqlText_WHere, "ID_REGISTRO = " & iID_REGISTRO, " AND ")
+    If Not String.IsNullOrEmpty(sSqlText_Registro) Then
+      FNC_Str_Adicionar(sSqlText_WHere, "ID_REGISTRO IN (" & sSqlText_Registro & ")", " AND ")
     End If
     If iProcessso > 0 Then
       FNC_Str_Adicionar(sSqlText_WHere, "ID_OPT_PROCESSO = " & iProcessso, " AND ")

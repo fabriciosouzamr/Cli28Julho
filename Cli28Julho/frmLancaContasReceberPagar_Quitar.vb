@@ -146,7 +146,8 @@ Public Class frmLancaContasReceberPagar_Quitar
                                                                        "@VL_JUROS_PAGTO",
                                                                        "@VL_IMPOSTORETIDO",
                                                                        "@CM_JUSTIFICATICA_DESCONTO_ACRESCIMO",
-                                                                       "@DT_PAGAMENTO")
+                                                                       "@DT_PAGAMENTO",
+                                                                       "@ID_USUARIO")
 
           .Cells(const_GridContas_SQ_PAGAMENTO).Value = iSQ_PAGAMENTO
 
@@ -168,7 +169,8 @@ Public Class frmLancaContasReceberPagar_Quitar
                                         DBParametro_Montar("VL_JUROS_PAGTO", FNC_ConvValorFormatoAmericano(FNC_NVL(.Cells(const_GridContas_ValorJuros).Value, "0"))),
                                         DBParametro_Montar("VL_IMPOSTORETIDO", FNC_ConvValorFormatoAmericano(FNC_NVL(.Cells(const_GridContas_ValorImpostoRetidoFonte).Value, "0"))),
                                         DBParametro_Montar("CM_JUSTIFICATICA_DESCONTO_ACRESCIMO", .Cells(const_GridContas_JustificativaDescontoAcrescimo).Value,,, const_BancoDados_TamanhoComentario),
-                                        DBParametro_Montar("DT_PAGAMENTO", txtDataPagamento.DateTime.Date, SqlDbType.Date)) Then GoTo Erro
+                                        DBParametro_Montar("DT_PAGAMENTO", txtDataPagamento.DateTime.Date, SqlDbType.Date),
+                                        DBParametro_Montar("ID_USUARIO", iID_USUARIO)) Then GoTo Erro
           End If
 
           FormMovimentacaoFinanceira_Status_Atualizar(.Cells(const_GridContas_ID_MOVFINANCEIRA).Value)
@@ -192,9 +194,11 @@ Public Class frmLancaContasReceberPagar_Quitar
 
       If txtValorImpostos.Value > 0 Then
         sSqlText = DBMontar_SP("SP_MOVFINANCEIRAPARCELA_PGT_IMPOSTORETIDO", False, "@ID_EMPRESA",
-                                                                                   "@VL_IMPOSTORETIDO")
+                                                                                   "@VL_IMPOSTORETIDO",
+                                                                                   "@ID_USUARIO")
         DBExecutar(sSqlText, DBParametro_Montar("ID_EMPRESA", iID_EMPRESA_FILIAL),
-                             DBParametro_Montar("VL_IMPOSTORETIDO", txtValorImpostos.Value))
+                             DBParametro_Montar("VL_IMPOSTORETIDO", txtValorImpostos.Value),
+                             DBParametro_Montar("ID_USUARIO", iID_USUARIO))
       End If
 
       DBExecutarTransacao()

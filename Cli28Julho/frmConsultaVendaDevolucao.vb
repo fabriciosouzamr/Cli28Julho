@@ -86,9 +86,11 @@ Public Class frmConsultaVendaDevolucao
     Next
 
     sSqlText = DBMontar_SP("SP_CLINICA_VENDA_DEVOLUCAO_CANCELA_REPASSE_UPD", False, "@ID_CLINICA_VENDA_DEVOLUCAO",
-                                                                                    "@ID_CONTACAIXA")
+                                                                                    "@ID_CONTACAIXA",
+                                                                                    "@ID_USUARIO")
     DBExecutar(sSqlText, DBParametro_Montar("ID_CLINICA_VENDA_DEVOLUCAO", iSQ_CLINICA_VENDA_DEVOLUCAO),
-                         DBParametro_Montar("ID_CONTACAIXA", cboContaFinanceira.SelectedValue))
+                         DBParametro_Montar("ID_CONTACAIXA", cboContaFinanceira.SelectedValue),
+                         DBParametro_Montar("ID_USUARIO", iID_USUARIO))
 
     cmdGravar.Enabled = False
 

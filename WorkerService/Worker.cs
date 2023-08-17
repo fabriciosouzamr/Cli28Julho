@@ -186,7 +186,8 @@ namespace WorkerService
                               "CONVERT(CHAR(5), AGEND.DH_AGENDAMENTO, 108) HR_AGENDAMENTO," +
                               "dbo.FC_Formatar_NUMERO_WHATSAPP(PSTEL.CD_NUMERO) CD_NUMERO," +
                               "ISNULL(PSCFG.DS_PATH_IMAGEM_MENSAGEM, '') DS_PATH_IMAGEM_MENSAGEM," +
-                              "ENDER.DS_ENDERECO" +
+                              "ENDER.DS_ENDERECO," +
+                              "CONSL.NO_CONSULTORIO" +
                        " FROM TB_AGENDAMENTO AGEND" +
                         " INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = AGEND.ID_PESSOA" +
                         " INNER JOIN TB_PESSOA PSPRF ON PSPRF.SQ_PESSOA = AGEND.ID_PESSOA_PROFISSIONAL" +
@@ -202,6 +203,7 @@ namespace WorkerService
                          " LEFT JOIN TB_HISTORICO HISTO ON HISTO.ID_REGISTRO = AGEND.SQ_AGENDAMENTO" +
                                                      " AND HISTO.ID_OPT_ACAO = 101" +
                                                      " AND CAST(HISTO.DT_HISTORICO AS DATE) = CAST(GETDATE() AS DATE)" +
+                         " LEFT JOIN TB_CONSULTORIO CONSL ON CONSL.SQ_CONSULTORIO = AGEND.ID_CONSULTORIO" + 
                        " WHERE AGEND.ID_OPT_STATUS IN (38)" +
                          " AND HISTO.SQ_HISTORICO IS NULL";
             oData = Util.Query(conn, sSqlText);
@@ -221,6 +223,7 @@ namespace WorkerService
                 Texto = Texto.Replace("[Medico]", row["NO_PESSOA_PROFISSIONAL"].ToString());
                 Texto = Texto.Replace("[Unidade]", row["NO_EMPRESA"].ToString());
                 Texto = Texto.Replace("[EnderecoUnidade]", row["DS_ENDERECO"].ToString());
+                Texto = Texto.Replace("[Consultorio]", row["NO_CONSULTORIO"].ToString());
 
                 await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", DS_PATH_IMAGEM, CD_USUARIO);
 

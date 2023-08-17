@@ -476,10 +476,12 @@ Public Class uscCadastroVenda
                            DBParametro_Montar("ID_CLINICA_VENDA", iSQ_CLINICA_VENDA))
 
       sSqlText = DBMontar_SP("SP_CLINICA_VENDA_MOVFINANCEIRA_PAGAR_CAD", False, "@ID_CLINICA_VENDA",
-                                                                                "@DS_MOVFINANCEIRA")
+                                                                                "@DS_MOVFINANCEIRA",
+                                                                                "@ID_USUARIO")
 
       DBExecutar(sSqlText, DBParametro_Montar("ID_CLINICA_VENDA", iSQ_CLINICA_VENDA),
-                           DBParametro_Montar("DS_MOVFINANCEIRA", "Repasse para o Profissional Ref a " + psqPessoa.cboPessoa.Text))
+                           DBParametro_Montar("DS_MOVFINANCEIRA", "Repasse para o Profissional Ref a " + psqPessoa.cboPessoa.Text),
+                           DBParametro_Montar("ID_USUARIO", iID_USUARIO))
 
       oVoucher.Salvar(0,
                       iSQ_CLINICA_VENDA,

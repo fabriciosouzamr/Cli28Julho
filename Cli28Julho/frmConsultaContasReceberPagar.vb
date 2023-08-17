@@ -730,9 +730,9 @@ Sair:
     Dim oForm As New frmConsultaHistorico_Registro
 
     oForm.iProcessso = enOpcoes.Processo_Historico_Financeiro_LancamentoContasaReceber_Pagar.GetHashCode()
-    oForm.iID_REGISTROS = New List(Of Registro)
-    oForm.iID_REGISTROS.Add(New Registro With {.Nome = "SQ_MOVFINANCEIRAPARCELA", .Valor = objGrid_Valor(grdListagem, const_GridListagem_SQ_MOVFINANCEIRAPARCELA)})
-    oForm.iID_REGISTROS.Add(New Registro With {.Nome = "ID_MOVFINANCEIRA", .Valor = objGrid_Valor(grdListagem, const_GridListagem_ID_MOVFINANCEIRA)})
+    oForm.iID_REGISTROS = New List(Of Integer)
+    oForm.iID_REGISTROS.Add(objGrid_Valor(grdListagem, const_GridListagem_SQ_MOVFINANCEIRAPARCELA))
+    oForm.iID_REGISTROS.Add(objGrid_Valor(grdListagem, const_GridListagem_ID_MOVFINANCEIRA))
     FNC_AbriTela(oForm, , True, True)
   End Sub
 End Class
