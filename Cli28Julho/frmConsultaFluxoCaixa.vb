@@ -23,6 +23,7 @@ Public Class frmConsultaFluxoCaixa
   Const const_GridListagem_Multa As Integer = 18
   Const const_GridListagem_Emitente As Integer = 19
   Const const_GridListagem_ValorParcelaReal As Integer = 20
+  Const const_GridListagem_Justificativa As Integer = 21
 
   Dim oDBGrid As New UltraWinDataSource.UltraDataSource
 
@@ -62,6 +63,7 @@ Public Class frmConsultaFluxoCaixa
     objGrid_Coluna_Add(grdListagem, "Multa", 150, , , ColumnStyle.Currency, , , , , , , , HAlign.Right)
     objGrid_Coluna_Add(grdListagem, "Emitente", 150)
     objGrid_Coluna_Add(grdListagem, "ValorParcelaReal", 0)
+    objGrid_Coluna_Add(grdListagem, "Justificativa", 1000)
     objGrid_Configuracao_Carregar(grdListagem, Me.Name)
 
     cmdNovo.Enabled = FNC_Permissao(enPermissao.FINA_ConsultaFluxodeCaixa).bIncluir
@@ -170,7 +172,8 @@ Sair:
                       "IIf(DateDiff(Day, MFP.DT_VENCIMENTO, ISNULL(MFP.DT_QUITACAO, GETDATE())) < 1, 0, (MFP.VL_PARCELA * MFN.PC_JUROS / 100 / 30) * DateDiff(Day, MFP.DT_VENCIMENTO, ISNULL(MFP.DT_QUITACAO, GETDATE())))," &
                       "IIf(DateDiff(Day, MFP.DT_VENCIMENTO, ISNULL(MFP.DT_QUITACAO, GETDATE())) < 1, 0, MFN.VL_MULTA)," &
                       "MFP.DS_EMITENTE," &
-                      "MFP.VL_PARCELA" &
+                      "MFP.VL_PARCELA," &
+                      "MFN.CM_MOVFINANCEIRA" &
                " FROM TB_MOVFINANCEIRA MFN" &
                 " INNER JOIN VW_TIPOMOVIMENTACAOFINANCEIRACONTAS TM ON TM.SQ_TIPOMOVIMENTACAOFINANCEIRACONTAS = MFN.ID_OPT_TIPOMOVFINANCEIRA" &
                 " INNER JOIN TB_MOVFINANCEIRAPARCELA MFP ON MFP.ID_MOVFINANCEIRA = MFN.SQ_MOVFINANCEIRA" &
@@ -238,7 +241,8 @@ Sair:
                                                            const_GridListagem_Juros,
                                                            const_GridListagem_Multa,
                                                            const_GridListagem_Emitente,
-                                                           const_GridListagem_ValorParcelaReal})
+                                                           const_GridListagem_ValorParcelaReal,
+                                                           const_GridListagem_Justificativa})
     objGrid_ExibirTotal(grdListagem, New Integer() {const_GridListagem_ValorParcela,
                                                     const_GridListagem_Juros,
                                                     const_GridListagem_Multa})

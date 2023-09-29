@@ -1,5 +1,4 @@
-﻿Imports Infragistics.Win.UltraWinGrid
-Imports Infragistics.Win
+﻿Imports Infragistics.Win
 
 Public Class frmConsultaFluxoCaixaSaldos
   Const const_GridListagem_IC_TIPO As Integer = 0
@@ -15,6 +14,7 @@ Public Class frmConsultaFluxoCaixaSaldos
   Const const_GridListagem_NO_STATUS As Integer = 10
   Const const_GridListagem_NO_PLANOCONTAS As Integer = 11
   Const const_GridListagem_NO_PLANOCONTAS_GRUPO As Integer = 12
+  Const const_GridListagem_CM_MOVFINANCEIRA As Integer = 13
 
   Dim oDBGrid As New UltraWinDataSource.UltraDataSource
   Private Sub CmdFechar_Click(sender As Object, e As EventArgs) Handles cmdFechar.Click
@@ -61,6 +61,7 @@ Public Class frmConsultaFluxoCaixaSaldos
     objGrid_Coluna_Add(grdListagem, "Status", 150)
     objGrid_Coluna_Add(grdListagem, "Plano de Contas", 150)
     objGrid_Coluna_Add(grdListagem, "Grupo de Plano de Contas", 150)
+    objGrid_Coluna_Add(grdListagem, "Justificativa", 1000)
   End Sub
 
   Private Sub CmdPesquisar_Click(sender As Object, e As EventArgs) Handles cmdPesquisar.Click
@@ -87,7 +88,8 @@ Public Class frmConsultaFluxoCaixaSaldos
                       "VL_SALDO," &
                       "NO_STATUS," &
                       "NO_PLANOCONTAS," &
-                      "NO_PLANOCONTAS_GRUPO" &
+                      "NO_PLANOCONTAS_GRUPO," &
+                      "DS_MOVFINANCEIRA" &
                " FROM FC_MOVFINANCEIRA_FLUXOCAIXA(" & iID_EMPRESA_FILIAL & "," _
                                                     & IIf(ComboBox_Selecionado(cboContaFinanceira), cboContaFinanceira.SelectedValue, "NULL") & ", " _
                                                     & IIf(ComboBox_Selecionado(cboSegmento), cboSegmento.SelectedValue, "NULL") & ", " _
@@ -107,7 +109,8 @@ Public Class frmConsultaFluxoCaixaSaldos
                                                            const_GridListagem_VL_SALDO,
                                                            const_GridListagem_NO_STATUS,
                                                            const_GridListagem_NO_PLANOCONTAS,
-                                                           const_GridListagem_NO_PLANOCONTAS_GRUPO})
+                                                           const_GridListagem_NO_PLANOCONTAS_GRUPO,
+                                                           const_GridListagem_CM_MOVFINANCEIRA})
   End Sub
 
   Private Sub frmConsultaFluxoCaixaSaldos_Resize(sender As Object, e As EventArgs) Handles Me.Resize

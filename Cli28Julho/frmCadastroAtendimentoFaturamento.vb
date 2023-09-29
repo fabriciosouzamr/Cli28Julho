@@ -293,26 +293,29 @@ Public Class frmCadastroAtendimentoFaturamento
     Dim iIndice As Integer = 0
 
     For iCont = 0 To oItens_Pendentes.Count - 1
-      If oItens_Pendentes(iCont).SQ_CLINICA_VENDA_PROCEDIMENTO = iSQ_CLINICA_VENDA_PROCEDIMENTO Then
-        If oItens_Faturar Is Nothing Then
-          ReDim oItens_Faturar(0)
-        Else
-          ReDim Preserve oItens_Faturar(oItens_Faturar.Length)
-        End If
+      Try
+        If oItens_Pendentes(iCont).SQ_CLINICA_VENDA_PROCEDIMENTO = iSQ_CLINICA_VENDA_PROCEDIMENTO Then
+          If oItens_Faturar Is Nothing Then
+            ReDim oItens_Faturar(0)
+          Else
+            ReDim Preserve oItens_Faturar(oItens_Faturar.Length)
+          End If
 
-        oItens_Faturar(oItens_Faturar.Length - 1) = New cCadastroAtendimentoFaturamento_Item
-        oItens_Faturar(oItens_Faturar.Length - 1).SQ_CLINICA_VENDA_PROCEDIMENTO = oItens_Pendentes(iCont).SQ_CLINICA_VENDA_PROCEDIMENTO
-        oItens_Faturar(oItens_Faturar.Length - 1).CD_CLINICA_VENDA = oItens_Pendentes(iCont).CD_CLINICA_VENDA
-        oItens_Faturar(oItens_Faturar.Length - 1).DT_VENCIMENTO = oItens_Pendentes(iCont).DT_VENCIMENTO
-        oItens_Faturar(oItens_Faturar.Length - 1).NO_PESSOA_PROFISSIONAL = oItens_Pendentes(iCont).NO_PESSOA_PROFISSIONAL
-        oItens_Faturar(oItens_Faturar.Length - 1).NO_PESSOA = oItens_Pendentes(iCont).NO_PESSOA
-        oItens_Faturar(oItens_Faturar.Length - 1).NO_PROCEDIMENTO = oItens_Pendentes(iCont).NO_PROCEDIMENTO
-        oItens_Faturar(oItens_Faturar.Length - 1).VL_PROCEDIMENTO = oItens_Pendentes(iCont).VL_PROCEDIMENTO
-        oItens_Faturar(oItens_Faturar.Length - 1).VL_REPASSE = oItens_Pendentes(iCont).VL_REPASSE
-      Else
-        oItens_PendentesUtil(iIndice) = oItens_Pendentes(iCont)
-        iIndice = iIndice + 1
-      End If
+          oItens_Faturar(oItens_Faturar.Length - 1) = New cCadastroAtendimentoFaturamento_Item
+          oItens_Faturar(oItens_Faturar.Length - 1).SQ_CLINICA_VENDA_PROCEDIMENTO = oItens_Pendentes(iCont).SQ_CLINICA_VENDA_PROCEDIMENTO
+          oItens_Faturar(oItens_Faturar.Length - 1).CD_CLINICA_VENDA = oItens_Pendentes(iCont).CD_CLINICA_VENDA
+          oItens_Faturar(oItens_Faturar.Length - 1).DT_VENCIMENTO = oItens_Pendentes(iCont).DT_VENCIMENTO
+          oItens_Faturar(oItens_Faturar.Length - 1).NO_PESSOA_PROFISSIONAL = oItens_Pendentes(iCont).NO_PESSOA_PROFISSIONAL
+          oItens_Faturar(oItens_Faturar.Length - 1).NO_PESSOA = oItens_Pendentes(iCont).NO_PESSOA
+          oItens_Faturar(oItens_Faturar.Length - 1).NO_PROCEDIMENTO = oItens_Pendentes(iCont).NO_PROCEDIMENTO
+          oItens_Faturar(oItens_Faturar.Length - 1).VL_PROCEDIMENTO = oItens_Pendentes(iCont).VL_PROCEDIMENTO
+          oItens_Faturar(oItens_Faturar.Length - 1).VL_REPASSE = oItens_Pendentes(iCont).VL_REPASSE
+        Else
+          oItens_PendentesUtil(iIndice) = oItens_Pendentes(iCont)
+          iIndice = iIndice + 1
+        End If
+      Catch ex As Exception
+      End Try
     Next
 
     oItens_Pendentes = oItens_PendentesUtil
@@ -496,7 +499,7 @@ Public Class frmCadastroAtendimentoFaturamento
     Else
       Dim bAchou As Boolean = False
 
-      If e.KeyCode = Keys.Enter Then
+      If e.KeyCode = Keys.Enter And oItens_Pendentes IsNot Nothing Then
         For Each oItem As cCadastroAtendimentoFaturamento_Item In oItens_Pendentes
           If Not oItem Is Nothing Then
             If oItem.CD_CLINICA_VENDA.Trim().ToUpper() = txtCodAutorizacao.Text.Trim().ToUpper() Then

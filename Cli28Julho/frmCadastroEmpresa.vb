@@ -65,7 +65,8 @@
                       "EMP.DS_MENSAGEM_IMPRESSAO_SENHA," &
                       "EMP.ID_PESSOA_RESPONSAVEL_IMPOSTORETIDO," &
                       "EMP.ID_PLANOCONTAS_PADRAO_IMPOSTORETIDO," &
-                      "EMP.ID_CONTAFINANCEIRA_IMPOSTORETIDO" &
+                      "EMP.ID_CONTAFINANCEIRA_IMPOSTORETIDO," &
+                      "EMP.ID_PLANOCONTAS_PADRAO_DEVOLUCAO" &
                " FROM TB_PESSOA PES" &
                 " INNER JOIN TB_EMPRESA EMP ON EMP.ID_EMPRESA = PES.SQ_PESSOA" &
                  " LEFT JOIN VW_PESSOA_MIDIASOCIAL_EMAIL EML ON EML.ID_PESSOA = PES.SQ_PESSOA" &
@@ -117,6 +118,7 @@
         ComboBox_Selecionar(cboContaFinanceiraTesouraria, .Item("ID_CONTAFINANCEIRA_TESOURARIA"))
         ComboBox_Selecionar(cboPlanoContasPadraoImpostoRetido, .Item("ID_PLANOCONTAS_PADRAO_IMPOSTORETIDO"))
         ComboBox_Selecionar(cboContaFinanceiraPadraoImpostoRetido, .Item("ID_CONTAFINANCEIRA_IMPOSTORETIDO"))
+        ComboBox_Selecionar(cboPlanoContasPadraoDevolucao, .Item("ID_PLANOCONTAS_PADRAO_DEVOLUCAO"))
 
         oCadEmpresa.chkDiaUtil_Dom.Checked = (FNC_NVL(.Item("IC_DIAUTIL_DOM"), "N") = "S")
         oCadEmpresa.chkDiaUtil_Seg.Checked = (FNC_NVL(.Item("IC_DIAUTIL_SEG"), "N") = "S")
@@ -181,6 +183,7 @@
     ComboBox_Carregar(cboContaFinanceiraTesouraria, enSql.ContaCaixa, , True)
     ComboBox_Carregar(cboContaFinanceiraPadraoImpostoRetido, enSql.ContaCaixa, , True)
     ComboBox_Carregar(cboPlanoContasPadraoImpostoRetido, enSql.PlanoContas_Debito)
+    ComboBox_Carregar(cboPlanoContasPadraoDevolucao, enSql.PlanoContas_Debito)
 
     cmdGravar.Enabled = FNC_Permissao(enPermissao.CADA_Pessoa_CadastroEmpresa).bGravar
 
@@ -303,7 +306,8 @@
                                                         "@DS_MENSAGEM_IMPRESSAO_SENHA",
                                                         "@ID_PLANOCONTAS_PADRAO_IMPOSTORETIDO",
                                                         "@ID_PESSOA_RESPONSAVEL_IMPOSTORETIDO",
-                                                        "@ID_CONTAFINANCEIRA_IMPOSTORETIDO")
+                                                        "@ID_CONTAFINANCEIRA_IMPOSTORETIDO",
+                                                        "@ID_PLANOCONTAS_PADRAO_DEVOLUCAO")
         DBExecutar(sSqlText, DBParametro_Montar("ID_EMPRESA", iID_EMPRESA_FILIAL),
                              DBParametro_Montar("ID_TABELAPRECO_PADRAO", cboTabelaPrecoPadrao.SelectedValue),
                              DBParametro_Montar("ID_TRANSACAOESTOQUE_PADRAO_COMPRAS", cboTransacaoEstoque_Padrao_Recebimentos.SelectedValue),
@@ -344,7 +348,8 @@
                              DBParametro_Montar("DS_MENSAGEM_IMPRESSAO_SENHA", txtMensagemSenha.Text, SqlDbType.NVarChar, , 200),
                              DBParametro_Montar("ID_PLANOCONTAS_PADRAO_IMPOSTORETIDO", cboPlanoContasPadraoImpostoRetido.SelectedValue),
                              DBParametro_Montar("ID_PESSOA_RESPONSAVEL_IMPOSTORETIDO", FNC_NuloZero(psqPessoaLancamentoImpostoRetido.ID_Pessoa, False)),
-                             DBParametro_Montar("ID_CONTAFINANCEIRA_IMPOSTORETIDO", cboContaFinanceiraPadraoImpostoRetido.SelectedValue))
+                             DBParametro_Montar("ID_CONTAFINANCEIRA_IMPOSTORETIDO", cboContaFinanceiraPadraoImpostoRetido.SelectedValue),
+                             DBParametro_Montar("ID_PLANOCONTAS_PADRAO_DEVOLUCAO", cboPlanoContasPadraoDevolucao.SelectedValue))
         If Trim(txtLogradouro.Text) <> "" Then
           sSqlText = DBMontar_SP("SP_ENDERECO_CAD", False, "@SQ_ENDERECO",
                                                            "@ID_PESSOA",

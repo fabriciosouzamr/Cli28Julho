@@ -91,14 +91,16 @@ Partial Class frmCadastroEmpresa
         Me.tbpRodapeRelatorio = New System.Windows.Forms.TabPage()
         Me.rtbRodapeRelatorio = New System.Windows.Forms.RichTextBox()
         Me.tbpImpostos = New System.Windows.Forms.TabPage()
+        Me.cboContaFinanceiraPadraoImpostoRetido = New System.Windows.Forms.ComboBox()
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.psqPessoaLancamentoImpostoRetido = New Cli28Julho.uscPesqPessoa()
         Me.cboPlanoContasPadraoImpostoRetido = New System.Windows.Forms.ComboBox()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.oCadEmpresa = New Cli28Julho.uscCadEmpresa()
         Me.cmdFechar = New System.Windows.Forms.Button()
         Me.cmdGravar = New System.Windows.Forms.Button()
-        Me.cboContaFinanceiraPadraoImpostoRetido = New System.Windows.Forms.ComboBox()
-        Me.Label7 = New System.Windows.Forms.Label()
+        Me.cboPlanoContasPadraoDevolucao = New System.Windows.Forms.ComboBox()
+        Me.Label10 = New System.Windows.Forms.Label()
         Me.tbcGeral.SuspendLayout()
         Me.tbpInformacoesGerais.SuspendLayout()
         CType(Me.txtNrCasasDecimaisValores, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -833,6 +835,8 @@ Partial Class frmCadastroEmpresa
         '
         'tbpImpostos
         '
+        Me.tbpImpostos.Controls.Add(Me.cboPlanoContasPadraoDevolucao)
+        Me.tbpImpostos.Controls.Add(Me.Label10)
         Me.tbpImpostos.Controls.Add(Me.cboContaFinanceiraPadraoImpostoRetido)
         Me.tbpImpostos.Controls.Add(Me.Label7)
         Me.tbpImpostos.Controls.Add(Me.psqPessoaLancamentoImpostoRetido)
@@ -845,6 +849,25 @@ Partial Class frmCadastroEmpresa
         Me.tbpImpostos.TabIndex = 5
         Me.tbpImpostos.Text = "Impostos"
         Me.tbpImpostos.UseVisualStyleBackColor = True
+        '
+        'cboContaFinanceiraPadraoImpostoRetido
+        '
+        Me.cboContaFinanceiraPadraoImpostoRetido.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboContaFinanceiraPadraoImpostoRetido.DropDownWidth = 500
+        Me.cboContaFinanceiraPadraoImpostoRetido.FormattingEnabled = True
+        Me.cboContaFinanceiraPadraoImpostoRetido.Location = New System.Drawing.Point(5, 62)
+        Me.cboContaFinanceiraPadraoImpostoRetido.Name = "cboContaFinanceiraPadraoImpostoRetido"
+        Me.cboContaFinanceiraPadraoImpostoRetido.Size = New System.Drawing.Size(280, 21)
+        Me.cboContaFinanceiraPadraoImpostoRetido.TabIndex = 146
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(5, 47)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(222, 13)
+        Me.Label7.TabIndex = 147
+        Me.Label7.Text = "Conta Financeira Padrão para Imposto Retido"
         '
         'psqPessoaLancamentoImpostoRetido
         '
@@ -912,24 +935,24 @@ Partial Class frmCadastroEmpresa
         Me.cmdGravar.Text = "  Gravar"
         Me.cmdGravar.UseVisualStyleBackColor = True
         '
-        'cboContaFinanceiraPadraoImpostoRetido
+        'cboPlanoContasPadraoDevolucao
         '
-        Me.cboContaFinanceiraPadraoImpostoRetido.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboContaFinanceiraPadraoImpostoRetido.DropDownWidth = 500
-        Me.cboContaFinanceiraPadraoImpostoRetido.FormattingEnabled = True
-        Me.cboContaFinanceiraPadraoImpostoRetido.Location = New System.Drawing.Point(5, 62)
-        Me.cboContaFinanceiraPadraoImpostoRetido.Name = "cboContaFinanceiraPadraoImpostoRetido"
-        Me.cboContaFinanceiraPadraoImpostoRetido.Size = New System.Drawing.Size(280, 21)
-        Me.cboContaFinanceiraPadraoImpostoRetido.TabIndex = 146
+        Me.cboPlanoContasPadraoDevolucao.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboPlanoContasPadraoDevolucao.DropDownWidth = 500
+        Me.cboPlanoContasPadraoDevolucao.FormattingEnabled = True
+        Me.cboPlanoContasPadraoDevolucao.Location = New System.Drawing.Point(5, 104)
+        Me.cboPlanoContasPadraoDevolucao.Name = "cboPlanoContasPadraoDevolucao"
+        Me.cboPlanoContasPadraoDevolucao.Size = New System.Drawing.Size(280, 21)
+        Me.cboPlanoContasPadraoDevolucao.TabIndex = 148
         '
-        'Label7
+        'Label10
         '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(5, 47)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(222, 13)
-        Me.Label7.TabIndex = 147
-        Me.Label7.Text = "Conta Financeira Padrão para Imposto Retido"
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(5, 89)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(201, 13)
+        Me.Label10.TabIndex = 149
+        Me.Label10.Text = "Plano de Contas Padrão para Devolução"
         '
         'frmCadastroEmpresa
         '
@@ -1041,4 +1064,6 @@ Partial Class frmCadastroEmpresa
     Friend WithEvents psqPessoaLancamentoImpostoRetido As uscPesqPessoa
     Friend WithEvents cboContaFinanceiraPadraoImpostoRetido As ComboBox
     Friend WithEvents Label7 As Label
+    Friend WithEvents cboPlanoContasPadraoDevolucao As ComboBox
+    Friend WithEvents Label10 As Label
 End Class

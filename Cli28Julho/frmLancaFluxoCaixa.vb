@@ -281,8 +281,6 @@ Public Class frmLancaFluxoCaixa
         eOPT_Status = enOpcoes.StatusMovimentacaoFinanceira_Compensar
       End If
 
-      DBUsarTransacao = True
-
       If FormCadastroMovimentacaoFinanceira(iSQ_MOVFINANCEIRA:=iSQ_MOVFINANCEIRA,
                                             eID_OPT_TIPOMOVFINANCEIRA:=cboTipoMovimentacao.SelectedValue,
                                             eID_OPT_STATUS:=eOPT_Status,
@@ -374,8 +372,6 @@ Public Class frmLancaFluxoCaixa
                                  DBParametro_Montar("CM_PARTICIPACAO", .Cells(const_GridPlanoContas_Comentario).Value,,, const_BancoDados_TamanhoComentario))
           End With
         Next
-
-        If Not DBExecutarTransacao() Then GoTo Erro
 
         FNC_Mensagem("Lançamento Efetuado")
       Else
