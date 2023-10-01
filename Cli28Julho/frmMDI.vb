@@ -688,4 +688,10 @@ Public Class frmMDI
 
     FNC_AbriTela(oForm)
   End Sub
+
+  Private Sub mnuCadastro_Financeiro_FaturamentoVendaAlterar_Click(sender As Object, e As EventArgs) Handles mnuCadastro_Financeiro_FaturamentoVendaAlterar.Click
+    Dim oForm As New frmCadastroAtendimentoFaturamentoAlterar
+
+    FNC_AbriTela(oForm)
+  End Sub
 End Class

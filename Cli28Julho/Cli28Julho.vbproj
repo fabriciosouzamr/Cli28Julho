@@ -321,6 +321,12 @@
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Constantes.vb" />
+    <Compile Include="frmCadastroAtendimentoFaturamentoAlterar.Designer.vb">
+      <DependentUpon>frmCadastroAtendimentoFaturamentoAlterar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCadastroAtendimentoFaturamentoAlterar.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmCadastroCondicaoPagamento.designer.vb">
       <DependentUpon>frmCadastroCondicaoPagamento.vb</DependentUpon>
     </Compile>
@@ -1227,6 +1233,9 @@
     <Compile Include="WebService.vb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmCadastroAtendimentoFaturamentoAlterar.resx">
+      <DependentUpon>frmCadastroAtendimentoFaturamentoAlterar.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmCadastroCondicaoPagamento.resx">
       <DependentUpon>frmCadastroCondicaoPagamento.vb</DependentUpon>
     </EmbeddedResource>

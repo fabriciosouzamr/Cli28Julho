@@ -554,8 +554,6 @@ Sair:
   End Sub
 
   Private Sub cmdQuitar_Excluir_Click(sender As Object, e As EventArgs) Handles cmdQuitar_Excluir.Click
-    Dim bCancelarParcelasAberta As Boolean = False
-
     If objGrid_LinhaSelecionada(grdListagem) = -1 Then
       FNC_Mensagem("Selecione o lançamento a ser excluído")
       Exit Sub

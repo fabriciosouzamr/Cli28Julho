@@ -906,9 +906,9 @@ Public Class frmLancaContasReceberPagar
         If Not objDataTable_Vazio(oData) Then
           For Each row As DataRow In oData.Rows
             sSqlText = "UPDATE TB_MOVFINANCEIRAPARCELA" &
-                     " SET ID_OPT_STATUS = " & enOpcoes.StatusMovimentacaoFinanceira_Aberta.GetHashCode &
-                     " WHERE SQ_MOVFINANCEIRAPARCELA = " & row.Item("SQ_MOVFINANCEIRAPARCELA") &
-                       " AND ID_OPT_STATUS = " & enOpcoes.StatusMovimentacaoFinanceira_Lancado.GetHashCode
+                       " SET ID_OPT_STATUS = " & enOpcoes.StatusMovimentacaoFinanceira_Aberta.GetHashCode &
+                       " WHERE SQ_MOVFINANCEIRAPARCELA = " & row.Item("SQ_MOVFINANCEIRAPARCELA") &
+                         " AND ID_OPT_STATUS = " & enOpcoes.StatusMovimentacaoFinanceira_Lancado.GetHashCode
             DBExecutar(sSqlText)
 
             FormCadastroHistorico_Gravar(iID_EMPRESA_FILIAL,
