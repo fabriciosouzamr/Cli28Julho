@@ -194,9 +194,11 @@ Public Class frmLancaContasReceberPagar_Quitar
 
       If txtValorImpostos.Value > 0 Then
         sSqlText = DBMontar_SP("SP_MOVFINANCEIRAPARCELA_PGT_IMPOSTORETIDO", False, "@ID_EMPRESA",
+                                                                                   "@ID_PAGAMENTO",
                                                                                    "@VL_IMPOSTORETIDO",
                                                                                    "@ID_USUARIO")
         DBExecutar(sSqlText, DBParametro_Montar("ID_EMPRESA", iID_EMPRESA_FILIAL),
+                             DBParametro_Montar("ID_PAGAMENTO", iSQ_PAGAMENTO),
                              DBParametro_Montar("VL_IMPOSTORETIDO", txtValorImpostos.Value),
                              DBParametro_Montar("ID_USUARIO", iID_USUARIO))
       End If
@@ -307,9 +309,9 @@ Sair:
                       "MFP.DT_MOVIMENTACAO," &
                       "MFP.DT_VENCIMENTO," &
                       "MFP.VL_PARCELA," &
-                      "MFP.VL_DEBITO," &
-                      "ROUND(MFP.VL_DEBITO - MFP.VL_CALC_DESCONTO - MFP.VL_CALC_MULTA + MFP.VL_CALC_JUROS, 2) - IIF(ISNULL(MFP.VL_IMPOSTORETIDO, 0) = 0, ROUND(ISNULL(PSEMP.PC_PROFISSIONAL_RETEMIMPOSTO, 0) * MFP.VL_DEBITO / 100, 2), MFP.VL_IMPOSTORETIDO)," &
-                      "ROUND(MFP.VL_DEBITO - MFP.VL_CALC_DESCONTO - MFP.VL_CALC_MULTA + MFP.VL_CALC_JUROS, 2) - IIF(ISNULL(MFP.VL_IMPOSTORETIDO, 0) = 0, ROUND(ISNULL(PSEMP.PC_PROFISSIONAL_RETEMIMPOSTO, 0) * MFP.VL_DEBITO / 100, 2), MFP.VL_IMPOSTORETIDO)," &
+                      "ROUND(MFP.VL_DEBITO - MFP.VL_CALC_DESCONTO - MFP.VL_CALC_MULTA + MFP.VL_CALC_JUROS, 2) + ISNULL(MFP.VL_IMPOSTORETIDO, 0)," &
+                      "ROUND(MFP.VL_DEBITO - MFP.VL_CALC_DESCONTO - MFP.VL_CALC_MULTA + MFP.VL_CALC_JUROS, 2) + ISNULL(MFP.VL_IMPOSTORETIDO, 0)," &
+                      "ROUND(MFP.VL_DEBITO - MFP.VL_CALC_DESCONTO - MFP.VL_CALC_MULTA + MFP.VL_CALC_JUROS, 2) + ISNULL(MFP.VL_IMPOSTORETIDO, 0)," &
                       "MFP.VL_CALC_DESCONTO," &
                       "MFP.VL_CALC_MULTA," &
                       "MFP.VL_CALC_JUROS," &
@@ -401,7 +403,6 @@ Sair:
                                                          CDbl(FNC_NVL(.Cells(const_GridContas_ValorJuros).Value, 0)) +
                                                          CDbl(FNC_NVL(.Cells(const_GridContas_ValorAcrescimoPagto).Value, 0)) -
                                                          CDbl(FNC_NVL(.Cells(const_GridContas_ValorDesconto).Value, 0)) -
-                                                         CDbl(FNC_NVL(.Cells(const_GridContas_ValorImpostoRetidoFonte).Value, 0)) -
                                                          CDbl(FNC_NVL(.Cells(const_GridContas_ValorDescontoPagto).Value, 0)))
       .Cells(const_GridContas_ValorRestante).Value = FNC_NVL(.Cells(const_GridContas_ValorTotalAPagar).Value, 0) -
                                                      FNC_NVL(.Cells(const_GridContas_ValorQuitando).Value, 0)

@@ -735,9 +735,11 @@ Sair:
 
     If objGrid_CalcularTotalColuna(grdContas, GrdContas_ValorImpostoRetido, grdTipoCalculoTotal.SomarValor) > 0 Then
       sSqlText = DBMontar_SP("SP_MOVFINANCEIRAPARCELA_PGT_IMPOSTORETIDO", False, "@ID_EMPRESA",
+                                                                                 "@ID_PAGAMENTO",
                                                                                  "@VL_IMPOSTORETIDO",
                                                                                  "@ID_USUARIO")
       DBExecutar(sSqlText, DBParametro_Montar("ID_EMPRESA", iID_EMPRESA_FILIAL),
+                           DBParametro_Montar("ID_PAGAMENTO", iSQ_PAGAMENTO),
                            DBParametro_Montar("VL_IMPOSTORETIDO", objGrid_CalcularTotalColuna(grdContas, GrdContas_ValorImpostoRetido, grdTipoCalculoTotal.SomarValor)),
                            DBParametro_Montar("ID_USUARIO", iID_USUARIO))
     End If

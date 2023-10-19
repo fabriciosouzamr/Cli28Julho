@@ -1078,6 +1078,7 @@ Partial Class frmMDI
         '
         Me.mnuCadastro_Financeiro_FaturamentoVendaAlterar.Name = "mnuCadastro_Financeiro_FaturamentoVendaAlterar"
         Me.mnuCadastro_Financeiro_FaturamentoVendaAlterar.Size = New System.Drawing.Size(378, 22)
+        Me.mnuCadastro_Financeiro_FaturamentoVendaAlterar.Tag = "0"
         Me.mnuCadastro_Financeiro_FaturamentoVendaAlterar.Text = "Faturamento de Vendas - Alteração"
         '
         'frmMDI
