@@ -19,21 +19,19 @@
   End Sub
 
   Private Sub frmConsultaAtendimentoMinhasFaturas_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-    ComboBox_Carregar(cboConvenio, enSql.Convenio)
-
     cmdListar.Formatar(enOpcoes.ConfiguracaoTela_Botao_Listar)
     cmdFechar.Formatar(enOpcoes.ConfiguracaoTela_Botao_Fechar)
-    cmdFinanceiro.Formatar(enOpcoes.ConfiguracaoTela_Botao_Financeiro)
     cmdImprimir.Formatar(enOpcoes.ConfiguracaoTela_Botao_Imprimir)
 
-    txtDataInicial.Value = Nothing
-    txtDataFinal.Value = Nothing
+    txtDataInicial.Value = Date.Now.Date
+    txtDataFinal.Value = Date.Now.Date
+
+    Pesquisa()
 
     VScrollBar.SmallChange = 1
     VScrollBar.LargeChange = 1
 
     optConsultas.Checked = True
-    optPendentes.Checked = True
 
     LimparMinhasFaturas()
   End Sub
@@ -43,6 +41,10 @@
   End Sub
 
   Private Sub cmdListar_Clicado(sender As Object) Handles cmdListar.Clicado
+    Pesquisa()
+  End Sub
+
+  Private Sub Pesquisa()
     Dim oData As DataTable
     Dim sSqlText As String
     Dim iIndice As Integer = 0
@@ -61,26 +63,17 @@
                 " INNER JOIN TB_CLINICA_VENDA_PROCEDIMENTO CVDPC ON CVDPC.ID_CLINICA_VENDA = CLVND.SQ_CLINICA_VENDA" &
                 " INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = CLVND.ID_PESSOA" &
                 " INNER JOIN TB_PROCEDIMENTO PROCE ON PROCE.SQ_PROCEDIMENTO = CVDPC.ID_PROCEDIMENTO" &
-                 " LEFT JOIN TB_AGENDAMENTO AGEND ON AGEND.SQ_AGENDAMENTO = CVDPC.ID_AGENDAMENTO" &
-                 " LEFT JOIN TB_TIPO_CONSULTA TPCST ON TPCST.SQ_CLINICA_VENDA = AGEND.ID_TIPO_CONSULTA" &
-               " WHERE CVDPC.ID_PESSOA_PROFISSIONAL = " & iID_USUARIO
+                " INNER JOIN TB_AGENDAMENTO AGEND ON AGEND.SQ_AGENDAMENTO = CVDPC.ID_AGENDAMENTO" &
+                 " LEFT JOIN TB_TIPO_CONSULTA TPCST ON TPCST.SQ_TIPO_CONSULTA = AGEND.ID_TIPO_CONSULTA" &
+               " WHERE CVDPC.ID_PESSOA_PROFISSIONAL = " & iID_USUARIO &
+                 " AND AGEND.ID_OPT_STATUS = " & enOpcoes.StatusAgendamento_Atendido.GetHashCode()
 
-    If optPendentes.Checked Then
-      sSqlText = sSqlText &
-                 " AND CVDPC.ID_OPT_STATUS = " & enOpcoes.StatusVendaClinica_Lancado.GetHashCode()
-    ElseIf optFaturados.Checked Then
-      sSqlText = sSqlText &
-                 " AND CVDPC.ID_OPT_STATUS = " & enOpcoes.StatusVendaClinica_RepasseRealizado.GetHashCode()
-    End If
     If optConsultas.Checked Then
       sSqlText = sSqlText &
                  " AND PROCE.ID_OPT_TIPOPROCEDIMENTO = " & enOpcoes.TipoProcedimento_Procedimento.GetHashCode()
-    ElseIf optFaturados.Checked Then
+    Else
       sSqlText = sSqlText &
                  " AND PROCE.ID_OPT_TIPOPROCEDIMENTO = " & enOpcoes.TipoProcedimento_Exame.GetHashCode()
-    End If
-    If ComboBox_Selecionado(cboConvenio) Then
-      sSqlText = sSqlText & " AND CLVND.ID_CONVENIO = " & cboConvenio.SelectedValue
     End If
     If IsDate(txtDataInicial.Text) Then
       sSqlText = sSqlText & " AND CAST(CLVND.DH_VENDA AS DATE) >= " & FNC_QuotedStr(txtDataInicial.Text)
@@ -130,7 +123,6 @@
     ListarMinhasFaturas()
 
     lblQuantidade.Text = iQuantidade
-    lblValorTotal.Text = FormatCurrency(dValorTotal)
     lblVlPrestadorTotal.Text = FormatCurrency(dVlPrestadorTotal)
   End Sub
 
@@ -147,7 +139,6 @@
         Me.Controls(Me.Controls.IndexOfKey("lblPaciente" + FNC_StrZero(iLabel, 2))).Text = oMinhasFaturas(iCont).PACIENTE
         Me.Controls(Me.Controls.IndexOfKey("lblProcedimentoExame" + FNC_StrZero(iLabel, 2))).Text = oMinhasFaturas(iCont).PROCEDIMENTO
         Me.Controls(Me.Controls.IndexOfKey("lblTipoAtendimento" + FNC_StrZero(iLabel, 2))).Text = oMinhasFaturas(iCont).TIPO_ATENDIMENTO
-        Me.Controls(Me.Controls.IndexOfKey("lblValor" + FNC_StrZero(iLabel, 2))).Text = FormatCurrency(oMinhasFaturas(iCont).Valor)
         Me.Controls(Me.Controls.IndexOfKey("lblVlPrestador" + FNC_StrZero(iLabel, 2))).Text = FormatCurrency(oMinhasFaturas(iCont).VlPrestador)
       Catch ex As Exception
         Me.Controls(Me.Controls.IndexOfKey("lblCodAutoiza" + FNC_StrZero(iLabel, 2))).Text = ""
@@ -155,7 +146,6 @@
         Me.Controls(Me.Controls.IndexOfKey("lblPaciente" + FNC_StrZero(iLabel, 2))).Text = ""
         Me.Controls(Me.Controls.IndexOfKey("lblProcedimentoExame" + FNC_StrZero(iLabel, 2))).Text = ""
         Me.Controls(Me.Controls.IndexOfKey("lblTipoAtendimento" + FNC_StrZero(iLabel, 2))).Text = ""
-        Me.Controls(Me.Controls.IndexOfKey("lblValor" + FNC_StrZero(iLabel, 2))).Text = ""
         Me.Controls(Me.Controls.IndexOfKey("lblVlPrestador" + FNC_StrZero(iLabel, 2))).Text = ""
       End Try
 
@@ -170,7 +160,6 @@
       Me.Controls(Me.Controls.IndexOfKey("lblPaciente" + FNC_StrZero(iCont, 2))).Text = ""
       Me.Controls(Me.Controls.IndexOfKey("lblProcedimentoExame" + FNC_StrZero(iCont, 2))).Text = ""
       Me.Controls(Me.Controls.IndexOfKey("lblTipoAtendimento" + FNC_StrZero(iCont, 2))).Text = ""
-      Me.Controls(Me.Controls.IndexOfKey("lblValor" + FNC_StrZero(iCont, 2))).Text = ""
       Me.Controls(Me.Controls.IndexOfKey("lblVlPrestador" + FNC_StrZero(iCont, 2))).Text = ""
     Next
   End Sub
@@ -179,7 +168,7 @@
     ListarMinhasFaturas()
   End Sub
 
-  Private Sub cmdFinanceiro_Click(sender As Object, e As EventArgs) Handles cmdFinanceiro.Click
+  Private Sub cmdFinanceiro_Click(sender As Object, e As EventArgs)
     Dim oForm As New frmConsultaAtendimentoMeuContaReceber
 
     oForm.Formatar()

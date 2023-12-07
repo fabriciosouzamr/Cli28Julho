@@ -180,17 +180,17 @@ Public Class frmLancaContasReceberPagar_Quitar
       oLancaContasReceberPagar_Quitar.iSQ_PAGAMENTO = iSQ_PAGAMENTO
       If Not oLancaContasReceberPagar_Quitar.Gravar() Then GoTo Erro
 
-      For iCont = 0 To grdContas.Rows.Count - 1
-        With grdContas.Rows(iCont)
-          'Quitação/Compensão das parcelas em dinheiro
-          sSqlText = DBMontar_SP("SP_MOVFINANCEIRA_QUITAR_CAD", False, "@ID_MOVFINANCEIRA", "@ID_USUARIO")
-          DBExecutar(sSqlText,
-                     DBParametro_Montar("ID_MOVFINANCEIRA", FNC_NVL(.Cells(const_GridContas_ID_MOVFINANCEIRA).Value, 0)),
-                     DBParametro_Montar("ID_USUARIO", iID_USUARIO))
+      'For iCont = 0 To grdContas.Rows.Count - 1
+      '  With grdContas.Rows(iCont)
+      '    'Quitação/Compensão das parcelas em dinheiro
+      '    sSqlText = DBMontar_SP("SP_MOVFINANCEIRA_QUITAR_CAD", False, "@ID_MOVFINANCEIRA", "@ID_USUARIO")
+      '    DBExecutar(sSqlText,
+      '               DBParametro_Montar("ID_MOVFINANCEIRA", FNC_NVL(.Cells(const_GridContas_ID_MOVFINANCEIRA).Value, 0)),
+      '               DBParametro_Montar("ID_USUARIO", iID_USUARIO))
 
-          FormMovimentacaoFinanceira_Status_Atualizar(FNC_NVL(.Cells(const_GridContas_ID_MOVFINANCEIRA).Value, 0))
-        End With
-      Next
+      '    FormMovimentacaoFinanceira_Status_Atualizar(FNC_NVL(.Cells(const_GridContas_ID_MOVFINANCEIRA).Value, 0))
+      '  End With
+      'Next
 
       If txtValorImpostos.Value > 0 Then
         sSqlText = DBMontar_SP("SP_MOVFINANCEIRAPARCELA_PGT_IMPOSTORETIDO", False, "@ID_EMPRESA",

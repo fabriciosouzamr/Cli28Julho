@@ -331,6 +331,12 @@ Public Module modControles
         DBTabela = "(SELECT DISTINCT ID_PESSOA, NO_PESSOA FROM VW_PESSOA_ESPECIALIDADE (NOLOCK) WHERE ID_ESPECIALIDADE = " & oParametro(0).ToString() & ") X"
         DBCampo_NO = "NO_PESSOA"
         DBCampo_ID = "ID_PESSOA"
+      Case enSql.TipoContaBancaria
+        DBTabela = "(SELECT SQ_TIPO_CONTAFINANCEIRA, NO_TIPO_CONTAFINANCEIRA FROM TB_TIPO_CONTAFINANCEIRA" &
+                   " WHERE ID_OPT_CLASSE NOT IN (" & enOpcoes.ClasseTipoContaFinanceira_ContaCaixa.GetHashCode() & ")" &
+                   " ORDER BY NO_TIPO_CONTAFINANCEIRA) X"
+        DBCampo_NO = "NO_TIPO_CONTAFINANCEIRA"
+        DBCampo_ID = "SQ_TIPO_CONTAFINANCEIRA"
       Case enSql.Profissional_Especilidade
         DBTabela = "(SELECT -1 ID_ESPECIALIDADE, 'Todos' NO_ESPECIALIDADE, 0 NR_ORDEM" &
                     " UNION ALL " &
@@ -933,10 +939,15 @@ Public Module modControles
         bFiltrarEmpresa = True
         bFiltrarAtivo = True
       Case enSql.ContaFinanceira
-        DBTabela = "TB_CONTAFINANCEIRA (NOLOCK)"
+        DBTabela = $"(SELECT * FROM TB_CONTAFINANCEIRA (NOLOCK) WHERE ID_EMPRESA = {iID_EMPRESA_FILIAL}) X"
         DBCampo_ID = "SQ_CONTAFINANCEIRA"
+        DBCampo_NO = "NO_CONTAFINANCEIRA"
         DBCamposAdicionais = ", ID_DEPARTAMENTO_RESPONSAVEL"
         bFiltrarEmpresa = True
+
+        If Not oParametro Is Nothing Then
+          FNC_Str_Adicionar(sSqlText_Where, "(SQ_CONTAFINANCEIRA IN (SELECT ID_CONTAFINANCEIRA FROM TB_CONTAFINANCEIRA_PESSOA WHERE ID_PESSOA = " & oParametro(0) & ") OR ID_PESSOA_SUPERVISAO = " & oParametro(0) & ")", " AND ")
+        End If
       Case enSql.TransacaoEstoque,
            enSql.TransacaoEstoque_MovimentacaoEstoque_Manual,
            enSql.TransacaoEstoque_Recebimento,

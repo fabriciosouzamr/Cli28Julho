@@ -1,6 +1,5 @@
 ﻿Imports Infragistics.Win.UltraWinGrid
 Imports Infragistics.Win
-Imports Infragistics.Win.Misc.UltraWinNavigationBar
 
 Public Class frmConsultaVendaDevolucao
   Const const_GridListagemADevolver_SQ_CLINICA_VENDA_PROCEDIMENTO As Integer = 0
@@ -52,36 +51,35 @@ Public Class frmConsultaVendaDevolucao
     Dim sSqlText As String
     Dim iSQ_CLINICA_VENDA_DEVOLUCAO As Integer
 
-    sSqlText = DBMontar_SP("SP_CLINICA_VENDA_DEVOLVER_UPD", False, "@SQ_CLINICA_VENDA",
-                                                                   "@SQ_CLINICA_VENDA_DEVOLUCAO OUTPUT",
-                                                                   "@SQ_MOVFINANCEIRA OUTPUT",
-                                                                   "@ID_EMPRESA",
-                                                                   "@ID_CONTAFINANCEIRA_DEBITO",
-                                                                   "@CM_JUSTIFICATIVA",
-                                                                   "@VL_DEVOLUCAO",
-                                                                   "@ID_TIPO_DOCUMENTO",
-                                                                   "@ID_USUARIO")
-    DBExecutar(sSqlText, DBParametro_Montar("SQ_CLINICA_VENDA", iSQ_CLINICA_VENDA),
-                         DBParametro_Montar("SQ_CLINICA_VENDA_DEVOLUCAO", Nothing, , ParameterDirection.Output),
-                         DBParametro_Montar("SQ_MOVFINANCEIRA", Nothing, , ParameterDirection.Output),
-                         DBParametro_Montar("ID_EMPRESA", iID_EMPRESA_MATRIZ),
-                         DBParametro_Montar("ID_CONTAFINANCEIRA_DEBITO", cboContaFinanceira.SelectedValue),
-                         DBParametro_Montar("CM_JUSTIFICATIVA", txtJustificativaDevolucao.Text),
-                         DBParametro_Montar("VL_DEVOLUCAO", CDbl(lblValorDevolucao.Tag), SqlDbType.Money),
-                         DBParametro_Montar("ID_TIPO_DOCUMENTO", cboTipoDocumento.SelectedValue),
-                         DBParametro_Montar("ID_USUARIO", iID_USUARIO))
+    'If DBTeveRetorno() Then
+    '  iSQ_CLINICA_VENDA_DEVOLUCAO = DBRetorno(1)
+    'End If
 
-    If DBTeveRetorno() Then
-      iSQ_CLINICA_VENDA_DEVOLUCAO = DBRetorno(1)
-    End If
-
-    sSqlText = DBMontar_SP("SP_CLINICA_VENDA_PROCEDIMENTO_DEVOLVER_UPD", False, "@SQ_CLINICA_VENDA_PROCEDIMENTO",
-                                                                                "@ID_CLINICA_VENDA_DEVOLUCAO")
+    'sSqlText = DBMontar_SP("SP_CLINICA_VENDA_PROCEDIMENTO_DEVOLVER_UPD", False, "@SQ_CLINICA_VENDA_PROCEDIMENTO",
+    '                                                                            "@ID_CLINICA_VENDA_DEVOLUCAO")
 
     For iCont = 0 To grdListagemDevolucao.Rows.Count - 1
       With grdListagemDevolucao.Rows(iCont)
-        DBExecutar(sSqlText, DBParametro_Montar("SQ_CLINICA_VENDA_PROCEDIMENTO", .Cells(const_GridListagemDevolucao_SQ_CLINICA_VENDA_PROCEDIMENTO).Value),
-                             DBParametro_Montar("ID_CLINICA_VENDA_DEVOLUCAO", iSQ_CLINICA_VENDA_DEVOLUCAO))
+        sSqlText = DBMontar_SP("SP_CLINICA_VENDA_DEVOLVER_UPD", False, "@SQ_CLINICA_VENDA",
+                                                                       "@SQ_CLINICA_VENDA_PROCEDIMENTO",
+                                                                       "@SQ_CLINICA_VENDA_DEVOLUCAO OUTPUT",
+                                                                       "@SQ_MOVFINANCEIRA OUTPUT",
+                                                                       "@ID_EMPRESA",
+                                                                       "@ID_CONTAFINANCEIRA_DEBITO",
+                                                                       "@CM_JUSTIFICATIVA",
+                                                                       "@VL_DEVOLUCAO",
+                                                                       "@ID_TIPO_DOCUMENTO",
+                                                                       "@ID_USUARIO")
+        DBExecutar(sSqlText, DBParametro_Montar("SQ_CLINICA_VENDA", iSQ_CLINICA_VENDA),
+                             DBParametro_Montar("SQ_CLINICA_VENDA_PROCEDIMENTO", .Cells(const_GridListagemDevolucao_SQ_CLINICA_VENDA_PROCEDIMENTO).Value),
+                             DBParametro_Montar("SQ_CLINICA_VENDA_DEVOLUCAO", Nothing, , ParameterDirection.Output),
+                             DBParametro_Montar("SQ_MOVFINANCEIRA", Nothing, , ParameterDirection.Output),
+                             DBParametro_Montar("ID_EMPRESA", iID_EMPRESA_MATRIZ),
+                             DBParametro_Montar("ID_CONTAFINANCEIRA_DEBITO", cboContaFinanceira.SelectedValue),
+                             DBParametro_Montar("CM_JUSTIFICATIVA", txtJustificativaDevolucao.Text),
+                             DBParametro_Montar("VL_DEVOLUCAO", CDbl(.Cells(const_GridListagemDevolucao_VlrTotalProcedimento).Value), SqlDbType.Money),
+                             DBParametro_Montar("ID_TIPO_DOCUMENTO", cboTipoDocumento.SelectedValue),
+                             DBParametro_Montar("ID_USUARIO", iID_USUARIO))
       End With
     Next
 

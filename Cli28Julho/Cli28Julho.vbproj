@@ -333,6 +333,12 @@
     <Compile Include="frmCadastroCondicaoPagamento.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmCadastroContaBancaria.Designer.vb">
+      <DependentUpon>frmCadastroContaBancaria.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCadastroContaBancaria.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmCadastroContaCaixa.Designer.vb">
       <DependentUpon>frmCadastroContaCaixa.vb</DependentUpon>
     </Compile>
@@ -1238,6 +1244,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmCadastroCondicaoPagamento.resx">
       <DependentUpon>frmCadastroCondicaoPagamento.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCadastroContaBancaria.resx">
+      <DependentUpon>frmCadastroContaBancaria.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCadastroContaCaixa.resx">
       <DependentUpon>frmCadastroContaCaixa.vb</DependentUpon>

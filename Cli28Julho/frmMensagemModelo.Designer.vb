@@ -82,7 +82,7 @@ Partial Class frmMensagemModelo
         Me.TabControl1.Location = New System.Drawing.Point(5, 5)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1212, 526)
+        Me.TabControl1.Size = New System.Drawing.Size(1212, 529)
         Me.TabControl1.TabIndex = 0
         '
         'tbsConfiguracaoProfissional
@@ -286,7 +286,7 @@ Partial Class frmMensagemModelo
         Me.tbsAniversarianteDia.Location = New System.Drawing.Point(4, 22)
         Me.tbsAniversarianteDia.Name = "tbsAniversarianteDia"
         Me.tbsAniversarianteDia.Padding = New System.Windows.Forms.Padding(3)
-        Me.tbsAniversarianteDia.Size = New System.Drawing.Size(1204, 500)
+        Me.tbsAniversarianteDia.Size = New System.Drawing.Size(1204, 503)
         Me.tbsAniversarianteDia.TabIndex = 2
         Me.tbsAniversarianteDia.Text = "AniversarianteDia"
         Me.tbsAniversarianteDia.UseVisualStyleBackColor = True
@@ -297,7 +297,7 @@ Partial Class frmMensagemModelo
         Me.oAniversarianteDia.Location = New System.Drawing.Point(3, 3)
         Me.oAniversarianteDia.Margin = New System.Windows.Forms.Padding(4)
         Me.oAniversarianteDia.Name = "oAniversarianteDia"
-        Me.oAniversarianteDia.Size = New System.Drawing.Size(1198, 494)
+        Me.oAniversarianteDia.Size = New System.Drawing.Size(1198, 497)
         Me.oAniversarianteDia.TabIndex = 1
         '
         'tbsCancelamentoAgendamento

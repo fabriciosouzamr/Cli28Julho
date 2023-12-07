@@ -169,7 +169,7 @@ Public Class uscLancaContasReceberPagar_QuitarForm
     Formatar_TipoMovimentacao()
 
     cFormaPagamento = FNC_FormaPagamento_Collection_Carregar()
-    ComboBox_Carregar(cboContaDebito_ContaCredito, enSql.ContaFinanceira)
+    ComboBox_Carregar(cboContaDebito_ContaCredito, enSql.ContaFinanceira, New Object() {iID_USUARIO})
     ComboBox_Carregar(cboBanco, enSql.Banco)
   End Sub
 

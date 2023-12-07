@@ -352,9 +352,9 @@ Sair:
     objGrid_Coluna_Add(grdFormaPagamento, "Valor Saldo", 150, , False, ColumnStyle.Currency)
     Select Case iTipoMovimentacao
       Case enOpcoes.TipoMovimentacaoFinanceiraRecebePagar_ContasPagar.GetHashCode
-        objGrid_Coluna_Add(grdFormaPagamento, "Conta de Débito", 300, , True, , FNC_CarregarLista(enTipoCadastro.ContaFinanceira))
+        objGrid_Coluna_Add(grdFormaPagamento, "Conta de Débito", 300, , True, , FNC_CarregarLista(enTipoCadastro.ContaFinanceira, New Object() {iID_USUARIO}))
       Case enOpcoes.TipoMovimentacaoFinanceiraRecebePagar_ContasReceber.GetHashCode
-        objGrid_Coluna_Add(grdFormaPagamento, "Conta de Crédito", 300, , True, , FNC_CarregarLista(enTipoCadastro.ContaFinanceira))
+        objGrid_Coluna_Add(grdFormaPagamento, "Conta de Crédito", 300, , True, , FNC_CarregarLista(enTipoCadastro.ContaFinanceira, New Object() {iID_USUARIO}))
     End Select
     objGrid_Coluna_Add(grdFormaPagamento, "Cód. Documento", 300, , True)
     objGrid_Coluna_Add(grdFormaPagamento, "Emitente", 300, , True)

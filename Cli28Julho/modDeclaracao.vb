@@ -2094,6 +2094,7 @@ Public Module modDeclaracao
     ContaCaixa_SistemaChamada = 1362
     ContaCaixaAtendimento_SistemaChamada = 1363
     ClinicaSenhaGerada_Hoje_Chamada = 1364
+    TipoContaBancaria = 1365
   End Enum
 
   Public Enum enTipoEndereco

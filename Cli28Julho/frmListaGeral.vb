@@ -506,7 +506,8 @@ Public Class frmListaGeral
        eListagemGeral_TipoTela = enListagemGeral_TipoTela.CadastroGrupoTributario Or
        eListagemGeral_TipoTela = enListagemGeral_TipoTela.CadastroConvenio Or
        eListagemGeral_TipoTela = enListagemGeral_TipoTela.CadastroEspecialidade Or
-       eListagemGeral_TipoTela = enListagemGeral_TipoTela.CadastroContaCaixa Then
+       eListagemGeral_TipoTela = enListagemGeral_TipoTela.CadastroContaCaixa Or
+       eListagemGeral_TipoTela = enListagemGeral_TipoTela.CadastroContaBancaria Then
       bEdicao = False
     End If
 
@@ -3348,6 +3349,13 @@ Public Class frmListaGeral
         FNC_AbriTela(oForm)
       Case enListagemGeral_TipoTela.CadastroContaCaixa
         Dim oForm As New frmCadastroContaCaixa
+
+        AddHandler oForm.Pesquisar, AddressOf Pesquisar
+        oForm.iSQ_CONTAFINANCEIRA = objGrid_Valor(grdListagem, const_GridContaCaixa_SQ_CONTACAIXA)
+
+        FNC_AbriTela(oForm)
+      Case enListagemGeral_TipoTela.CadastroContaBancaria
+        Dim oForm As New frmCadastroContaBancaria
 
         AddHandler oForm.Pesquisar, AddressOf Pesquisar
         oForm.iSQ_CONTAFINANCEIRA = objGrid_Valor(grdListagem, const_GridContaCaixa_SQ_CONTACAIXA)
