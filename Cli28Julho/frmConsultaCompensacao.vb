@@ -188,8 +188,18 @@ Public Class frmConsultaCompensacao
 
     AddHandler oForm.Pesquisar, AddressOf Pesquisar
 
-    oForm.iSQ_MOVFINANCEIRAPARCELA = objGrid_Valor(grdListagem, const_GridListagem_ID_MOVFINANCEIRAPARCELA, , 0)
-    oForm.iSQ_PAGAMENTOITEM = objGrid_Valor(grdListagem, const_GridListagem_ID_PAGAMENTOITEM, , 0)
+    oForm.cSQ_MOVFINANCEIRAPARCELA = New Collection()
+    oForm.cSQ_PAGAMENTOITEM = New Collection()
+
+    For iCont = 0 To grdListagem.Rows.Count - 1
+      If objGrid_CheckCol_Valor(grdListagem, const_GridListagem_Check, iCont) = "S" Then
+        If objGrid_Valor(grdListagem, const_GridListagem_ID_MOVFINANCEIRAPARCELA, , 0) > 0 Then
+          oForm.cSQ_MOVFINANCEIRAPARCELA.Add(objGrid_Valor(grdListagem, const_GridListagem_ID_MOVFINANCEIRAPARCELA, iCont, 0))
+        Else
+          oForm.cSQ_PAGAMENTOITEM.Add(objGrid_Valor(grdListagem, const_GridListagem_ID_PAGAMENTOITEM, iCont, 0))
+        End If
+      End If
+    Next
 
     FNC_AbriTela(oForm)
   End Sub

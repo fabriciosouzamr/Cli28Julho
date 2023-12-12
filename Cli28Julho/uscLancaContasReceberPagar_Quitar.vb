@@ -452,7 +452,8 @@ Sair:
   Public Sub CalcularBaixarParcelas(grdContas As UltraWinGrid.UltraGrid,
                                     iGridContas_ValorQuitando As Integer,
                                     iGridContas_ValorTotalAPagar As Integer,
-                                    iGridContas_ValorRestante As Integer)
+                                    iGridContas_ValorRestante As Integer,
+                                    iGridContas_ValorImpostoRetidoFonte As Integer)
     Dim iCont_01 As Integer
     Dim iCont_02 As Integer
     Dim vValor As Double
@@ -474,9 +475,11 @@ Sair:
     For iCont_01 = 0 To grdFormaPagamento.Rows.Count - 1
       For iCont_02 = 0 To grdContas.Rows.Count - 1
         If objGrid_Valor(grdContas, iGridContas_ValorRestante, iCont_02) > 0 Then
+          Dim valorRestanteImposto = Val(objGrid_Valor(grdContas, iGridContas_ValorRestante, iCont_02)) - Val(objGrid_Valor(grdContas, iGridContas_ValorImpostoRetidoFonte, iCont_02))
+
           If Val(objGrid_Valor(grdFormaPagamento, const_GridFormaPagamento_ValorSaldo, iCont_01)) >
-             Val(objGrid_Valor(grdContas, iGridContas_ValorRestante, iCont_02)) Then
-            vValor = Math.Round(Val(objGrid_Valor(grdContas, iGridContas_ValorRestante, iCont_02)), 2)
+             valorRestanteImposto Then
+            vValor = valorRestanteImposto
           Else
             vValor = Val(objGrid_Valor(grdFormaPagamento, const_GridFormaPagamento_ValorSaldo, iCont_01))
           End If

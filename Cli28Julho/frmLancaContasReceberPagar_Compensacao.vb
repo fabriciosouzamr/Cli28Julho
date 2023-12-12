@@ -2,6 +2,7 @@
   Public Event Pesquisar()
 
   Public cSQ_MOVFINANCEIRAPARCELA = New Collection
+  Public cSQ_PAGAMENTOITEM = New Collection
   Public iSQ_MOVFINANCEIRAPARCELA As Integer
   Public iSQ_PAGAMENTOITEM As Integer
 
@@ -10,8 +11,13 @@
     Public VL_PARCELA As Double
     Public VL_TAXA_COMPENSACAO As Double
   End Class
+  Class cPAGAMENTOITEM
+    Public SQ_PAGAMENTOITEM As Integer
+    Public VL_PAGAMENTO As Double
+  End Class
 
   Public MOVFINANCEIRAPARCELA As cMOVFINANCEIRAPARCELA()
+  Public PAGAMENTOITEM As cPAGAMENTOITEM()
   Dim Indice As Integer = 0
 
   Private Sub cmdFechar_Click(sender As Object, e As EventArgs) Handles cmdFechar.Click
@@ -45,6 +51,13 @@
         sSqlText = "SELECT * FROM VW_MOVFINANCEIRAPARCELA WHERE SQ_MOVFINANCEIRAPARCELA = " & Item.ToString()
         CompensacaoDados(sSqlText)
       Next
+    ElseIf FNC_Collection_Preenchido(cSQ_PAGAMENTOITEM) Then
+      ReDim PAGAMENTOITEM(cSQ_PAGAMENTOITEM.Count - 1)
+
+      For Each Item As Object In cSQ_PAGAMENTOITEM
+        sSqlText = "SELECT * FROM VW_PAGAMENTOITEM WHERE SQ_PAGAMENTOITEM = " & Item.ToString()
+        CompensacaoDados(sSqlText)
+      Next
     Else
       sSqlText = "SELECT * FROM VW_PAGAMENTOITEM WHERE SQ_PAGAMENTOITEM = " & iSQ_PAGAMENTOITEM
       CompensacaoDados(sSqlText)
@@ -63,7 +76,7 @@
 
     If Not objDataTable_Vazio(oData) Then
       With oData.Rows(0)
-        If iSQ_PAGAMENTOITEM > 0 Then
+        If iSQ_PAGAMENTOITEM > 0 Or PAGAMENTOITEM.Count > 0 Then
           ComboBox_Selecionar(cboContaFinanceira, FNC_NVL(.Item("ID_CONTAFINANCEIRA"), 0))
         Else
           ComboBox_Selecionar(cboContaFinanceira, FNC_NVL(.Item("ID_CONTAFINANCEIRA_CREDITO"), 0))
@@ -77,6 +90,12 @@
 
         If iSQ_PAGAMENTOITEM > 0 Then
           txtValorCompensacao.Value = FNC_NVL(.Item("VL_PAGAMENTO"), 0)
+        ElseIf cSQ_PAGAMENTOITEM.Count > 0 Then
+          PAGAMENTOITEM(Indice) = New cPAGAMENTOITEM()
+          PAGAMENTOITEM(Indice).SQ_PAGAMENTOITEM = .Item("SQ_PAGAMENTOITEM")
+          PAGAMENTOITEM(Indice).VL_PAGAMENTO = .Item("VL_PAGAMENTO")
+          Indice = Indice + 1
+          txtValorCompensacao.Value = txtValorCompensacao.Value + FNC_NVL(.Item("VL_PAGAMENTO"), 0)
         Else
           MOVFINANCEIRAPARCELA(Indice) = New cMOVFINANCEIRAPARCELA()
           MOVFINANCEIRAPARCELA(Indice).SQ_MOVFINANCEIRAPARCELA = .Item("SQ_MOVFINANCEIRAPARCELA")
@@ -122,6 +141,15 @@
                                              txtDataCompensacao.Value,
                                              txtValorCompensacao.Value,
                                              Trim(txtComentario.Text))
+    ElseIf PAGAMENTOITEM.Count > 0 Then
+      For Each Item As cPAGAMENTOITEM In PAGAMENTOITEM
+        bOk = FormPagamento_Compensacao_Gravar(Item.SQ_PAGAMENTOITEM,
+                                               FNC_NVL(cboContaFinanceira.SelectedValue, 0),
+                                               enOpcoes.StatusPagamentoItem_Quitado.GetHashCode(),
+                                               txtDataCompensacao.Value,
+                                               Item.VL_PAGAMENTO,
+                                               Trim(txtComentario.Text))
+      Next
     Else
       For Each Item As cMOVFINANCEIRAPARCELA In MOVFINANCEIRAPARCELA
         dVL_TAXA_COMPENSACAO = dVL_TAXA_COMPENSACAO + Item.VL_TAXA_COMPENSACAO

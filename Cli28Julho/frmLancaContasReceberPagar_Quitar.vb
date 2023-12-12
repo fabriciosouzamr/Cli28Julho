@@ -405,6 +405,7 @@ Sair:
                                                          CDbl(FNC_NVL(.Cells(const_GridContas_ValorDesconto).Value, 0)) -
                                                          CDbl(FNC_NVL(.Cells(const_GridContas_ValorDescontoPagto).Value, 0)))
       .Cells(const_GridContas_ValorRestante).Value = FNC_NVL(.Cells(const_GridContas_ValorTotalAPagar).Value, 0) -
+                                                     FNC_NVL(.Cells(const_GridContas_ValorImpostoRetidoFonte).Value, 0) -
                                                      FNC_NVL(.Cells(const_GridContas_ValorQuitando).Value, 0)
     End With
   End Sub
@@ -417,7 +418,8 @@ Sair:
           oLancaContasReceberPagar_Quitar.CalcularBaixarParcelas(grdContas,
                                                                  const_GridContas_ValorQuitando,
                                                                  const_GridContas_ValorTotalAPagar,
-                                                                 const_GridContas_ValorRestante)
+                                                                 const_GridContas_ValorRestante,
+                                                                 const_GridContas_ValorImpostoRetidoFonte)
         End If
       Case const_GridContas_BTN_Descer
         If e.Cell.Row.Index < grdContas.Rows.Count - 1 Then
@@ -425,7 +427,8 @@ Sair:
           oLancaContasReceberPagar_Quitar.CalcularBaixarParcelas(grdContas,
                                                                  const_GridContas_ValorQuitando,
                                                                  const_GridContas_ValorTotalAPagar,
-                                                                 const_GridContas_ValorRestante)
+                                                                 const_GridContas_ValorRestante,
+                                                                 const_GridContas_ValorImpostoRetidoFonte)
         End If
     End Select
   End Sub
@@ -443,7 +446,8 @@ Sair:
     oLancaContasReceberPagar_Quitar.CalcularBaixarParcelas(grdContas,
                                                            const_GridContas_ValorQuitando,
                                                            const_GridContas_ValorTotalAPagar,
-                                                           const_GridContas_ValorRestante)
+                                                           const_GridContas_ValorRestante,
+                                                           const_GridContas_ValorImpostoRetidoFonte)
   End Sub
 
   Private Sub txtValorAtualizado_ValueChanged(sender As Object, e As EventArgs) Handles txtValorAtualizado.ValueChanged
