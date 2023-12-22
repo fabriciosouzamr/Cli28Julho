@@ -33,6 +33,8 @@ Public Class frmCadastroVenda_Fechamento_Aprovacao
         Me.Text = "Cadastro de Venda - Conferência de Fechamento"
     End Select
 
+    txtDataBaixa.Value = DateTime.Now
+
     objGrid_Inicializar(grdListagem, , oDBGrid, UltraWinGrid.CellClickAction.RowSelect, , DefaultableBoolean.False, True, , , , True)
     objGrid_Coluna_Add(grdListagem, "SQ_CLINICA_VENDA_FECHAMENTO", 0)
     objGrid_Coluna_Add(grdListagem, "Cód. Fechamento", 200)
@@ -120,6 +122,10 @@ Public Class frmCadastroVenda_Fechamento_Aprovacao
       FNC_Mensagem("Selecione a conta caixa")
       Exit Sub
     End If
+    If txtDataBaixa.Value Is Nothing Then
+      FNC_Mensagem("Informe a data da baixa")
+      Exit Sub
+    End If
 
     If eCadastroVenda_Fechamento = modDeclaracaoLocal.enCadastroVenda_Fechamento.eAprovacao Then
       Gravar_Aprovacao()
@@ -142,7 +148,7 @@ Public Class frmCadastroVenda_Fechamento_Aprovacao
     DBExecutar(sSqlText, DBParametro_Montar("SQ_CLINICA_VENDA_FECHAMENTO", iSQ_CLINICA_VENDA_FECHAMENTO),
                          DBParametro_Montar("ID_CONTAFINANCEIRA_APROVACAO", cboContaFinanceira.SelectedValue),
                          DBParametro_Montar("ID_PESSOA_FINANCEIRA", iID_USUARIO),
-                         DBParametro_Montar("DH_FINANCEIRA", Now(), SqlDbType.DateTime))
+                         DBParametro_Montar("DH_FINANCEIRA", txtDataBaixa.DateTime.Date, SqlDbType.DateTime))
   End Sub
 
   Private Sub Gravar_Financeiro()
@@ -155,7 +161,7 @@ Public Class frmCadastroVenda_Fechamento_Aprovacao
     DBExecutar(sSqlText, DBParametro_Montar("SQ_CLINICA_VENDA_FECHAMENTO", iSQ_CLINICA_VENDA_FECHAMENTO),
                          DBParametro_Montar("ID_CONTAFINANCEIRA_FINANCEIRA", cboContaFinanceira.SelectedValue),
                          DBParametro_Montar("ID_PESSOA_FINANCEIRA", iID_USUARIO),
-                         DBParametro_Montar("DH_FINANCEIRA", Now(), SqlDbType.DateTime))
+                         DBParametro_Montar("DH_FINANCEIRA", txtDataBaixa.DateTime.Date, SqlDbType.DateTime))
   End Sub
 
   Private Sub grdListagem_ClickCell(sender As Object, e As ClickCellEventArgs) Handles grdListagem.ClickCell

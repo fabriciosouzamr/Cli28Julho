@@ -242,6 +242,10 @@
     Dim sSqlText As String
     Dim bOk As Boolean
 
+    If (PAGAMENTOITEM IsNot Nothing AndAlso PAGAMENTOITEM.Count > 1) OrElse (MOVFINANCEIRAPARCELA IsNot Nothing AndAlso MOVFINANCEIRAPARCELA.Count > 1) Then
+      FNC_Mensagem("Selecione somente um item para exclusão")
+      Exit Sub
+    End If
     If Not IsDate(txtDataCompensacao.Text) Then
       FNC_Mensagem("Informe a data de compensação")
       Exit Sub
@@ -251,20 +255,20 @@
       Exit Sub
     End If
 
-    If iSQ_MOVFINANCEIRAPARCELA > 0 Then
-      sSqlText = DBMontar_SP("SP_MOVFINANCEIRAPARCELA_COMPENSACAO_DEL", False, "@SQ_MOVFINANCEIRAPARCELA", _
-                                                                               "@VL_COMPENSACAO", _
+    If iSQ_MOVFINANCEIRAPARCELA > 0 OrElse (MOVFINANCEIRAPARCELA IsNot Nothing AndAlso MOVFINANCEIRAPARCELA.Count = 1) Then
+      sSqlText = DBMontar_SP("SP_MOVFINANCEIRAPARCELA_COMPENSACAO_DEL", False, "@SQ_MOVFINANCEIRAPARCELA",
+                                                                               "@VL_COMPENSACAO",
                                                                                "@CM_COMPENSACAO")
 
-      bOk = DBExecutar(sSqlText, DBParametro_Montar("SQ_MOVFINANCEIRAPARCELA", iSQ_MOVFINANCEIRAPARCELA),
+      bOk = DBExecutar(sSqlText, DBParametro_Montar("SQ_MOVFINANCEIRAPARCELA", IIf(iSQ_MOVFINANCEIRAPARCELA = 0, MOVFINANCEIRAPARCELA(0).SQ_MOVFINANCEIRAPARCELA, iSQ_MOVFINANCEIRAPARCELA)),
                                  DBParametro_Montar("VL_COMPENSACAO", txtValorCompensacao.Value),
                                  DBParametro_Montar("CM_COMPENSACAO", Trim(txtComentario.Text),,, const_BancoDados_TamanhoComentario))
-    Else
+    ElseIf iSQ_PAGAMENTOITEM > 0 Or (PAGAMENTOITEM IsNot Nothing AndAlso PAGAMENTOITEM.Count = 1) Then
       sSqlText = DBMontar_SP("SP_PAGAMENTO_COMPENSACAO_DEL", False, "@SQ_PAGAMENTOITEM", _
                                                                     "@VL_COMPENSACAO", _
                                                                     "@CM_COMPENSACAO")
 
-      bOk = DBExecutar(sSqlText, DBParametro_Montar("SQ_PAGAMENTOITEM", iSQ_PAGAMENTOITEM),
+      bOk = DBExecutar(sSqlText, DBParametro_Montar("SQ_PAGAMENTOITEM", IIf(iSQ_PAGAMENTOITEM = 0, PAGAMENTOITEM(0).SQ_PAGAMENTOITEM, iSQ_PAGAMENTOITEM)),
                                  DBParametro_Montar("VL_COMPENSACAO", txtValorCompensacao.Value),
                                  DBParametro_Montar("CM_COMPENSACAO", Trim(txtComentario.Text),,, const_BancoDados_TamanhoComentario))
     End If

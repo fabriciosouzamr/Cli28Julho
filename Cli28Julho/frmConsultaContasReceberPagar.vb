@@ -639,10 +639,10 @@ Sair:
       FNC_Mensagem("Selecione o lançamento a ser impresso")
       Exit Sub
     End If
-    If objGrid_Valor(grdListagem, const_GridListagem_ID_OPT_STATUS) <> enOpcoes.StatusMovimentacaoFinanceira_Quitada.GetHashCode Then
-      FNC_Mensagem("Essa movimentação precisa está quitada para ser emitido o recibo")
-      Exit Sub
-    End If
+    'If objGrid_Valor(grdListagem, const_GridListagem_ID_OPT_STATUS) <> enOpcoes.StatusMovimentacaoFinanceira_Quitada.GetHashCode Then
+    '  FNC_Mensagem("Essa movimentação precisa está quitada para ser emitido o recibo")
+    '  Exit Sub
+    'End If
 
     If ComboBox_Selecionado(cboContaCaixa) Then
       FormRelatorioFinanceiro_Recibo_Pagamento(objGrid_Valor(grdListagem, const_GridListagem_SQ_MOVFINANCEIRAPARCELA), cboContaCaixa.SelectedValue, 0)
