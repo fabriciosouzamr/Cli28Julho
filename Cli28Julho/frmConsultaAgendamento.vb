@@ -140,12 +140,12 @@ Public Class frmConsultaAgendamento
                       "AGEND.IC_TIPO_RETORNO," &
                       "AGEND.NO_CANALMARCACAO," &
                       "HISTO.NO_USUARIO" &
-               " FROM VW_AGENDAMENTO AGEND" &
-                " INNER JOIN TB_PESSOA EMPRE ON EMPRE.SQ_PESSOA = AGEND.ID_EMPRESA" &
-                 " LEFT JOIN TB_OPCAO OPCDS ON OPCDS.ID_TIPO_OPCAO = 114" &
-                                         " AND OPCDS.CD_OPCAO = DATEPART(dw, AGEND.DH_AGENDAMENTO)" &
-                 " LEFT JOIN VW_HISTORICO_INCLUSAO HISTO ON HISTO.ID_REGISTRO = AGEND.SQ_AGENDAMENTO" &
-                                             " AND HISTO.ID_OPT_PROCESSO = " & enOpcoes.Processo_Historico_Clinica_Agendamento.GetHashCode()
+               " FROM VW_AGENDAMENTO AGEND (NOLOCK)" &
+                " INNER JOIN TB_PESSOA EMPRE (NOLOCK) ON EMPRE.SQ_PESSOA = AGEND.ID_EMPRESA" &
+                 " LEFT JOIN TB_OPCAO OPCDS (NOLOCK) ON OPCDS.ID_TIPO_OPCAO = 114" &
+                                                  " AND OPCDS.CD_OPCAO = DATEPART(dw, AGEND.DH_AGENDAMENTO)" &
+                 " LEFT JOIN VW_HISTORICO_INCLUSAO HISTO (NOLOCK) ON HISTO.ID_REGISTRO = AGEND.SQ_AGENDAMENTO" &
+                                                               " AND HISTO.ID_OPT_PROCESSO = " & enOpcoes.Processo_Historico_Clinica_Agendamento.GetHashCode()
 
     If ComboBox_Selecionado(cboEmpresa) Then
       FNC_Str_Adicionar(sSqlText_Where, "AGEND.ID_EMPRESA = " & cboEmpresa.SelectedValue, " AND ")

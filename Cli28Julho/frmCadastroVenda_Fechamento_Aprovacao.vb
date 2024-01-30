@@ -60,6 +60,7 @@ Public Class frmCadastroVenda_Fechamento_Aprovacao
 
     cmdAprovar.Enabled = FNC_Permissao(enPermissao.VEND_AprovacaodeFechamento).bGravar
     cmdBaixar.Enabled = FNC_Permissao(enPermissao.VEND_AprovacaodeFechamento).bGravar
+    txtDataBaixa.ReadOnly = Not FNC_Permissao(enPermissao.PERM_AprovacaoFechamentoAdministrador).bPermissao
 
     Pesquisar()
   End Sub

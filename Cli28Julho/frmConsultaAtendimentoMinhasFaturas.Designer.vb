@@ -28,9 +28,6 @@ Partial Class frmConsultaAtendimentoMinhasFaturas
     Me.optExames = New System.Windows.Forms.RadioButton()
     Me.optConsultas = New System.Windows.Forms.RadioButton()
         Me.VScrollBar = New System.Windows.Forms.VScrollBar()
-        Me.cmdImprimir = New Cli28Julho.uscBotao()
-        Me.cmdListar = New Cli28Julho.uscBotao()
-        Me.cmdFechar = New Cli28Julho.uscBotao()
         Me.txtDataInicial = New Infragistics.Win.UltraWinEditors.UltraDateTimeEditor()
         Me.txtDataFinal = New Infragistics.Win.UltraWinEditors.UltraDateTimeEditor()
         Me.lblQuantidade = New System.Windows.Forms.Label()
@@ -77,6 +74,11 @@ Partial Class frmConsultaAtendimentoMinhasFaturas
         Me.lblVlPrestador03 = New System.Windows.Forms.Label()
         Me.lblVlPrestador02 = New System.Windows.Forms.Label()
         Me.lblVlPrestador01 = New System.Windows.Forms.Label()
+        Me.cboConvenio = New System.Windows.Forms.ComboBox()
+        Me.cmdFechar = New Cli28Julho.uscBotao()
+        Me.cmdListar = New Cli28Julho.uscBotao()
+        Me.cmdImprimir = New Cli28Julho.uscBotao()
+        Me.optTodos = New System.Windows.Forms.RadioButton()
         CType(Me.picGeral, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         CType(Me.txtDataInicial, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -96,11 +98,12 @@ Partial Class frmConsultaAtendimentoMinhasFaturas
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.optTodos)
         Me.Panel1.Controls.Add(Me.optExames)
         Me.Panel1.Controls.Add(Me.optConsultas)
         Me.Panel1.Location = New System.Drawing.Point(295, 79)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(126, 22)
+        Me.Panel1.Size = New System.Drawing.Size(201, 22)
         Me.Panel1.TabIndex = 1
         '
         'optExames
@@ -130,40 +133,16 @@ Partial Class frmConsultaAtendimentoMinhasFaturas
         Me.VScrollBar.Size = New System.Drawing.Size(17, 201)
         Me.VScrollBar.TabIndex = 3
         '
-        'cmdImprimir
-        '
-        Me.cmdImprimir.AutoSize = True
-        Me.cmdImprimir.Location = New System.Drawing.Point(737, 34)
-        Me.cmdImprimir.Name = "cmdImprimir"
-        Me.cmdImprimir.Size = New System.Drawing.Size(16, 17)
-        Me.cmdImprimir.TabIndex = 4
-        '
-        'cmdListar
-        '
-        Me.cmdListar.AutoSize = True
-        Me.cmdListar.Location = New System.Drawing.Point(737, 72)
-        Me.cmdListar.Name = "cmdListar"
-        Me.cmdListar.Size = New System.Drawing.Size(16, 17)
-        Me.cmdListar.TabIndex = 5
-        '
-        'cmdFechar
-        '
-        Me.cmdFechar.AutoSize = True
-        Me.cmdFechar.Location = New System.Drawing.Point(815, 72)
-        Me.cmdFechar.Name = "cmdFechar"
-        Me.cmdFechar.Size = New System.Drawing.Size(16, 17)
-        Me.cmdFechar.TabIndex = 7
-        '
         'txtDataInicial
         '
-        Me.txtDataInicial.Location = New System.Drawing.Point(4, 82)
+        Me.txtDataInicial.Location = New System.Drawing.Point(25, 82)
         Me.txtDataInicial.Name = "txtDataInicial"
         Me.txtDataInicial.Size = New System.Drawing.Size(89, 21)
         Me.txtDataInicial.TabIndex = 161
         '
         'txtDataFinal
         '
-        Me.txtDataFinal.Location = New System.Drawing.Point(96, 82)
+        Me.txtDataFinal.Location = New System.Drawing.Point(118, 82)
         Me.txtDataFinal.Name = "txtDataFinal"
         Me.txtDataFinal.Size = New System.Drawing.Size(89, 21)
         Me.txtDataFinal.TabIndex = 162
@@ -578,11 +557,55 @@ Partial Class frmConsultaAtendimentoMinhasFaturas
         Me.lblVlPrestador01.Text = "lblVlPrestador01"
         Me.lblVlPrestador01.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
+        'cboConvenio
+        '
+        Me.cboConvenio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cboConvenio.FormattingEnabled = True
+        Me.cboConvenio.Location = New System.Drawing.Point(502, 82)
+        Me.cboConvenio.Name = "cboConvenio"
+        Me.cboConvenio.Size = New System.Drawing.Size(229, 21)
+        Me.cboConvenio.TabIndex = 216
+        '
+        'cmdFechar
+        '
+        Me.cmdFechar.AutoSize = True
+        Me.cmdFechar.Location = New System.Drawing.Point(830, 72)
+        Me.cmdFechar.Name = "cmdFechar"
+        Me.cmdFechar.Size = New System.Drawing.Size(16, 17)
+        Me.cmdFechar.TabIndex = 7
+        '
+        'cmdListar
+        '
+        Me.cmdListar.AutoSize = True
+        Me.cmdListar.Location = New System.Drawing.Point(737, 72)
+        Me.cmdListar.Name = "cmdListar"
+        Me.cmdListar.Size = New System.Drawing.Size(16, 17)
+        Me.cmdListar.TabIndex = 5
+        '
+        'cmdImprimir
+        '
+        Me.cmdImprimir.AutoSize = True
+        Me.cmdImprimir.Location = New System.Drawing.Point(737, 34)
+        Me.cmdImprimir.Name = "cmdImprimir"
+        Me.cmdImprimir.Size = New System.Drawing.Size(16, 17)
+        Me.cmdImprimir.TabIndex = 4
+        '
+        'optTodos
+        '
+        Me.optTodos.AutoSize = True
+        Me.optTodos.Location = New System.Drawing.Point(160, 3)
+        Me.optTodos.Name = "optTodos"
+        Me.optTodos.Size = New System.Drawing.Size(14, 13)
+        Me.optTodos.TabIndex = 216
+        Me.optTodos.TabStop = True
+        Me.optTodos.UseVisualStyleBackColor = True
+        '
         'frmConsultaAtendimentoMinhasFaturas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1172, 450)
+        Me.Controls.Add(Me.cboConvenio)
         Me.Controls.Add(Me.lblVlPrestador07)
         Me.Controls.Add(Me.lblVlPrestador06)
         Me.Controls.Add(Me.lblVlPrestador05)
@@ -703,4 +726,6 @@ Partial Class frmConsultaAtendimentoMinhasFaturas
   Friend WithEvents lblVlPrestador03 As Label
   Friend WithEvents lblVlPrestador02 As Label
   Friend WithEvents lblVlPrestador01 As Label
+    Friend WithEvents cboConvenio As ComboBox
+    Friend WithEvents optTodos As RadioButton
 End Class

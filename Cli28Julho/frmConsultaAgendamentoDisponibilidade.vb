@@ -113,7 +113,28 @@
     End If
 
     Try
-      sSqlText = "SELECT DIA," &
+      sSqlText = "WITH LSTPR (DATA, NO_OPCAO, ID_EMPRESA, ID_PESSOA, SQ_PESSOA_HORARIO, HR_INICIO, HR_FIM, QT_ATENDIMENTO, QT_RETORNO, DATA_INICIO, DATA_FIM)" &
+                 " AS" &
+                 " (SELECT LSTPR.DATA," &
+                           "OPCAO.NO_OPCAO," &
+                           "PSHRR.ID_EMPRESA," &
+                           "PSHRR.ID_PESSOA," &
+                           "PSHRR.SQ_PESSOA_HORARIO," &
+                           "PSHRR.HR_INICIO," &
+                           "PSHRR.HR_FIM," &
+                           "PSHRR.QT_ATENDIMENTO," &
+                           "PSHRR.QT_RETORNO," &
+                           "dbo.FC_DATAHORA_MONTAR(LSTPR.DATA, PSHRR.HR_INICIO) DATA_INICIO," &
+                           "dbo.FC_DATAHORA_MONTAR(LSTPR.DATA, PSHRR.HR_FIM) DATA_FIM" &
+                    " FROM dbo.FC_DATA_LISTARPERIODO_DATAUTIL(2, '" + sData_Inicial + "', '" + sData_Final + "') LSTPR" &
+                     " INNER JOIN TB_OPCAO (NOLOCK) OPCAO ON OPCAO.CD_OPCAO = DATEPART(DW, LSTPR.DATA)" &
+                                                        " AND OPCAO.ID_TIPO_OPCAO = " & enTipoOpcao.DiasSemana &
+                     " INNER JOIN TB_PESSOA_HORARIO (NOLOCK) PSHRR On PSHRR.ID_OPT_DIA_SEMANA = OPCAO.SQ_OPCAO" &
+                                                                " And ISNULL(PSHRR.IC_BLOQUEADO, 'N') = 'N'" &
+                      " AND ISNULL(PSHRR.DT_ESPECIAL, LSTPR.DATA) = LSTPR.DATA" &
+                      " AND PSHRR.ID_OPT_ATIVO = " & enOpcoes.SimNao_Sim.GetHashCode() & ")"
+      sSqlText = sSqlText &
+                 "SELECT DIA," &
                         "DATA," &
                         "ID_EMPRESA," &
                         "NO_EMPRESA," &
@@ -128,36 +149,30 @@
                         "QT_RETORNO REVISOES_PREVISAO," &
                         "SUM(RETORNO) REVISOES_AGENDADAS," &
                         "dbo.FC_ValorPositivo(QT_RETORNO - SUM(RETORNO), 0) REVISOES_DISPONIVEL" &
-                 " FROM (SELECT OPCAO.NO_OPCAO DIA," &
+                 " FROM (SELECT LSTPR.NO_OPCAO DIA," &
                                "LSTPR.DATA," &
                                "EMPRE.SQ_PESSOA ID_EMPRESA," &
                                "EMPRE.NO_PESSOA NO_EMPRESA," &
                                "PESSO.SQ_PESSOA," &
                                "PESSO.NO_PESSOA," &
-                               "PSHRR.SQ_PESSOA_HORARIO," &
-                               "PSHRR.HR_INICIO," &
-                               "PSHRR.HR_FIM," &
-                               "ISNULL(PSHRR.QT_ATENDIMENTO, 0) QT_ATENDIMENTO," &
-                               "ISNULL(PSHRR.QT_RETORNO, 0) QT_RETORNO," &
+                               "LSTPR.SQ_PESSOA_HORARIO," &
+                               "LSTPR.HR_INICIO," &
+                               "LSTPR.HR_FIM," &
+                               "ISNULL(LSTPR.QT_ATENDIMENTO, 0) QT_ATENDIMENTO," &
+                               "ISNULL(LSTPR.QT_RETORNO, 0) QT_RETORNO," &
                                "SUM(IIF(ISNULL(TPCSL.IC_TIPO_RETORNO, 'X') = 'N', 1, 0)) PROCEDIMENTO," &
                                "SUM(IIF(ISNULL(TPCSL.IC_TIPO_RETORNO, 'X') = 'S', 1, 0)) RETORNO" &
-                        " FROM dbo.FC_DATA_LISTARPERIODO_DATAUTIL(2, '" + sData_Inicial + "', '" + sData_Final + "') LSTPR" &
-                         " INNER JOIN TB_OPCAO (NOLOCK) OPCAO ON OPCAO.CD_OPCAO = DATEPART(DW, LSTPR.DATA)" &
-                                                  " AND OPCAO.ID_TIPO_OPCAO = " & enTipoOpcao.DiasSemana &
-                         " INNER JOIN TB_PESSOA_HORARIO (NOLOCK) PSHRR ON PSHRR.ID_OPT_DIA_SEMANA = OPCAO.SQ_OPCAO" &
-                                                                    " AND ISNULL(PSHRR.IC_BLOQUEADO, 'N') = 'N'" &
-                                                                    " AND ISNULL(PSHRR.DT_ESPECIAL, LSTPR.DATA) = LSTPR.DATA" &
-                                                                    " AND PSHRR.ID_OPT_ATIVO = " & enOpcoes.SimNao_Sim.GetHashCode() &
-                         " LEFT JOIN VW_PESSOA_HORARIO_BLOQUEIO (NOLOCK) PNRBP ON PNRBP.DT_BLOQUEIO_INCIO <= dbo.FC_DATAHORA_MONTAR(LSTPR.DATA, PSHRR.HR_INICIO)" &
-                                                                   " AND PNRBP.DT_BLOQUEIO_FIM >= dbo.FC_DATAHORA_MONTAR(LSTPR.DATA, PSHRR.HR_FIM)" &
+                        " FROM LSTPR LSTPR" &
+                          " LEFT JOIN VW_PESSOA_HORARIO_BLOQUEIO (NOLOCK) PNRBP ON PNRBP.DT_BLOQUEIO_INCIO <= LSTPR.DATA_INICIO" &
+                                                                   " AND PNRBP.DT_BLOQUEIO_FIM >= LSTPR.DATA_FIM" &
                                                                    " AND PNRBP.ID_EMPRESA = " & iID_EMPRESA_MATRIZ &
-                                                                   " AND PNRBP.ID_PESSOA = PSHRR.ID_PESSOA" &
-                         " INNER JOIN TB_PESSOA (NOLOCK) PESSO ON PESSO.SQ_PESSOA = PSHRR.ID_PESSOA" &
-                         " INNER JOIN TB_PESSOA (NOLOCK) EMPRE ON EMPRE.SQ_PESSOA = PSHRR.ID_EMPRESA"
+                                                                   " AND PNRBP.ID_PESSOA = LSTPR.ID_PESSOA" &
+                         " INNER JOIN TB_PESSOA (NOLOCK) PESSO ON PESSO.SQ_PESSOA = LSTPR.ID_PESSOA" &
+                         " INNER JOIN TB_PESSOA (NOLOCK) EMPRE ON EMPRE.SQ_PESSOA = LSTPR.ID_EMPRESA"
 
       If Trim(sID_Procedimentos) <> "" Then
         sSqlText = sSqlText &
-                         " INNER JOIN TB_PESSOA_HORARIO_PROCEDIMENTO (NOLOCK) PSHPC ON PSHPC.ID_PESSOA_HORARIO = PSHRR.SQ_PESSOA_HORARIO" &
+                         " INNER JOIN TB_PESSOA_HORARIO_PROCEDIMENTO (NOLOCK) PSHPC ON PSHPC.ID_PESSOA_HORARIO = LSTPR.SQ_PESSOA_HORARIO" &
                          " INNER JOIN TB_PROCEDIMENTO (NOLOCK) PROCE ON PROCE.SQ_PROCEDIMENTO = PSHPC.ID_PROCEDIMENTO"
       End If
       If Trim(sID_Especialidade) <> "" Then
@@ -166,10 +181,10 @@
       End If
 
       sSqlText = sSqlText &
-                          " LEFT JOIN TB_AGENDAMENTO (NOLOCK) AGEND ON AGEND.DH_AGENDAMENTO >= dbo.FC_DATAHORA_MONTAR(LSTPR.DATA, PSHRR.HR_INICIO)" &
-                                                        " AND AGEND.DH_AGENDAMENTO <= dbo.FC_DATAHORA_MONTAR(LSTPR.DATA, PSHRR.HR_FIM)" &
-                                                        " AND AGEND.ID_PESSOA_PROFISSIONAL = PSHRR.ID_PESSOA" &
-                                                        " AND AGEND.ID_EMPRESA = PSHRR.ID_EMPRESA" &
+                          " LEFT JOIN TB_AGENDAMENTO (NOLOCK) AGEND ON AGEND.DH_AGENDAMENTO >= LSTPR.DATA_INICIO" &
+                                                        " AND AGEND.DH_AGENDAMENTO <= LSTPR.DATA_FIM" &
+                                                        " AND AGEND.ID_PESSOA_PROFISSIONAL = LSTPR.ID_PESSOA" &
+                                                        " AND AGEND.ID_EMPRESA = LSTPR.ID_EMPRESA" &
                                                         " AND AGEND.ID_OPT_STATUS NOT IN (" & enOpcoes.StatusAgendamento_CanceladoClinica.GetHashCode() & "," &
                                                                                               enOpcoes.StatusAgendamento_CanceladoPaciente.GetHashCode() & "," &
                                                                                               enOpcoes.StatusAgendamento_Sistema_CanceladoFalta.GetHashCode() & "," &
@@ -179,7 +194,7 @@
                         " WHERE PNRBP.SQ_PESSOA_HORARIO_BLOQUEIO IS NULL"
 
       If Trim(sID_Profissionais) <> "" Then
-        sSqlText = sSqlText & " AND PSHRR.ID_PESSOA IN (" & sID_Profissionais & ")"
+        sSqlText = sSqlText & " AND LSTPR.ID_PESSOA IN (" & sID_Profissionais & ")"
       End If
       If Trim(sID_Procedimentos) <> "" Then
         sSqlText = sSqlText & " AND PROCE.SQ_PROCEDIMENTO IN (" & sID_Procedimentos & ")"
@@ -192,17 +207,17 @@
       End If
 
       sSqlText = sSqlText &
-                        " GROUP BY OPCAO.NO_OPCAO," &
+                        " GROUP BY LSTPR.NO_OPCAO," &
                                   "LSTPR.DATA," &
                                   "EMPRE.SQ_PESSOA," &
                                   "EMPRE.NO_PESSOA," &
                                   "PESSO.SQ_PESSOA," &
                                   "PESSO.NO_PESSOA," &
-                                  "PSHRR.SQ_PESSOA_HORARIO," &
-                                  "PSHRR.HR_INICIO," &
-                                  "PSHRR.HR_FIM," &
-                                  "PSHRR.QT_ATENDIMENTO," &
-                                  "PSHRR.QT_RETORNO) X" &
+                                  "LSTPR.SQ_PESSOA_HORARIO," &
+                                  "LSTPR.HR_INICIO," &
+                                  "LSTPR.HR_FIM," &
+                                  "LSTPR.QT_ATENDIMENTO," &
+                                  "LSTPR.QT_RETORNO) X" &
                  " GROUP BY DIA," &
                            "DATA," &
                            "ID_EMPRESA," &

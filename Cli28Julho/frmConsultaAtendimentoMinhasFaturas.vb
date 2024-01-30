@@ -22,6 +22,7 @@
     cmdListar.Formatar(enOpcoes.ConfiguracaoTela_Botao_Listar)
     cmdFechar.Formatar(enOpcoes.ConfiguracaoTela_Botao_Fechar)
     cmdImprimir.Formatar(enOpcoes.ConfiguracaoTela_Botao_Imprimir)
+    ComboBox_Carregar(cboConvenio, enSql.Convenio)
 
     txtDataInicial.Value = Date.Now.Date
     txtDataFinal.Value = Date.Now.Date
@@ -71,7 +72,7 @@
     If optConsultas.Checked Then
       sSqlText = sSqlText &
                  " AND PROCE.ID_OPT_TIPOPROCEDIMENTO = " & enOpcoes.TipoProcedimento_Procedimento.GetHashCode()
-    Else
+    ElseIf optExames.Checked Then
       sSqlText = sSqlText &
                  " AND PROCE.ID_OPT_TIPOPROCEDIMENTO = " & enOpcoes.TipoProcedimento_Exame.GetHashCode()
     End If
@@ -80,6 +81,9 @@
     End If
     If IsDate(txtDataFinal.Text) Then
       sSqlText = sSqlText & " AND CAST(CLVND.DH_VENDA AS DATE) <= " & FNC_QuotedStr(txtDataFinal.Text)
+    End If
+    If ComboBox_Selecionado(cboConvenio) Then
+      sSqlText = sSqlText & " AND AGEND.ID_CONVENIO = " & cboConvenio.SelectedValue
     End If
 
     oData = DBQuery(sSqlText)
@@ -174,5 +178,9 @@
     oForm.Formatar()
 
     FNC_AbriTela(oForm, , True, True)
+  End Sub
+
+  Private Sub cmdImprimir_Clicado(sender As Object) Handles cmdImprimir.Clicado
+    FormRelatorioMinhasFaturas(iID_USUARIO, optConsultas.Checked, txtDataInicial.Text, txtDataFinal.Text)
   End Sub
 End Class

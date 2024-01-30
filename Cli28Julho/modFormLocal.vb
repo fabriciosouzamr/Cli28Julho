@@ -4163,6 +4163,59 @@ INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = ISNULL(AGEND.ID_PESSOA, CLVND.ID
     End Try
   End Sub
 
+  Public Sub FormRelatorioMinhasFaturas(iID_USUARIO As Integer, bConsultas As Boolean, sDataInicial As String, sDataFinal As String)
+    Try
+      Dim oForm As New frmReportViewer
+      Dim oData As DataTable
+      Dim sSqlText As String
+
+      sSqlText = "SELECT PESSO_PROFI.NO_PESSOA NO_PESSOA_PROFISSIONAL," &
+                        "CLVND.DH_VENDA," &
+                        "PESSO.NO_PESSOA," &
+                        "CLVND.CD_CLINICA_VENDA," &
+                        "PROCE.NO_PROCEDIMENTO," &
+                        "CVDPC.VL_REPASSE" &
+                     " FROM TB_CLINICA_VENDA CLVND" &
+                      " INNER JOIN TB_CLINICA_VENDA_PROCEDIMENTO CVDPC ON CVDPC.ID_CLINICA_VENDA = CLVND.SQ_CLINICA_VENDA" &
+                      " INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = CLVND.ID_PESSOA" &
+                      " INNER JOIN TB_PROCEDIMENTO PROCE ON PROCE.SQ_PROCEDIMENTO = CVDPC.ID_PROCEDIMENTO" &
+                      " INNER JOIN TB_AGENDAMENTO AGEND ON AGEND.SQ_AGENDAMENTO = CVDPC.ID_AGENDAMENTO" &
+                      " INNER JOIN TB_PESSOA PESSO_PROFI On PESSO_PROFI.SQ_PESSOA = AGEND.ID_PESSOA_PROFISSIONAL" &
+                       " LEFT JOIN TB_TIPO_CONSULTA TPCST ON TPCST.SQ_TIPO_CONSULTA = AGEND.ID_TIPO_CONSULTA" &
+                     " WHERE CVDPC.ID_PESSOA_PROFISSIONAL = " & iID_USUARIO &
+                       " AND AGEND.ID_OPT_STATUS = " & enOpcoes.StatusAgendamento_Atendido.GetHashCode()
+
+      If bConsultas Then
+        sSqlText = sSqlText &
+                   " AND PROCE.ID_OPT_TIPOPROCEDIMENTO = " & enOpcoes.TipoProcedimento_Procedimento.GetHashCode()
+      Else
+        sSqlText = sSqlText &
+                   " AND PROCE.ID_OPT_TIPOPROCEDIMENTO = " & enOpcoes.TipoProcedimento_Exame.GetHashCode()
+      End If
+      If IsDate(sDataInicial) Then
+        sSqlText = sSqlText & " AND CAST(CLVND.DH_VENDA AS DATE) >= " & FNC_QuotedStr(sDataInicial)
+      End If
+      If IsDate(sDataFinal) Then
+        sSqlText = sSqlText & " AND CAST(CLVND.DH_VENDA AS DATE) <= " & FNC_QuotedStr(sDataFinal)
+      End If
+      oData = DBQuery(sSqlText)
+
+      With oForm.rpvGeral
+        .LocalReport.ReportPath = FNC_Relatorio_CarregarArquivo("Impressoes\MedicoFaturamento_a_faturar.rdl")
+        oForm.TipoRelatorio = frmReportViewer.enTipoRelatorio.ClinicaVendaFechamento
+        oForm.Formatar()
+
+        .LocalReport.DataSources.Clear()
+        .LocalReport.DataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("Dados", oData))
+        .RefreshReport()
+        oForm.Show()
+      End With
+
+    Catch ex As Exception
+      FNC_Mensagem("FormRelatorioMinhasFaturas - " & ex.Message)
+    End Try
+  End Sub
+
   Public Sub FormRelatorioMovimentacaoFinanceiraPrestacaoContas(iID_CONTA_FINANCEIRA As Integer,
                                                                 sNO_CONTA_FINANCEIRA As String,
                                                                 dDataInicial As Date,
@@ -4502,6 +4555,7 @@ INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = ISNULL(AGEND.ID_PESSOA, CLVND.ID
                           PGIT.NO_PESSOA,
 			                    SUM(PGIT.VL_PAGAMENTO) VL_PARCELA,
                           SUM(PGIT.VL_PAGAMENTO) VL_QUITADO,
+                          SUM(PGIT.VL_IMPOSTORETIDO) VL_IMPOSTORETIDO,
 			                    PGIT.DS_MOVFINANCEIRA,
 			                    dbo.FC_PAGAMENTO_PAGAMENTO_MOVFINANCEIRA_FORMASPAGTO(PGIT.ID_MOVFINANCEIRA) FORMASPAGTO,
 			                    dbo.FC_MOVFINANCEIRA_PLANOSCONTA(PGIT.ID_MOVFINANCEIRA) PLANOSCONTA,

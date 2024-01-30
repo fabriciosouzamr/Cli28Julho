@@ -1197,9 +1197,8 @@ Public Class frmCadastroPessoa
         'Exclusão dos endereço
         For iCont = 1 To oEndereco_Exclusao.Count
           If Trim(oEndereco_Exclusao(iCont)) <> "" Then
-            sSqlText = "DELETE FROM TB_ENDERECO" &
-                       " WHERE SQ_ENDERECO = " & oEndereco_Exclusao(iCont)
-            If Not DBExecutar(sSqlText) Then GoTo Erro
+            sSqlText = DBMontar_SP("SP_ENDERECO_DEL", False, "@SQ_ENDERECO")
+            If Not DBExecutar(sSqlText, DBParametro_Montar("SQ_ENDERECO", oEndereco_Exclusao(iCont))) Then GoTo Erro
           End If
         Next
         'Exclusão das referência pessoal
