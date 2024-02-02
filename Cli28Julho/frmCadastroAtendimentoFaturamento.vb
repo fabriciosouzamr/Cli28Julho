@@ -47,6 +47,9 @@ Public Class frmCadastroAtendimentoFaturamento
 
     vsbPendentes.Enabled = False
     vsbFaturar.Enabled = False
+
+    lblMovimentacaoFinanceira.Visible = False
+    cboMovimentacaoFinanceira.Visible = False
   End Sub
 
   Private Sub cmdFechar_Clicado(sender As Object) Handles cmdFechar.Clicado
@@ -446,20 +449,42 @@ Public Class frmCadastroAtendimentoFaturamento
       Exit Sub
     End If
 
-    Dim oForm As New frmLancaContasReceberPagar
+    If ComboBox_Selecionado(cboMovimentacaoFinanceira) Then
+      Dim sSqlText As String
 
-    oForm.oCadastroAtendimentoFaturamento_Item = oItens_Faturar
-    oForm.iID_PESSOA = cboMedicoPrestador.SelectedValue
-    oForm.dValorOriginal = lblFVlPrestTotal.Tag
+      iSQ_MOVFINANCEIRA = cboMovimentacaoFinanceira.SelectedValue
 
-    AddHandler oForm.RegerarConsulta, AddressOf CarregarDados
+      For Each item As cCadastroAtendimentoFaturamento_Item In oItens_Faturar
+        sSqlText = DBMontar_SP("SP_CLINICA_VENDA_PROCEDIMENTO", False, "@SQ_CLINICA_VENDA_PROCEDIMENTO",
+                                                                       "@SQ_MOVFINANCEIRA",
+                                                                       "@ID_USUARIO")
+        DBExecutar(sSqlText, DBParametro_Montar("SQ_CLINICA_VENDA_PROCEDIMENTO", item.SQ_CLINICA_VENDA_PROCEDIMENTO),
+                             DBParametro_Montar("SQ_MOVFINANCEIRA", iSQ_MOVFINANCEIRA),
+                             DBParametro_Montar("ID_USUARIO", iID_USUARIO))
+      Next
 
-    FNC_AbriTela(oForm, , True, True)
+      sSqlText = DBMontar_SP("SP_MOVFINANCEIRAGERADA_ATUALIZARVALOR", False, "@ID_MOVFINANCEIRA")
+      DBExecutar(sSqlText, DBParametro_Montar("ID_MOVFINANCEIRA", iSQ_MOVFINANCEIRA))
 
-    LimparFaturar(True)
-    oItens_Faturar = Nothing
+      CarregarDados()
+      LimparFaturar(True)
+      cboMovimentacaoFinanceira.SelectedIndex = -1
+    Else
+      Dim oForm As New frmLancaContasReceberPagar With {
+        .oCadastroAtendimentoFaturamento_Item = oItens_Faturar,
+        .iID_PESSOA = cboMedicoPrestador.SelectedValue,
+        .dValorOriginal = lblFVlPrestTotal.Tag
+      }
 
-    iSQ_MOVFINANCEIRA = oForm.iSQ_MOVFINANCEIRA
+      AddHandler oForm.RegerarConsulta, AddressOf CarregarDados
+
+      FNC_AbriTela(oForm, , True, True)
+
+      LimparFaturar(True)
+      oItens_Faturar = Nothing
+
+      iSQ_MOVFINANCEIRA = oForm.iSQ_MOVFINANCEIRA
+    End If
   End Sub
 
   Private Sub cmdTodasPendentes_Click(sender As Object, e As EventArgs) Handles cmdTodasPendentes.Click
@@ -552,4 +577,22 @@ Public Class frmCadastroAtendimentoFaturamento
 
     Return bOk
   End Function
+
+  Private Sub cboMedicoPrestador_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMedicoPrestador.SelectedIndexChanged
+    Dim SqlText As String
+
+    If cboMedicoPrestador.SelectedIndex = -1 Then
+      cboMovimentacaoFinanceira.DataSource = Nothing
+    Else
+      SqlText = $"SELECT SQ_MOVFINANCEIRA, CONCAT(CD_MOVFINANCEIRA,  ' - ', CONVERT(CHAR, DT_MOVIMENTACAO, 103)) DS_MOVFINANCEIRA
+                   FROM TB_MOVFINANCEIRA
+                   WHERE ID_OPT_STATUS = {enOpcoes.StatusMovimentacaoFinanceira_Aberta.GetHashCode()}
+                     AND ID_PESSOA = {cboMedicoPrestador.SelectedValue}
+                   ORDER BY DT_MOVIMENTACAO"
+      DBComboBox_Carregar(cboMovimentacaoFinanceira, SqlText)
+    End If
+
+    lblMovimentacaoFinanceira.Visible = (cboMovimentacaoFinanceira.Items.Count > 0)
+    cboMovimentacaoFinanceira.Visible = lblMovimentacaoFinanceira.Visible
+  End Sub
 End Class
