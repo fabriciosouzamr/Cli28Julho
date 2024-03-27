@@ -23,10 +23,10 @@ Partial Class frmConsultaAtendimentoMinhasFaturas
   <System.Diagnostics.DebuggerStepThrough()> _
   Private Sub InitializeComponent()
     Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmConsultaAtendimentoMinhasFaturas))
-    Me.picGeral = New System.Windows.Forms.PictureBox()
-    Me.Panel1 = New System.Windows.Forms.Panel()
-    Me.optExames = New System.Windows.Forms.RadioButton()
-    Me.optConsultas = New System.Windows.Forms.RadioButton()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.optTodos = New System.Windows.Forms.RadioButton()
+        Me.optExames = New System.Windows.Forms.RadioButton()
+        Me.optConsultas = New System.Windows.Forms.RadioButton()
         Me.VScrollBar = New System.Windows.Forms.VScrollBar()
         Me.txtDataInicial = New Infragistics.Win.UltraWinEditors.UltraDateTimeEditor()
         Me.txtDataFinal = New Infragistics.Win.UltraWinEditors.UltraDateTimeEditor()
@@ -75,25 +75,15 @@ Partial Class frmConsultaAtendimentoMinhasFaturas
         Me.lblVlPrestador02 = New System.Windows.Forms.Label()
         Me.lblVlPrestador01 = New System.Windows.Forms.Label()
         Me.cboConvenio = New System.Windows.Forms.ComboBox()
+        Me.picGeral = New System.Windows.Forms.PictureBox()
         Me.cmdFechar = New Cli28Julho.uscBotao()
         Me.cmdListar = New Cli28Julho.uscBotao()
         Me.cmdImprimir = New Cli28Julho.uscBotao()
-        Me.optTodos = New System.Windows.Forms.RadioButton()
-        CType(Me.picGeral, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         CType(Me.txtDataInicial, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtDataFinal, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.picGeral, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'picGeral
-        '
-        Me.picGeral.Image = CType(resources.GetObject("picGeral.Image"), System.Drawing.Image)
-        Me.picGeral.Location = New System.Drawing.Point(5, 5)
-        Me.picGeral.Name = "picGeral"
-        Me.picGeral.Size = New System.Drawing.Size(964, 409)
-        Me.picGeral.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
-        Me.picGeral.TabIndex = 0
-        Me.picGeral.TabStop = False
         '
         'Panel1
         '
@@ -105,6 +95,16 @@ Partial Class frmConsultaAtendimentoMinhasFaturas
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(201, 22)
         Me.Panel1.TabIndex = 1
+        '
+        'optTodos
+        '
+        Me.optTodos.AutoSize = True
+        Me.optTodos.Location = New System.Drawing.Point(160, 3)
+        Me.optTodos.Name = "optTodos"
+        Me.optTodos.Size = New System.Drawing.Size(14, 13)
+        Me.optTodos.TabIndex = 216
+        Me.optTodos.TabStop = True
+        Me.optTodos.UseVisualStyleBackColor = True
         '
         'optExames
         '
@@ -566,6 +566,16 @@ Partial Class frmConsultaAtendimentoMinhasFaturas
         Me.cboConvenio.Size = New System.Drawing.Size(229, 21)
         Me.cboConvenio.TabIndex = 216
         '
+        'picGeral
+        '
+        Me.picGeral.Image = CType(resources.GetObject("picGeral.Image"), System.Drawing.Image)
+        Me.picGeral.Location = New System.Drawing.Point(5, 5)
+        Me.picGeral.Name = "picGeral"
+        Me.picGeral.Size = New System.Drawing.Size(964, 409)
+        Me.picGeral.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.picGeral.TabIndex = 0
+        Me.picGeral.TabStop = False
+        '
         'cmdFechar
         '
         Me.cmdFechar.AutoSize = True
@@ -589,16 +599,6 @@ Partial Class frmConsultaAtendimentoMinhasFaturas
         Me.cmdImprimir.Name = "cmdImprimir"
         Me.cmdImprimir.Size = New System.Drawing.Size(16, 17)
         Me.cmdImprimir.TabIndex = 4
-        '
-        'optTodos
-        '
-        Me.optTodos.AutoSize = True
-        Me.optTodos.Location = New System.Drawing.Point(160, 3)
-        Me.optTodos.Name = "optTodos"
-        Me.optTodos.Size = New System.Drawing.Size(14, 13)
-        Me.optTodos.TabIndex = 216
-        Me.optTodos.TabStop = True
-        Me.optTodos.UseVisualStyleBackColor = True
         '
         'frmConsultaAtendimentoMinhasFaturas
         '
@@ -662,11 +662,11 @@ Partial Class frmConsultaAtendimentoMinhasFaturas
         Me.MaximizeBox = False
         Me.Name = "frmConsultaAtendimentoMinhasFaturas"
         Me.Text = "Médicos - Minhas Faturas"
-        CType(Me.picGeral, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         CType(Me.txtDataInicial, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtDataFinal, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.picGeral, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

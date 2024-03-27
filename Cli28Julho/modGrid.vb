@@ -925,7 +925,7 @@ Erro:
         oSectionFooterText.Background = New Background(Infragistics.Documents.Reports.Graphics.Brushes.Gainsboro)
         oSectionFooterText.AddContent(FNC_Sistema_Relatorio_Rodape())
 
-        oReport.Publish(sArquivo, Infragistics.Documents.Reports.Report.FileFormat.PDF)
+        oReport.Publish(sArquivo, FileFormat.PDF)
 
         If bEnviarEMail Then
           'EMail_Enviar(cnt_EmailExportacaoRelatorio, _

@@ -1245,12 +1245,18 @@ Public Class uscCadastroVenda
       Case const_GridListagem_BNT_Pessoa
         Dim oForm As New frmpsqPessoa
 
+        oForm.HabilitarSelecionarTodos = True
         oForm.TipoFiltro = frmpsqPessoa.enTipoFiltroPessoa.Paciente
         FNC_AbriTela(oForm, , True, True)
 
         If oForm.SQ_PESSOA > 0 Then
-          e.Cell.Row.Cells(const_GridListagem_Pessoa_Agendamento).Value = oForm.NO_PESSOA
-          e.Cell.Row.Cells(const_GridListagem_ID_PESSOA_AGENDAMENTO).Value = oForm.SQ_PESSOA
+          If oForm.SelecionarParaTodos Then
+            Grid_AtualizarTodos(oForm.NO_PESSOA, const_GridListagem_Pessoa_Agendamento)
+            Grid_AtualizarTodos(oForm.SQ_PESSOA, const_GridListagem_ID_PESSOA_AGENDAMENTO)
+          Else
+            e.Cell.Row.Cells(const_GridListagem_Pessoa_Agendamento).Value = oForm.NO_PESSOA
+            e.Cell.Row.Cells(const_GridListagem_ID_PESSOA_AGENDAMENTO).Value = oForm.SQ_PESSOA
+          End If
         End If
 
         oForm.Close()
@@ -1258,17 +1264,29 @@ Public Class uscCadastroVenda
       Case const_GridListagem_BNT_Solicitante
         Dim oForm As New frmpsqPessoa
 
+        oForm.HabilitarSelecionarTodos = True
         oForm.TipoFiltro = frmpsqPessoa.enTipoFiltroPessoa.Profissional
         FNC_AbriTela(oForm, , True, True)
 
         If oForm.SQ_PESSOA > 0 Then
-          e.Cell.Row.Cells(const_GridListagem_Solicitante).Value = oForm.NO_PESSOA
-          e.Cell.Row.Cells(const_GridListagem_ID_Solicitante).Value = oForm.SQ_PESSOA
+          If oForm.SelecionarParaTodos Then
+            Grid_AtualizarTodos(oForm.NO_PESSOA, const_GridListagem_Solicitante)
+            Grid_AtualizarTodos(oForm.SQ_PESSOA, const_GridListagem_ID_Solicitante)
+          Else
+            e.Cell.Row.Cells(const_GridListagem_Solicitante).Value = oForm.NO_PESSOA
+            e.Cell.Row.Cells(const_GridListagem_ID_Solicitante).Value = oForm.SQ_PESSOA
+          End If
         End If
 
         oForm.Close()
         oForm.Dispose()
     End Select
+  End Sub
+
+  Private Sub Grid_AtualizarTodos(Valor As Object, Coluna As Integer)
+    For iLinha = 0 To grdListagem.Rows.Count - 1
+      grdListagem.Rows(iLinha).Cells(Coluna).Value = Valor
+    Next
   End Sub
 
   Private Sub Grid_CarregarEspecialidade()

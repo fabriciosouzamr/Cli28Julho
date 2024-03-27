@@ -20,6 +20,8 @@ Public Class frmpsqPessoa
   Public SQ_PESSOA As Integer = 0
   Public NO_PESSOA As String = ""
   Public SomentePesquisa As Boolean
+  Public HabilitarSelecionarTodos As Boolean
+  Public SelecionarParaTodos As Boolean
 
   Private Sub cmdFechar_Click(sender As Object, e As EventArgs) Handles cmdFechar.Click
     Close()
@@ -52,6 +54,8 @@ Public Class frmpsqPessoa
       lblDocumentos.Visible = False
       txtDocumentos.Visible = False
     End If
+
+    cmdSelecionarTodos.Visible = HabilitarSelecionarTodos
 
     Me.Width = 900
     Me.Height = 420
@@ -136,5 +140,10 @@ Public Class frmpsqPessoa
       oFormCadastroPessoa.iSQ_PESSOA = objGrid_Valor(grdListagem, const_GridListagemPessoa_SQ_PESSOA)
       FNC_AbriTela(oFormCadastroPessoa)
     End If
+  End Sub
+
+  Private Sub cmdSelecionarTodos_Click(sender As Object, e As EventArgs) Handles cmdSelecionarTodos.Click
+    SelecionarParaTodos = True
+    RetornarSelecionado()
   End Sub
 End Class

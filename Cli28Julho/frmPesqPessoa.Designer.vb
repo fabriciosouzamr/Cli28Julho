@@ -51,44 +51,41 @@ Partial Class frmpsqPessoa
     Me.cmdAlterar = New System.Windows.Forms.Button()
     Me.txtNrProtuario = New System.Windows.Forms.TextBox()
     Me.Label3 = New System.Windows.Forms.Label()
+        Me.cmdSelecionarTodos = New System.Windows.Forms.Button()
         CType(Me.grdListagem, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'lblRPessoa
         '
         Me.lblRPessoa.AutoSize = True
-        Me.lblRPessoa.Location = New System.Drawing.Point(7, 6)
-        Me.lblRPessoa.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblRPessoa.Location = New System.Drawing.Point(5, 5)
         Me.lblRPessoa.Name = "lblRPessoa"
-        Me.lblRPessoa.Size = New System.Drawing.Size(78, 16)
+        Me.lblRPessoa.Size = New System.Drawing.Size(60, 13)
         Me.lblRPessoa.TabIndex = 0
         Me.lblRPessoa.Text = "lblRPessoa"
         '
         'txtPessoa
         '
-        Me.txtPessoa.Location = New System.Drawing.Point(7, 25)
-        Me.txtPessoa.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtPessoa.Location = New System.Drawing.Point(5, 20)
         Me.txtPessoa.Name = "txtPessoa"
-        Me.txtPessoa.Size = New System.Drawing.Size(399, 22)
+        Me.txtPessoa.Size = New System.Drawing.Size(300, 20)
         Me.txtPessoa.TabIndex = 1
         '
         'lblMae
         '
         Me.lblMae.AutoSize = True
-        Me.lblMae.Location = New System.Drawing.Point(415, 6)
-        Me.lblMae.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblMae.Location = New System.Drawing.Point(311, 5)
         Me.lblMae.Name = "lblMae"
-        Me.lblMae.Size = New System.Drawing.Size(34, 16)
+        Me.lblMae.Size = New System.Drawing.Size(28, 13)
         Me.lblMae.TabIndex = 3
         Me.lblMae.Text = "Mãe"
         '
         'lblRListagemPessoa
         '
         Me.lblRListagemPessoa.AutoSize = True
-        Me.lblRListagemPessoa.Location = New System.Drawing.Point(7, 57)
-        Me.lblRListagemPessoa.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblRListagemPessoa.Location = New System.Drawing.Point(5, 46)
         Me.lblRListagemPessoa.Name = "lblRListagemPessoa"
-        Me.lblRListagemPessoa.Size = New System.Drawing.Size(133, 16)
+        Me.lblRListagemPessoa.Size = New System.Drawing.Size(102, 13)
         Me.lblRListagemPessoa.TabIndex = 51
         Me.lblRListagemPessoa.Text = "lblRListagemPessoa"
         '
@@ -148,38 +145,34 @@ Partial Class frmpsqPessoa
         Me.grdListagem.DisplayLayout.ScrollBounds = Infragistics.Win.UltraWinGrid.ScrollBounds.ScrollToFill
         Me.grdListagem.DisplayLayout.ScrollStyle = Infragistics.Win.UltraWinGrid.ScrollStyle.Immediate
         Me.grdListagem.DisplayLayout.ViewStyleBand = Infragistics.Win.UltraWinGrid.ViewStyleBand.OutlookGroupBy
-        Me.grdListagem.Location = New System.Drawing.Point(7, 75)
-        Me.grdListagem.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.grdListagem.Location = New System.Drawing.Point(5, 61)
         Me.grdListagem.Name = "grdListagem"
-        Me.grdListagem.Size = New System.Drawing.Size(1153, 341)
+        Me.grdListagem.Size = New System.Drawing.Size(865, 277)
         Me.grdListagem.TabIndex = 52
         Me.grdListagem.Text = "UltraGrid1"
         '
         'lblDocumentos
         '
         Me.lblDocumentos.AutoSize = True
-        Me.lblDocumentos.Location = New System.Drawing.Point(623, 6)
-        Me.lblDocumentos.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.lblDocumentos.Location = New System.Drawing.Point(467, 5)
         Me.lblDocumentos.Name = "lblDocumentos"
-        Me.lblDocumentos.Size = New System.Drawing.Size(83, 16)
+        Me.lblDocumentos.Size = New System.Drawing.Size(67, 13)
         Me.lblDocumentos.TabIndex = 53
         Me.lblDocumentos.Text = "Documentos"
         '
         'txtDocumentos
         '
-        Me.txtDocumentos.Location = New System.Drawing.Point(623, 25)
-        Me.txtDocumentos.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtDocumentos.Location = New System.Drawing.Point(467, 20)
         Me.txtDocumentos.Name = "txtDocumentos"
-        Me.txtDocumentos.Size = New System.Drawing.Size(145, 22)
+        Me.txtDocumentos.Size = New System.Drawing.Size(110, 20)
         Me.txtDocumentos.TabIndex = 3
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(951, 6)
-        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label4.Location = New System.Drawing.Point(713, 5)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(51, 16)
+        Me.Label4.Size = New System.Drawing.Size(42, 13)
         Me.Label4.TabIndex = 57
         Me.Label4.Text = "Ativos?"
         '
@@ -188,20 +181,18 @@ Partial Class frmpsqPessoa
         Me.cboAtivo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboAtivo.FormattingEnabled = True
         Me.cboAtivo.Items.AddRange(New Object() {"Todos", "Sim", "Não"})
-        Me.cboAtivo.Location = New System.Drawing.Point(951, 25)
-        Me.cboAtivo.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cboAtivo.Location = New System.Drawing.Point(713, 20)
         Me.cboAtivo.Name = "cboAtivo"
-        Me.cboAtivo.Size = New System.Drawing.Size(100, 24)
+        Me.cboAtivo.Size = New System.Drawing.Size(76, 21)
         Me.cboAtivo.TabIndex = 4
         '
         'cmdSelecionar
         '
         Me.cmdSelecionar.Image = Global.Cli28Julho.My.Resources.Resources.Mini_Selecionar
         Me.cmdSelecionar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdSelecionar.Location = New System.Drawing.Point(7, 423)
-        Me.cmdSelecionar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cmdSelecionar.Location = New System.Drawing.Point(5, 344)
         Me.cmdSelecionar.Name = "cmdSelecionar"
-        Me.cmdSelecionar.Size = New System.Drawing.Size(107, 34)
+        Me.cmdSelecionar.Size = New System.Drawing.Size(80, 28)
         Me.cmdSelecionar.TabIndex = 100
         Me.cmdSelecionar.Text = "     Selecionar"
         Me.cmdSelecionar.UseVisualStyleBackColor = True
@@ -211,10 +202,9 @@ Partial Class frmpsqPessoa
         Me.cmdFechar.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.cmdFechar.Image = Global.Cli28Julho.My.Resources.Resources.Mini_Fechar
         Me.cmdFechar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdFechar.Location = New System.Drawing.Point(1060, 423)
-        Me.cmdFechar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cmdFechar.Location = New System.Drawing.Point(795, 344)
         Me.cmdFechar.Name = "cmdFechar"
-        Me.cmdFechar.Size = New System.Drawing.Size(100, 34)
+        Me.cmdFechar.Size = New System.Drawing.Size(75, 28)
         Me.cmdFechar.TabIndex = 101
         Me.cmdFechar.Text = "  Fechar"
         Me.cmdFechar.UseVisualStyleBackColor = True
@@ -223,10 +213,9 @@ Partial Class frmpsqPessoa
         '
         Me.cmdPesquisar.Image = Global.Cli28Julho.My.Resources.Resources.Mini_Pesquisar
         Me.cmdPesquisar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdPesquisar.Location = New System.Drawing.Point(1060, 16)
-        Me.cmdPesquisar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cmdPesquisar.Location = New System.Drawing.Point(795, 13)
         Me.cmdPesquisar.Name = "cmdPesquisar"
-        Me.cmdPesquisar.Size = New System.Drawing.Size(100, 34)
+        Me.cmdPesquisar.Size = New System.Drawing.Size(75, 28)
         Me.cmdPesquisar.TabIndex = 5
         Me.cmdPesquisar.Text = "    Pesquisar"
         Me.cmdPesquisar.UseVisualStyleBackColor = True
@@ -235,60 +224,67 @@ Partial Class frmpsqPessoa
         '
         Me.cmdNovoCadastro.Image = Global.Cli28Julho.My.Resources.Resources.Mini_Novo
         Me.cmdNovoCadastro.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdNovoCadastro.Location = New System.Drawing.Point(121, 423)
-        Me.cmdNovoCadastro.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cmdNovoCadastro.Location = New System.Drawing.Point(91, 344)
         Me.cmdNovoCadastro.Name = "cmdNovoCadastro"
-        Me.cmdNovoCadastro.Size = New System.Drawing.Size(149, 34)
+        Me.cmdNovoCadastro.Size = New System.Drawing.Size(112, 28)
         Me.cmdNovoCadastro.TabIndex = 102
         Me.cmdNovoCadastro.Text = "     Novo Cadastro"
         Me.cmdNovoCadastro.UseVisualStyleBackColor = True
         '
         'txtMae
         '
-        Me.txtMae.Location = New System.Drawing.Point(415, 25)
-        Me.txtMae.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtMae.Location = New System.Drawing.Point(311, 20)
         Me.txtMae.Name = "txtMae"
-        Me.txtMae.Size = New System.Drawing.Size(199, 22)
+        Me.txtMae.Size = New System.Drawing.Size(150, 20)
         Me.txtMae.TabIndex = 103
         '
         'cmdAlterar
         '
         Me.cmdAlterar.Image = Global.Cli28Julho.My.Resources.Resources.Mini_Editar
         Me.cmdAlterar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdAlterar.Location = New System.Drawing.Point(279, 423)
-        Me.cmdAlterar.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cmdAlterar.Location = New System.Drawing.Point(209, 344)
         Me.cmdAlterar.Name = "cmdAlterar"
-        Me.cmdAlterar.Size = New System.Drawing.Size(100, 34)
+        Me.cmdAlterar.Size = New System.Drawing.Size(75, 28)
         Me.cmdAlterar.TabIndex = 104
         Me.cmdAlterar.Text = "Alterar"
         Me.cmdAlterar.UseVisualStyleBackColor = True
         '
         'txtNrProtuario
         '
-        Me.txtNrProtuario.Location = New System.Drawing.Point(777, 25)
-        Me.txtNrProtuario.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNrProtuario.Location = New System.Drawing.Point(583, 20)
         Me.txtNrProtuario.Name = "txtNrProtuario"
-        Me.txtNrProtuario.Size = New System.Drawing.Size(145, 22)
+        Me.txtNrProtuario.Size = New System.Drawing.Size(110, 20)
         Me.txtNrProtuario.TabIndex = 105
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(777, 6)
-        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label3.Location = New System.Drawing.Point(583, 5)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(68, 16)
+        Me.Label3.Size = New System.Drawing.Size(55, 13)
         Me.Label3.TabIndex = 106
         Me.Label3.Text = "Protunário"
+        '
+        'cmdSelecionarTodos
+        '
+        Me.cmdSelecionarTodos.Image = Global.Cli28Julho.My.Resources.Resources.Mini_Selecionar
+        Me.cmdSelecionarTodos.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.cmdSelecionarTodos.Location = New System.Drawing.Point(290, 344)
+        Me.cmdSelecionarTodos.Name = "cmdSelecionarTodos"
+        Me.cmdSelecionarTodos.Size = New System.Drawing.Size(115, 28)
+        Me.cmdSelecionarTodos.TabIndex = 107
+        Me.cmdSelecionarTodos.Text = "     Selecionar Todos"
+        Me.cmdSelecionarTodos.UseVisualStyleBackColor = True
         '
         'frmpsqPessoa
         '
         Me.AcceptButton = Me.cmdSelecionar
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.cmdFechar
-        Me.ClientSize = New System.Drawing.Size(1167, 462)
+        Me.ClientSize = New System.Drawing.Size(875, 375)
         Me.ControlBox = False
+        Me.Controls.Add(Me.cmdSelecionarTodos)
         Me.Controls.Add(Me.txtNrProtuario)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.cmdAlterar)
@@ -307,7 +303,6 @@ Partial Class frmpsqPessoa
         Me.Controls.Add(Me.txtPessoa)
         Me.Controls.Add(Me.lblRPessoa)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
         Me.Name = "frmpsqPessoa"
         Me.Text = "Pesquisa de Pessoa"
         CType(Me.grdListagem, System.ComponentModel.ISupportInitialize).EndInit()
@@ -332,4 +327,5 @@ Partial Class frmpsqPessoa
   Friend WithEvents cmdAlterar As Button
   Friend WithEvents txtNrProtuario As TextBox
   Friend WithEvents Label3 As Label
+    Friend WithEvents cmdSelecionarTodos As Button
 End Class

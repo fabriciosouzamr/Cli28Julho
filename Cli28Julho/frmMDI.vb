@@ -515,9 +515,7 @@ Public Class frmMDI
   End Sub
 
   Private Sub mnuMedico_MinhasFaturas_Click(sender As Object, e As EventArgs) Handles mnuMedico_MinhasFaturas.Click
-    Dim oForm As New frmConsultaAtendimentoMinhasFaturas
-
-    oForm.Formatar()
+    Dim oForm As New frmConsultaMinhasFaturas
 
     FNC_AbriTela(oForm)
   End Sub
