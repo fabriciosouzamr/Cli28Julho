@@ -327,6 +327,12 @@
     <Compile Include="frmCadastroAtendimentoFaturamentoAlterar.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmCadastroAtendimentoOftalmologico.Designer.vb">
+      <DependentUpon>frmCadastroAtendimentoOftalmologico.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmCadastroAtendimentoOftalmologico.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmCadastroCondicaoPagamento.designer.vb">
       <DependentUpon>frmCadastroCondicaoPagamento.vb</DependentUpon>
     </Compile>
@@ -763,6 +769,12 @@
       <DependentUpon>frmConsultaHistorico_Registro.vb</DependentUpon>
     </Compile>
     <Compile Include="frmConsultaHistorico_Registro.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConsultaMinhasFaturas.Designer.vb">
+      <DependentUpon>frmConsultaMinhasFaturas.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmConsultaMinhasFaturas.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmConsultaOcupacaoTempoPrevisto.Designer.vb">
@@ -1242,6 +1254,9 @@
     <EmbeddedResource Include="frmCadastroAtendimentoFaturamentoAlterar.resx">
       <DependentUpon>frmCadastroAtendimentoFaturamentoAlterar.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmCadastroAtendimentoOftalmologico.resx">
+      <DependentUpon>frmCadastroAtendimentoOftalmologico.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmCadastroCondicaoPagamento.resx">
       <DependentUpon>frmCadastroCondicaoPagamento.vb</DependentUpon>
     </EmbeddedResource>
@@ -1467,6 +1482,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmConsultaHistorico_Registro.resx">
       <DependentUpon>frmConsultaHistorico_Registro.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmConsultaMinhasFaturas.resx">
+      <DependentUpon>frmConsultaMinhasFaturas.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmConsultaOcupacaoTempoPrevisto.resx">
       <DependentUpon>frmConsultaOcupacaoTempoPrevisto.vb</DependentUpon>

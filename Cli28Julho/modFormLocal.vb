@@ -4216,6 +4216,29 @@ INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = ISNULL(AGEND.ID_PESSOA, CLVND.ID
     End Try
   End Sub
 
+  Public Sub FormRelatorioConsultaMinhasFaturas(sSqlText As String)
+    Try
+      Dim oForm As New frmReportViewer
+      Dim oData As DataTable
+
+      oData = DBQuery(sSqlText)
+
+      With oForm.rpvGeral
+        .LocalReport.ReportPath = FNC_Relatorio_CarregarArquivo("Impressoes\MinhasFaturas.rdl")
+        oForm.TipoRelatorio = frmReportViewer.enTipoRelatorio.ConsultaMinhasFaturas
+        oForm.Formatar()
+
+        .LocalReport.DataSources.Clear()
+        .LocalReport.DataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("Dados", oData))
+        .RefreshReport()
+        oForm.Show()
+      End With
+
+    Catch ex As Exception
+      FNC_Mensagem("FormRelatorioMinhasFaturas - " & ex.Message)
+    End Try
+  End Sub
+
   Public Sub FormRelatorioMovimentacaoFinanceiraPrestacaoContas(iID_CONTA_FINANCEIRA As Integer,
                                                                 sNO_CONTA_FINANCEIRA As String,
                                                                 dDataInicial As Date,
@@ -4824,27 +4847,30 @@ INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = ISNULL(AGEND.ID_PESSOA, CLVND.ID
       Dim oData As DataTable
       Dim sSqlText As String
 
-      sSqlText = $"SELECT distinct MVFNC.DT_MOVIMENTACAO,
-       CLVND.CD_CLINICA_VENDA,
-       CLVND.DH_VENDA,
-			 PESSO_PROFI.NO_PESSOA NO_PESSOA_PROFISSIONAL,
-			 PESSO.NO_PESSOA,
-			 PROCE.NO_PROCEDIMENTO,
-			 CVPRC.VL_REPASSE,
-			 MVFNC.VL_ORIGINAL ,
-			 MVFNC.VL_DESCONTO  ,
-			 MVFNC.VL_MOVFINANCEIRA  ,
-(CVPRC.VL_REPASSE / 2) * (6.15 / 100) vl_imposto,
-PESSOAFIN.NO_PESSOA AS PESSOA_CONTASAPAGAR
- FROM TB_MOVFINANCEIRA MVFNC
-  INNER JOIN TB_MOVFINANCEIRAPARCELA	MVFNP ON MVFNP.ID_MOVFINANCEIRAGERADA = MVFNC.SQ_MOVFINANCEIRA
-  INNER JOIN TB_CLINICA_VENDA_PROCEDIMENTO CVPRC ON CVPRC.ID_MOVFINANCEIRA = MVFNP.ID_MOVFINANCEIRA
-	INNER JOIN TB_CLINICA_VENDA CLVND ON CLVND.SQ_CLINICA_VENDA = CVPRC.ID_CLINICA_VENDA
-	INNER JOIN TB_PESSOA PESSO_PROFI ON PESSO_PROFI.SQ_PESSOA = CVPRC.ID_PESSOA_PROFISSIONAL
-	INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = CLVND.ID_PESSOA
-	INNER JOIN TB_PESSOA PESSOAFIN ON PESSOAFIN.SQ_PESSOA  = MVFNC.ID_PESSOA 
-	INNER JOIN TB_PROCEDIMENTO PROCE ON PROCE.SQ_PROCEDIMENTO = CVPRC.ID_PROCEDIMENTO" &
-                 " WHERE MVFNC.SQ_MOVFINANCEIRA = " & iID_MOVFINANCEIRA.ToString()
+      sSqlText = $"SELECT MVFNC.DT_MOVIMENTACAO,
+                          CLVND.CD_CLINICA_VENDA,
+                          CLVND.DH_VENDA,
+			                    PESSO_PROFI.NO_PESSOA NO_PESSOA_PROFISSIONAL,
+			                    PESSO.NO_PESSOA,
+			                    CLVNDI.paciente_atendimento_nome ,
+			                    CLVNDI.paciente_atendimento_cpf ,
+			                    PROCE.NO_PROCEDIMENTO,
+			                    CVPRC.VL_REPASSE,
+			                    MVFNC.VL_ORIGINAL ,
+			                    MVFNC.VL_DESCONTO  ,
+			                    MVFNC.VL_MOVFINANCEIRA  ,
+                          (CVPRC.VL_REPASSE / 2) * (6.15 / 100) vl_imposto,
+                          PESSOAFIN.NO_PESSOA AS PESSOA_CONTASAPAGAR
+                   FROM TB_MOVFINANCEIRA MVFNC
+                    INNER JOIN TB_MOVFINANCEIRAPARCELA	MVFNP ON MVFNP.ID_MOVFINANCEIRAGERADA = MVFNC.SQ_MOVFINANCEIRA
+                    INNER JOIN TB_CLINICA_VENDA_PROCEDIMENTO CVPRC ON CVPRC.ID_MOVFINANCEIRA = MVFNP.ID_MOVFINANCEIRA
+	                  INNER JOIN TB_CLINICA_VENDA CLVND ON CLVND.SQ_CLINICA_VENDA = CVPRC.ID_CLINICA_VENDA
+	                  INNER JOIN TB_PESSOA PESSO_PROFI ON PESSO_PROFI.SQ_PESSOA = CVPRC.ID_PESSOA_PROFISSIONAL
+	                  INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = CLVND.ID_PESSOA
+	                  INNER JOIN TB_CLINICA_VENDA_PROCEDIMENTO CLVNDI ON CLVNDI.ID_CLINICA_VENDA = CLVND.SQ_CLINICA_VENDA 
+	                  INNER JOIN TB_PESSOA PESSOAFIN ON PESSOAFIN.SQ_PESSOA  = MVFNC.ID_PESSOA 
+	                  INNER JOIN TB_PROCEDIMENTO PROCE ON PROCE.SQ_PROCEDIMENTO = CVPRC.ID_PROCEDIMENTO
+                    WHERE MVFNC.SQ_MOVFINANCEIRA = {iID_MOVFINANCEIRA.ToString()}  AND CVPRC.ID_OPT_STATUS = {enOpcoes.StatusVendaClinica_RepasseRealizado.GetHashCode()}"
       oData = DBQuery(sSqlText)
 
       With oForm.rpvGeral
@@ -5155,7 +5181,55 @@ PESSOAFIN.NO_PESSOA AS PESSOA_CONTASAPAGAR
         End If
       End With
     Catch ex As Exception
-      FNC_Mensagem("FormRelatorioAtestadoComparecimento - " & ex.Message)
+      FNC_Mensagem("FormRelatorioRelatorio - " & ex.Message)
+    End Try
+  End Sub
+
+  Public Sub FormRelatorioOfalmotologia(iSQ_CLINICA_OFTAMOLOGIA As Integer, bImprimir As Boolean)
+    Try
+      Dim oForm As New frmReportViewer
+      Dim oData As DataTable
+      Dim sSqlText As String
+
+      sSqlText = $"SELECT CLATO.SQ_CLINICA_OFTAMOLOGIA,
+                          PESSO.NO_PESSOA,
+			                    PESSO_PROFI.NO_PESSOA NO_PESSOA_PROFISSIONAL,
+			                    CLATO.DH_CLINICA_OFTAMOLOGIA,
+			                    CLATO.DT_VALIDADE_RECEITA,
+			                    CLATO.NR_LONGEOD_ESFERICO,
+			                    CLATO.NR_LONGEOD_CILINDRO,
+			                    CLATO.NR_LONGEOD_EIXO,
+			                    CLATO.NR_LONGEOE_ESFERICO,
+			                    CLATO.NR_LONGEOE_CILINDRO,
+			                    CLATO.NR_LONGEOE_EIXO,
+			                    CLATO.NR_PERTOAO_ESFERICO,
+			                    CLATO.CM_OBSERVACAO
+                    FROM TB_CLINICA_OFTAMOLOGIA CLATO
+                     INNER JOIN TB_CLINICA_ATENDIMENTO CLATD ON CLATD.SQ_CLINICA_ATENDIMENTO = CLATO.ID_CLINICA_ATENDIMENTO
+                     INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = CLATD.ID_PESSOA
+                     INNER JOIN TB_PESSOA PESSO_PROFI ON PESSO_PROFI.SQ_PESSOA = CLATD.ID_PESSOA_PROFISSIONAL
+                    WHERE CLATO.SQ_CLINICA_OFTAMOLOGIA =  " & iSQ_CLINICA_OFTAMOLOGIA.ToString()
+      oData = DBQuery(sSqlText)
+
+      With oForm.rpvGeral
+        .LocalReport.ReportPath = FNC_Relatorio_CarregarArquivo("Impressoes\ReceituarioOFT.rdl")
+        oForm.TipoRelatorio = frmReportViewer.enTipoRelatorio.Receituario
+        oForm.Formatar()
+
+        .LocalReport.DataSources.Clear()
+        .LocalReport.DataSources.Add(New Microsoft.Reporting.WinForms.ReportDataSource("Dados", oData))
+        .RefreshReport()
+
+        If bImprimir Then
+          Dim autoprintme As AutoPrintCls = New AutoPrintCls(.LocalReport)
+          autoprintme.Print()
+          autoprintme = Nothing
+        Else
+          oForm.Show()
+        End If
+      End With
+    Catch ex As Exception
+      FNC_Mensagem("FormRelatorioOfalmotologia - " & ex.Message)
     End Try
   End Sub
 

@@ -40,6 +40,7 @@ Public Class frmCadastroAgendamento
   Dim iQT_LIMITE As Integer = 0
   Dim sHorarioAtendimento_Inicio As String
   Dim sHorarioAtendimento_Fim As String
+  Dim iPROFISSIONAL_NR_ATENDIMENTO_INTERVALO As Integer = 0
   Public iID_PACIENTE As Integer
 
   Private Sub frmCadastroAgendamento_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -721,12 +722,22 @@ Public Class frmCadastroAgendamento
     Dim dDT_EVENTO_FIM As Date
     Dim iRowIndex As Integer
     Dim sProcedimento As String = ""
+    Dim iNR_ATENDIMENTO_INTERVALO As Integer
+
+    If iPROFISSIONAL_NR_ATENDIMENTO_INTERVALO > 0 Then
+      iNR_ATENDIMENTO_INTERVALO = iPROFISSIONAL_NR_ATENDIMENTO_INTERVALO
+    Else
+      iNR_ATENDIMENTO_INTERVALO = iEMPRESA_NR_ATENDIMENTO_INTERVALO
+    End If
 
     iQT_LIMITE = 0
 
     If Not oAgendamento_Disponibilidade Is Nothing Then
       If oAgendamento_Disponibilidade.Procedimento <> "" Then
         sProcedimento = oAgendamento_Disponibilidade.Procedimento
+      End If
+      If oAgendamento_Disponibilidade.Intervalo > 0 Then
+        iNR_ATENDIMENTO_INTERVALO = oAgendamento_Disponibilidade.Intervalo
       End If
 
       iQT_LIMITE = iQT_LIMITE + oAgendamento_Disponibilidade.Atendimento_Previsto + oAgendamento_Disponibilidade.Retorno_Previsto
@@ -741,21 +752,21 @@ Public Class frmCadastroAgendamento
 
       oData_Inicio = FNC_Hora(sHR_ATENDIMENTO_INICIO)
 
-      For iCont = 0 To DateDiff(DateInterval.Minute, oData_Inicio, FNC_Hora(sHR_ATENDIMENTO_FIM)) / iEMPRESA_NR_ATENDIMENTO_INTERVALO
+      For iCont = 0 To DateDiff(DateInterval.Minute, oData_Inicio, FNC_Hora(sHR_ATENDIMENTO_FIM)) / iNR_ATENDIMENTO_INTERVALO
         oRow = oDBHorario.Rows.Add()
         oRow.SetCellValue(const_GridHorario_HORA, FormatDateTime(oData_Inicio, DateFormat.ShortTime))
-        oData_Inicio = oData_Inicio.AddMinutes(iEMPRESA_NR_ATENDIMENTO_INTERVALO)
+        oData_Inicio = oData_Inicio.AddMinutes(iNR_ATENDIMENTO_INTERVALO)
       Next
     Else
       If Trim(sProcedimento) = "" Then
-        sSqlText = "SELECT HR_INICIO, HR_FIM, ISNULL(QT_ATENDIMENTO, 0) QT_ATENDIMENTO, ISNULL(QT_RETORNO, 0) QT_RETORNO" &
+        sSqlText = "SELECT HR_INICIO, HR_FIM, ISNULL(QT_ATENDIMENTO, 0) QT_ATENDIMENTO, ISNULL(QT_RETORNO, 0) QT_RETORNO, ISNULL(NR_INTERVALO, 0) NR_INTERVALO" &
                    " FROM VW_PESSOA_HORARIO" &
                    " WHERE ID_EMPRESA = " & cboEmpresa.SelectedValue &
                      " AND ID_PESSOA = " & cboProfissional.SelectedValue &
                      " AND CD_OPT_DIA_SEMANA = " & (txtDataAgendamento.DateTime.DayOfWeek.GetHashCode() + 1) &
                   "  ORDER BY HR_INICIO"
       Else
-        sSqlText = "SELECT DISTINCT PH.HR_INICIO, PH.HR_FIM, ISNULL(QT_ATENDIMENTO, 0) QT_ATENDIMENTO, ISNULL(QT_RETORNO, 0) QT_RETORNO" &
+        sSqlText = "SELECT DISTINCT PH.HR_INICIO, PH.HR_FIM, ISNULL(QT_ATENDIMENTO, 0) QT_ATENDIMENTO, ISNULL(QT_RETORNO, 0) QT_RETORNO, ISNULL(NR_INTERVALO, 0) NR_INTERVALO" &
                    " FROM VW_PESSOA_HORARIO PH" &
                     " INNER JOIN TB_PESSOA_HORARIO_PROCEDIMENTO PP ON PP.ID_PESSOA_HORARIO = PH.SQ_PESSOA_HORARIO" &
                       " AND PP.ID_PROCEDIMENTO IN (" & sProcedimento & ")" &
@@ -772,6 +783,12 @@ Public Class frmCadastroAgendamento
         Exit Sub
       Else
         For Each oDataRow As DataRow In oData.Rows
+          If oDataRow.Item("NR_INTERVALO") > 0 Then
+            iNR_ATENDIMENTO_INTERVALO = oDataRow.Item("NR_INTERVALO")
+          Else
+            iNR_ATENDIMENTO_INTERVALO = iEMPRESA_NR_ATENDIMENTO_INTERVALO
+          End If
+
           iQT_LIMITE = iQT_LIMITE + oDataRow.Item("QT_ATENDIMENTO") + oDataRow.Item("QT_RETORNO")
 
           sHR_ATENDIMENTO_INICIO = oDataRow.Item("HR_INICIO").ToString()
@@ -788,10 +805,10 @@ Public Class frmCadastroAgendamento
 
           oData_Inicio = FNC_Hora(sHR_ATENDIMENTO_INICIO)
 
-          For iCont = 0 To DateDiff(DateInterval.Minute, oData_Inicio, FNC_Hora(sHR_ATENDIMENTO_FIM)) / iEMPRESA_NR_ATENDIMENTO_INTERVALO
+          For iCont = 0 To DateDiff(DateInterval.Minute, oData_Inicio, FNC_Hora(sHR_ATENDIMENTO_FIM)) / iNR_ATENDIMENTO_INTERVALO
             oRow = oDBHorario.Rows.Add()
             oRow.SetCellValue(const_GridHorario_HORA, FormatDateTime(oData_Inicio, DateFormat.ShortTime))
-            oData_Inicio = oData_Inicio.AddMinutes(iEMPRESA_NR_ATENDIMENTO_INTERVALO)
+            oData_Inicio = oData_Inicio.AddMinutes(iNR_ATENDIMENTO_INTERVALO)
           Next
         Next
       End If
@@ -1480,7 +1497,15 @@ Public Class frmCadastroAgendamento
       bEmProcessamento = True
       iID_PROFISSIONAL = FNC_NVL(cboProfissional.SelectedValue, 0)
       ComboBox_Carregar(cboProfissional, enSql.Especilidade_Profissional, New Object() {FNC_NVL(cboEspecialdade.SelectedValue, 0)})
-      If iID_PROFISSIONAL > 0 Then ComboBox_Selecionar(cboProfissional, iID_PROFISSIONAL)
+      If iID_PROFISSIONAL > 0 Then
+        ComboBox_Selecionar(cboProfissional, iID_PROFISSIONAL)
+
+        iPROFISSIONAL_NR_ATENDIMENTO_INTERVALO = DBQuery_ValorUnicoInt($"SELECT ISNULL(NR_INTERVALO, 0) NR_INTERVALO
+                                                                          FROM VW_PESSOA_HORARIO
+                                                                          WHERE ID_EMPRESA = {iID_EMPRESA_FILIAL}
+                                                                            AND ID_PESSOA = {iID_PROFISSIONAL}
+                                                                            AND CD_OPT_DIA_SEMANA = {txtDataAgendamento.DateTime.DayOfWeek.GetHashCode() + 1}")
+      End If
       bEmProcessamento = False
     End If
   End Sub
@@ -1513,7 +1538,7 @@ Public Class frmCadastroAgendamento
       Dim sSqlText As String
       Dim oData As DataTable
 
-      sSqlText = "SELECT ISNULL(VL_PROCEDIMENTO, 0) VL_PROCEDIMENTO" &
+      sSqlText = "Select ISNULL(VL_PROCEDIMENTO, 0) VL_PROCEDIMENTO" &
                  " FROM TB_CONVENIO_PROCEDIMENTO" &
                  " WHERE ID_PROCEDIMENTO = " & psqProcedimento.Identificador &
                    " And ID_CONVENIO = " & cboConvenio.SelectedValue &
@@ -1547,7 +1572,7 @@ Public Class frmCadastroAgendamento
       Dim oData As DataTable
       Dim sSqlText As String
 
-      sSqlText = "SELECT SQ_CONVENIO, VL_CREDITO FROM TB_CONVENIO WHERE SQ_CONVENIO = " & cboConvenio.SelectedValue & " And ISNULL(IC_CONTROLACREDITO, 'N') = 'S'"
+      sSqlText = "Select SQ_CONVENIO, VL_CREDITO FROM TB_CONVENIO WHERE SQ_CONVENIO = " & cboConvenio.SelectedValue & " And ISNULL(IC_CONTROLACREDITO, 'N') = 'S'"
       oData = DBQuery(sSqlText)
 
       If objDataTable_Vazio(oData) Then

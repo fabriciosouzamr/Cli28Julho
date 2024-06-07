@@ -1,58 +1,58 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmCadastroAtendimento
-  Inherits System.Windows.Forms.Form
+    Inherits System.Windows.Forms.Form
 
-  'Descartar substituições de formulário para limpar a lista de componentes.
-  <System.Diagnostics.DebuggerNonUserCode()>
-  Protected Overrides Sub Dispose(ByVal disposing As Boolean)
-    Try
-      If disposing AndAlso components IsNot Nothing Then
-        components.Dispose()
-      End If
-    Finally
-      MyBase.Dispose(disposing)
-    End Try
-  End Sub
+    'Descartar substituições de formulário para limpar a lista de componentes.
+    <System.Diagnostics.DebuggerNonUserCode()>
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
 
-  'Exigido pelo Windows Form Designer
-  Private components As System.ComponentModel.IContainer
+    'Exigido pelo Windows Form Designer
+    Private components As System.ComponentModel.IContainer
 
-  'OBSERVAÇÃO: o procedimento a seguir é exigido pelo Windows Form Designer
-  'Pode ser modificado usando o Windows Form Designer.  
-  'Não o modifique usando o editor de códigos.
-  <System.Diagnostics.DebuggerStepThrough()>
-  Private Sub InitializeComponent()
-    Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCadastroAtendimento))
-    Me.picGeral = New System.Windows.Forms.PictureBox()
-    Me.lblIdade = New System.Windows.Forms.Label()
-    Me.txtDataAgendamento = New Infragistics.Win.UltraWinEditors.UltraDateTimeEditor()
-    Me.rtbDescricao = New System.Windows.Forms.RichTextBox()
-    Me.picFotoPaciente = New System.Windows.Forms.PictureBox()
-    Me.txtConsultasAnterior01 = New System.Windows.Forms.RichTextBox()
-    Me.VScrollBar = New System.Windows.Forms.VScrollBar()
-    Me.lblMedico01 = New System.Windows.Forms.Label()
-    Me.lblDescricaoProcedimento01 = New System.Windows.Forms.Label()
-    Me.lblDataHora01 = New System.Windows.Forms.Label()
-    Me.lblCodigoProcedimento01 = New System.Windows.Forms.Label()
-    Me.pnlExamesSolicitados = New System.Windows.Forms.Panel()
-    Me.pnlExamesSolicitadosDetalhe = New System.Windows.Forms.Panel()
-    Me.lstExamesSolicitados01 = New System.Windows.Forms.ListBox()
-    Me.pnlExamesSolicitadosCabecalho = New System.Windows.Forms.Panel()
-    Me.cmdExamesSolicitadosFechar = New System.Windows.Forms.Button()
-    Me.cmdExamesSolicitadosExibir = New System.Windows.Forms.Button()
-    Me.lblProntuario = New System.Windows.Forms.Label()
-    Me.lblPessoa = New System.Windows.Forms.Label()
-    Me.lblProcedimento = New System.Windows.Forms.Label()
-    Me.cmdRelatorios = New Cli28Julho.uscBotao()
-    Me.cmdSalvar = New Cli28Julho.uscBotao()
-    Me.cmdFinalizar = New Cli28Julho.uscBotao()
-    Me.cmdVascinas = New Cli28Julho.uscBotao()
-    Me.cmdReceituario = New Cli28Julho.uscBotao()
-    Me.cmdHistorico = New Cli28Julho.uscBotao()
-    Me.cmdAtestados = New Cli28Julho.uscBotao()
-    Me.cmdExames = New Cli28Julho.uscBotao()
-    Me.cmdPacienteCadastro = New Cli28Julho.uscBotao()
-    Me.cmdFechar = New Cli28Julho.uscBotao()
+    'OBSERVAÇÃO: o procedimento a seguir é exigido pelo Windows Form Designer
+    'Pode ser modificado usando o Windows Form Designer.  
+    'Não o modifique usando o editor de códigos.
+    <System.Diagnostics.DebuggerStepThrough()>
+    Private Sub InitializeComponent()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmCadastroAtendimento))
+        Me.picGeral = New System.Windows.Forms.PictureBox()
+        Me.lblIdade = New System.Windows.Forms.Label()
+        Me.txtDataAgendamento = New Infragistics.Win.UltraWinEditors.UltraDateTimeEditor()
+        Me.rtbDescricao = New System.Windows.Forms.RichTextBox()
+        Me.picFotoPaciente = New System.Windows.Forms.PictureBox()
+        Me.txtConsultasAnterior01 = New System.Windows.Forms.RichTextBox()
+        Me.VScrollBar = New System.Windows.Forms.VScrollBar()
+        Me.lblMedico01 = New System.Windows.Forms.Label()
+        Me.lblDescricaoProcedimento01 = New System.Windows.Forms.Label()
+        Me.lblDataHora01 = New System.Windows.Forms.Label()
+        Me.lblCodigoProcedimento01 = New System.Windows.Forms.Label()
+        Me.pnlExamesSolicitados = New System.Windows.Forms.Panel()
+        Me.pnlExamesSolicitadosDetalhe = New System.Windows.Forms.Panel()
+        Me.lstExamesSolicitados01 = New System.Windows.Forms.ListBox()
+        Me.pnlExamesSolicitadosCabecalho = New System.Windows.Forms.Panel()
+        Me.cmdExamesSolicitadosFechar = New System.Windows.Forms.Button()
+        Me.cmdExamesSolicitadosExibir = New System.Windows.Forms.Button()
+        Me.lblProntuario = New System.Windows.Forms.Label()
+        Me.lblPessoa = New System.Windows.Forms.Label()
+        Me.lblProcedimento = New System.Windows.Forms.Label()
+        Me.cmdRelatorios = New Cli28Julho.uscBotao()
+        Me.cmdSalvar = New Cli28Julho.uscBotao()
+        Me.cmdFinalizar = New Cli28Julho.uscBotao()
+        Me.cmdVascinas = New Cli28Julho.uscBotao()
+        Me.cmdReceituario = New Cli28Julho.uscBotao()
+        Me.cmdHistorico = New Cli28Julho.uscBotao()
+        Me.cmdAtestados = New Cli28Julho.uscBotao()
+        Me.cmdExames = New Cli28Julho.uscBotao()
+        Me.cmdPacienteCadastro = New Cli28Julho.uscBotao()
+        Me.cmdFechar = New Cli28Julho.uscBotao()
         CType(Me.picGeral, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtDataAgendamento, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picFotoPaciente, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -370,6 +370,7 @@ Partial Class frmCadastroAtendimento
         Me.Controls.Add(Me.cmdFechar)
         Me.Controls.Add(Me.picGeral)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.KeyPreview = True
         Me.MaximizeBox = False
         Me.Name = "frmCadastroAtendimento"
         Me.Text = "Cadastro de Atendimento"
@@ -386,7 +387,7 @@ Partial Class frmCadastroAtendimento
     End Sub
 
     Friend WithEvents picGeral As PictureBox
-  Friend WithEvents cmdFechar As uscBotao
+    Friend WithEvents cmdFechar As uscBotao
     Friend WithEvents cmdPacienteCadastro As uscBotao
     Friend WithEvents cmdExames As uscBotao
     Friend WithEvents lblIdade As Label

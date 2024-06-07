@@ -36,6 +36,7 @@ Public Class frmCadastroProfissionalHorario
       ComboBox_Selecionar(cboAtivo, oData.Rows(0).Item("ID_OPT_ATIVO"))
       txtHoraInicio.Text = oData.Rows(0).Item("HR_INICIO")
       txtHoraFim.Text = oData.Rows(0).Item("HR_FIM")
+      txtIntervalo.Text = oData.Rows(0).Item("NR_INTERVALO")
       txtQtdeProcedimento.Value = oData.Rows(0).Item("QT_ATENDIMENTO")
       txtQtdeRetorno.Value = oData.Rows(0).Item("QT_RETORNO")
       If Not FNC_CampoNulo(oData.Rows(0).Item("DT_ESPECIAL")) Then txtData.Value = oData.Rows(0).Item("DT_ESPECIAL")
@@ -69,7 +70,7 @@ Public Class frmCadastroProfissionalHorario
 
     Dim sSqlText As String
     Dim iCont As Integer
-    Dim oParametro(11) As DBParamentro
+    Dim oParametro(12) As DBParamentro
 
     sSqlText = DBMontar_SP("SP_PESSOA_HORARIO_CAD", False, "@SQ_PESSOA_HORARIO OUT",
                                                            "@ID_EMPRESA",
@@ -81,6 +82,7 @@ Public Class frmCadastroProfissionalHorario
                                                            "@QT_RETORNO",
                                                            "@HR_INICIO",
                                                            "@HR_FIM",
+                                                           "@NR_INTERVALO",
                                                            "@DT_ESPECIAL",
                                                            "@IC_BLOQUEADO")
     oParametro(0) = DBParametro_Montar("SQ_PESSOA_HORARIO", iSQ_PESSOA_HORARIO,, ParameterDirection.InputOutput)
@@ -92,13 +94,14 @@ Public Class frmCadastroProfissionalHorario
     oParametro(6) = DBParametro_Montar("QT_ATENDIMENTO", txtQtdeProcedimento.Value)
     oParametro(7) = DBParametro_Montar("QT_RETORNO", txtQtdeRetorno.Value)
     oParametro(8) = DBParametro_Montar("HR_INICIO", txtHoraInicio.Text)
-    oParametro(9) = DBParametro_Montar("HR_FIM", txtHoraFim.Text)
+    oParametro(9) = DBParametro_Montar("NR_INTERVALO", txtIntervalo.Value)
+    oParametro(10) = DBParametro_Montar("HR_FIM", txtHoraFim.Text)
     If IsDate(txtData.Text) Then
-      oParametro(10) = DBParametro_Montar("DT_ESPECIAL", txtData.Text, SqlDbType.DateTime)
+      oParametro(11) = DBParametro_Montar("DT_ESPECIAL", txtData.Text, SqlDbType.DateTime)
     Else
-      oParametro(10) = DBParametro_Montar("DT_ESPECIAL", Nothing, SqlDbType.DateTime)
+      oParametro(11) = DBParametro_Montar("DT_ESPECIAL", Nothing, SqlDbType.DateTime)
     End If
-    oParametro(11) = DBParametro_Montar("IC_BLOQUEADO", IIf(chkBloqueado.Checked, "S", "N"))
+    oParametro(12) = DBParametro_Montar("IC_BLOQUEADO", IIf(chkBloqueado.Checked, "S", "N"))
 
     DBExecutar(sSqlText, oParametro)
 

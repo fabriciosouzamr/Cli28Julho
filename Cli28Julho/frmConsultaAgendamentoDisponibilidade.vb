@@ -113,7 +113,7 @@
     End If
 
     Try
-      sSqlText = "WITH LSTPR (DATA, NO_OPCAO, ID_EMPRESA, ID_PESSOA, SQ_PESSOA_HORARIO, HR_INICIO, HR_FIM, QT_ATENDIMENTO, QT_RETORNO, DATA_INICIO, DATA_FIM)" &
+      sSqlText = "WITH LSTPR (DATA, NO_OPCAO, ID_EMPRESA, ID_PESSOA, SQ_PESSOA_HORARIO, HR_INICIO, HR_FIM, NR_INTERVALO, QT_ATENDIMENTO, QT_RETORNO, DATA_INICIO, DATA_FIM)" &
                  " AS" &
                  " (SELECT LSTPR.DATA," &
                            "OPCAO.NO_OPCAO," &
@@ -122,6 +122,7 @@
                            "PSHRR.SQ_PESSOA_HORARIO," &
                            "PSHRR.HR_INICIO," &
                            "PSHRR.HR_FIM," &
+                           "ISNULL(PSHRR.NR_INTERVALO, 0) NR_INTERVALO," &
                            "PSHRR.QT_ATENDIMENTO," &
                            "PSHRR.QT_RETORNO," &
                            "dbo.FC_DATAHORA_MONTAR(LSTPR.DATA, PSHRR.HR_INICIO) DATA_INICIO," &
@@ -143,6 +144,7 @@
                         "SQ_PESSOA_HORARIO," &
                         "HR_INICIO," &
                         "HR_FIM," &
+                        "NR_INTERVALO," &
                         "QT_ATENDIMENTO PROCEDIMENTO_PREVISAO," &
                         "SUM(PROCEDIMENTO) PROCEDIMENTO_AGENDADAS," &
                         "dbo.FC_ValorPositivo(QT_ATENDIMENTO - SUM(PROCEDIMENTO), 0) PROCEDIMENTO_DISPONIVEL," &
@@ -158,6 +160,7 @@
                                "LSTPR.SQ_PESSOA_HORARIO," &
                                "LSTPR.HR_INICIO," &
                                "LSTPR.HR_FIM," &
+                               "LSTPR.NR_INTERVALO," &
                                "ISNULL(LSTPR.QT_ATENDIMENTO, 0) QT_ATENDIMENTO," &
                                "ISNULL(LSTPR.QT_RETORNO, 0) QT_RETORNO," &
                                "SUM(IIF(ISNULL(TPCSL.IC_TIPO_RETORNO, 'X') = 'N', 1, 0)) PROCEDIMENTO," &
@@ -216,6 +219,7 @@
                                   "LSTPR.SQ_PESSOA_HORARIO," &
                                   "LSTPR.HR_INICIO," &
                                   "LSTPR.HR_FIM," &
+                                  "LSTPR.NR_INTERVALO," &
                                   "LSTPR.QT_ATENDIMENTO," &
                                   "LSTPR.QT_RETORNO) X" &
                  " GROUP BY DIA," &
@@ -227,6 +231,7 @@
                            "SQ_PESSOA_HORARIO," &
                            "HR_INICIO," &
                            "HR_FIM," &
+                           "NR_INTERVALO," &
                            "QT_ATENDIMENTO," &
                            "QT_RETORNO" &
                  " ORDER BY DATA," &
@@ -270,6 +275,7 @@
             .oAgendamento_Disponibilidade.Retorno_Disponivel = oRow.Item("REVISOES_DISPONIVEL")
             .oAgendamento_Disponibilidade.HoraInicial = oRow.Item("HR_INICIO")
             .oAgendamento_Disponibilidade.HoraFim = oRow.Item("HR_FIM")
+            .oAgendamento_Disponibilidade.Intervalo = oRow.Item("NR_INTERVALO")
             .oAgendamento_Disponibilidade.ID_PESSOA_HORARIO = oRow.Item("SQ_PESSOA_HORARIO")
           End With
 

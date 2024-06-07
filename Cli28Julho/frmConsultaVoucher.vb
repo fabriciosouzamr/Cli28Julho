@@ -42,7 +42,7 @@ Public Class frmConsultaVoucher
     objGrid_Coluna_Add(grdListagem, "Pessoa", 300)
     objGrid_Coluna_Add(grdListagem, "Vlr. Voucher", 140, , , ColumnStyle.Currency, , const_Formato_Valor_4casas)
     objGrid_Coluna_Add(grdListagem, "Vlr. Saldo", 140, , , ColumnStyle.Currency, , const_Formato_Valor_4casas)
-    objGrid_Coluna_Add(grdListagem, "Vlr. Camcelado", 140, , , ColumnStyle.Currency, , const_Formato_Valor_4casas)
+    objGrid_Coluna_Add(grdListagem, "Vlr. Cancelado", 140, , , ColumnStyle.Currency, , const_Formato_Valor_4casas)
     objGrid_Coluna_Add(grdListagem, "D/H Voucher", 140, , , ColumnStyle.DateTime)
     objGrid_Coluna_Add(grdListagem, "D/H Última Movimentação", 140, , , ColumnStyle.DateTime)
     objGrid_Coluna_Add(grdListagem, "D/H Cancelado", 140, , , ColumnStyle.DateTime)

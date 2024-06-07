@@ -1281,7 +1281,7 @@ Sair:
   End Sub
 
   Public Sub objGrid_ExibirTotal(ByVal oGrid As UltraGrid,
-                                   ByVal ParamArray ColunasTotal() As Integer)
+                                 ByVal ParamArray ColunasTotal() As Integer)
     objGrid_ExibirCalculado(oGrid, 0, SummaryType.Sum, False, ColunasTotal)
   End Sub
 

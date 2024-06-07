@@ -10,12 +10,13 @@ Public Class frmConsultaProfissionalHorario
   Const const_GridListagem_NO_OPT_DIA_SEMANA As Integer = 6
   Const const_GridListagem_HR_INICIO As Integer = 7
   Const const_GridListagem_HR_FIM As Integer = 8
-  Const const_GridListagem_QT_PROCEDIMENTOS As Integer = 9
-  Const const_GridListagem_QT_RETORNO As Integer = 10
-  Const const_GridListagem_NO_CONSULTORIO As Integer = 11
-  Const const_GridListagem_DT_ESPECIAL As Integer = 12
-  Const const_GridListagem_IC_BLOQUEADO As Integer = 13
-  Const const_GridListagem_NO_OPT_ATIVO As Integer = 14
+  Const const_GridListagem_HR_INTERVALO As Integer = 9
+  Const const_GridListagem_QT_PROCEDIMENTOS As Integer = 10
+  Const const_GridListagem_QT_RETORNO As Integer = 11
+  Const const_GridListagem_NO_CONSULTORIO As Integer = 12
+  Const const_GridListagem_DT_ESPECIAL As Integer = 13
+  Const const_GridListagem_IC_BLOQUEADO As Integer = 14
+  Const const_GridListagem_NO_OPT_ATIVO As Integer = 15
 
   Dim oDBGrid As New UltraWinDataSource.UltraDataSource
 
@@ -39,6 +40,7 @@ Public Class frmConsultaProfissionalHorario
     objGrid_Coluna_Add(grdListagem, "Dia da Semana", 100)
     objGrid_Coluna_Add(grdListagem, "Hora Início", 100)
     objGrid_Coluna_Add(grdListagem, "Hora Fim", 100)
+    objGrid_Coluna_Add(grdListagem, "Invervalo", 100)
     objGrid_Coluna_Add(grdListagem, "Qtde. Atendimento", 100)
     objGrid_Coluna_Add(grdListagem, "Qtde. Retorno", 100)
     objGrid_Coluna_Add(grdListagem, "Consultório", 100)
@@ -78,6 +80,7 @@ Public Class frmConsultaProfissionalHorario
                       "NO_OPT_DIA_SEMANA," &
                       "HR_INICIO," &
                       "HR_FIM," &
+                      "NR_INTERVALO," &
                       "QT_ATENDIMENTO," &
                       "QT_RETORNO," &
                       "NO_CONSULTORIO," &
@@ -118,6 +121,7 @@ Public Class frmConsultaProfissionalHorario
                                                            const_GridListagem_NO_OPT_DIA_SEMANA,
                                                            const_GridListagem_HR_INICIO,
                                                            const_GridListagem_HR_FIM,
+                                                           const_GridListagem_HR_INTERVALO,
                                                            const_GridListagem_QT_PROCEDIMENTOS,
                                                            const_GridListagem_QT_RETORNO,
                                                            const_GridListagem_NO_CONSULTORIO,

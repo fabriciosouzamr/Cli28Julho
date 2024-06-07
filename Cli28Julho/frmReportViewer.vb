@@ -54,6 +54,7 @@ Public Class frmReportViewer
     Agendamento = 48
     Voucher = 49
     Voucher_Lancamento = 50
+    ConsultaMinhasFaturas = 51
   End Enum
 
   Public TipoRelatorio As enTipoRelatorio
@@ -90,8 +91,7 @@ Public Class frmReportViewer
              enTipoRelatorio.FinanceiroComprovanteTransferencia,
              enTipoRelatorio.FinanceiroReciboPagamento,
              enTipoRelatorio.ExameCitologico,
-             enTipoRelatorio.SolicitacaoCitologiaLote,
-             enTipoRelatorio.MedicoFaturamento
+             enTipoRelatorio.SolicitacaoCitologiaLote
           bPaisagem = False
         Case Else
           bPaisagem = True
@@ -243,6 +243,8 @@ Public Class frmReportViewer
         Me.Text = "Voucher"
       Case enTipoRelatorio.Voucher_Lancamento
         Me.Text = "Voucher - Lançamentos"
+      Case enTipoRelatorio.ConsultaMinhasFaturas
+        Me.Text = "Consulta Minhas Faturas"
     End Select
   End Sub
 End Class

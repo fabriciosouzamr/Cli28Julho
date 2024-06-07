@@ -286,6 +286,18 @@ Public Class uscLancaContasReceberPagar_QuitarForm
       Exit Sub
     End If
 
+    If txtDtDocumento.Enabled And cboBanco.Enabled Then
+      If DBQuery_ValorUnico($"SELECT COUNT(*) FROM TB_DOCUMENTOFINANCEIRO
+                               WHERE ID_EMPRESA = {iID_EMPRESA_FILIAL} 
+                                 AND ID_BANCO = {cboBanco.SelectedValue}
+                                 AND CD_DOCUMENTO = '{txtCodDocumento.Text}'
+                                 AND NR_BANCO_AGENCIA = {txtNrAgencia.Value}
+                                 AND ID_OPT_STATUS IN ({enOpcoes.StatusDocumentoFinanceiro_Cadastrado.GetHashCode},{enOpcoes.StatusDocumentoFinanceiro_Compensado.GetHashCode})") > 0 Then
+        FNC_Mensagem("Documento já lançado")
+        Exit Sub
+      End If
+    End If
+
     If iNRLinha = -1 Then
       iNRLinha = oDBFormaPagamento.Rows.Add().Index
     End If

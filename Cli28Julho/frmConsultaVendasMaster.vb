@@ -6,25 +6,26 @@ Public Class frmConsultaVendasMaster
   Const const_GridListagem_NO_GRUPOPROCEDIMENTO As Integer = 2
   Const const_GridListagem_NO_ESPECIALIDADE As Integer = 3
   Const const_GridListagem_DS_SOLICITANTE As Integer = 4
-  Const const_GridListagem_NO_CONVENIO As Integer = 5
-  Const const_GridListagem_NO_EMPREsa As Integer = 6
-  Const const_GridListagem_CD_CLINICA_VENDA As Integer = 7
-  Const const_GridListagem_DH_VENDA As Integer = 8
-  Const const_GridListagem_NO_PESSOA As Integer = 9
-  Const const_GridListagem_NO_BAIRRO As Integer = 10
-  Const const_GridListagem_NO_CIDADE As Integer = 11
-  Const const_GridListagem_CD_CPF_CNPJ As Integer = 12
-  Const const_GridListagem_NO_PROFISSIONAL As Integer = 13
-  Const const_GridListagem_NO_PROCEDIMENTO As Integer = 14
-  Const const_GridListagem_VL_PROCEDIMENTO As Integer = 15
-  Const const_GridListagem_VL_DESCONTO As Integer = 16
-  Const const_GridListagem_VL_LIQUIDO As Integer = 17
-  Const const_GridListagem_VL_REPASSE As Integer = 18
-  Const const_GridListagem_NO_ATENDENTE As Integer = 19
-  Const const_GridListagem_ID_MOVFINANCEIRA As Integer = 20
-  Const const_GridListagem_CanalMarcacao As Integer = 21
-  Const const_GridListagem_DataMarcacao As Integer = 22
-  Const const_GridListagem_UsuarioMarcacao As Integer = 23
+  Const const_GridListagem_CD_AGENDAMENTO As Integer = 5
+  Const const_GridListagem_NO_CONVENIO As Integer = 6
+  Const const_GridListagem_NO_EMPREsa As Integer = 7
+  Const const_GridListagem_CD_CLINICA_VENDA As Integer = 8
+  Const const_GridListagem_DH_VENDA As Integer = 9
+  Const const_GridListagem_NO_PESSOA As Integer = 10
+  Const const_GridListagem_NO_BAIRRO As Integer = 11
+  Const const_GridListagem_NO_CIDADE As Integer = 12
+  Const const_GridListagem_CD_CPF_CNPJ As Integer = 13
+  Const const_GridListagem_NO_PROFISSIONAL As Integer = 14
+  Const const_GridListagem_NO_PROCEDIMENTO As Integer = 15
+  Const const_GridListagem_VL_PROCEDIMENTO As Integer = 16
+  Const const_GridListagem_VL_DESCONTO As Integer = 17
+  Const const_GridListagem_VL_LIQUIDO As Integer = 18
+  Const const_GridListagem_VL_REPASSE As Integer = 19
+  Const const_GridListagem_NO_ATENDENTE As Integer = 20
+  Const const_GridListagem_ID_MOVFINANCEIRA As Integer = 21
+  Const const_GridListagem_CanalMarcacao As Integer = 22
+  Const const_GridListagem_DataMarcacao As Integer = 23
+  Const const_GridListagem_UsuarioMarcacao As Integer = 24
 
   Dim oDBGrid As New UltraWinDataSource.UltraDataSource
 
@@ -41,6 +42,7 @@ Public Class frmConsultaVendasMaster
                       "GPPRC.NO_GRUPOPROCEDIMENTO," &
                       "ESPEC.NO_ESPECIALIDADE," &
                       "ISNULL(CLVND.DS_SOLICITANTE, ISNULL(CVPCD.DS_SOLICITANTE, PESSO_SOLIC.NO_PESSOA)) DS_SOLICITANTE," &
+                      "AGEND.CD_AGENDAMENTO," &
                       "CONVE.NO_CONVENIO," &
                       "EMPRE.NO_PESSOA," &
                       "CLVND.CD_CLINICA_VENDA," &
@@ -153,6 +155,7 @@ Public Class frmConsultaVendasMaster
                                                            const_GridListagem_NO_GRUPOPROCEDIMENTO,
                                                            const_GridListagem_NO_ESPECIALIDADE,
                                                            const_GridListagem_DS_SOLICITANTE,
+                                                           const_GridListagem_CD_AGENDAMENTO,
                                                            const_GridListagem_NO_CONVENIO,
                                                            const_GridListagem_NO_EMPREsa,
                                                            const_GridListagem_CD_CLINICA_VENDA,
@@ -216,6 +219,7 @@ Public Class frmConsultaVendasMaster
     objGrid_Coluna_Add(grdListagem, "Grupo de Procedimento", 200)
     objGrid_Coluna_Add(grdListagem, "Especialidade", 200)
     objGrid_Coluna_Add(grdListagem, "Médico Solicitante", 200)
+    objGrid_Coluna_Add(grdListagem, "Cód. Agendamento", 200)
     objGrid_Coluna_Add(grdListagem, "Convênio", 200)
     objGrid_Coluna_Add(grdListagem, "Empresa", 200)
     objGrid_Coluna_Add(grdListagem, "Cód. Venda", 200)

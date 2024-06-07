@@ -100,7 +100,7 @@ Public Class frmConsultaCompensacao
       FNC_Str_Adicionar(sSqlText, " MVFCP.ID_PESSOA = " & psqPessoa.ID_Pessoa, " AND ")
     End If
     If Trim(txtCodigoDocumento.Text) <> "" Then
-      FNC_Str_Adicionar(sSqlText, " DCFIN.CD_DOCUMENTO LIKE " & FNC_SQL_FormatarLike(txtCodigoDocumento.Text), " AND ")
+      FNC_Str_Adicionar(sSqlText, " MVFCP.CD_DOCUMENTO LIKE " & FNC_SQL_FormatarLike(txtCodigoDocumento.Text), " AND ")
     End If
 
     sSqlText = sSqlText &

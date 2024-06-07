@@ -8,6 +8,7 @@
   Dim sCD_CLINICA_ATENDIMENTO As String
   Dim iID_Pessoa As Integer
   Dim iID_Procedimento As Integer
+  Dim iID_Especialidade As Integer
   Dim oHistorico As New clsHistorico
 
   Class cAtendimento
@@ -21,6 +22,8 @@
 
   Dim oAtendimento() As cAtendimento
   Dim eStatus As enOpcoes = enOpcoes.StatusAtendimentoClinica_EmAtendimento
+
+  Const cnt_Especialidade_Oftalmologia As Integer = 20
 
   Private Sub frmCadastroAtendimento_Load(sender As Object, e As EventArgs) Handles Me.Load
     pnlExamesSolicitados.Visible = False
@@ -43,6 +46,7 @@
     Dim sSqlText As String
 
     sSqlText = "SELECT AGEND.ID_PESSOA," &
+                      "AGEND.ID_ESPECIALIDADE," &
                       "PESSO.NO_PESSOA," &
                       "ISNULL(CLATD.ID_PROCEDIMENTO, AGEND.ID_PROCEDIMENTO) ID_PROCEDIMENTO," &
                       "dbo.FC_DateDiff_Extenso(PESSO.DT_NASC_ABERTURA, GETDATE(), 'S') IDADE," &
@@ -63,6 +67,7 @@
 
     If Not objDataTable_Vazio(oData) Then
       iID_Pessoa = oData.Rows(0).Item("ID_PESSOA")
+      iID_Especialidade = oData.Rows(0).Item("ID_ESPECIALIDADE")
       lblPessoa.Text = oData.Rows(0).Item("NO_PESSOA")
       lblProntuario.Text = oData.Rows(0).Item("ID_PESSOA")
       If Not FNC_CampoNulo(oData.Rows(0).Item("ID_PROCEDIMENTO")) Then
@@ -155,7 +160,7 @@
     End If
   End Sub
 
-  Private Function Salvar(eID_STATUS As enOpcoes, bGravarHistorico As Boolean) As Boolean
+  Private Function Salvar(eID_STATUS As enOpcoes, bGravarHistorico As Boolean, Optional Async As Boolean = False) As Boolean
     Dim sSqlText As String
     Dim bOk As Boolean = False
 
@@ -176,6 +181,20 @@
       GoTo Sair
     End If
 
+    Dim Parametro() As DBParamentro = {
+      DBParametro_Montar("SQ_CLINICA_ATENDIMENTO", iSQ_CLINICA_ATENDIMENTO, , ParameterDirection.InputOutput),
+      DBParametro_Montar("CD_CLINICA_ATENDIMENTO", Nothing, , ParameterDirection.InputOutput),
+      DBParametro_Montar("ID_EMPRESA", iID_EMPRESA_FILIAL),
+      DBParametro_Montar("ID_PESSOA", iID_Pessoa),
+      DBParametro_Montar("ID_PESSOA_PROFISSIONAL", iID_USUARIO),
+      DBParametro_Montar("ID_PROCEDIMENTO", iID_Procedimento),
+      DBParametro_Montar("ID_AGENDAMENTO", iID_AGENDAMENTO),
+      DBParametro_Montar("ID_CONSULTORIO", iID_CONSULTORIO),
+      DBParametro_Montar("ID_OPT_STATUS", eID_STATUS.GetHashCode()),
+      DBParametro_Montar("DH_CLINICA_ATENDIMENTO", txtDataAgendamento.DateTime, SqlDbType.DateTime2),
+      DBParametro_Montar("DS_CLINICA_ATENDIMENTO", rtbDescricao.Text, SqlDbType.Text)
+    }
+
     sSqlText = DBMontar_SP("SP_CLINICA_ATENDIMENTO_CAD", False, "@SQ_CLINICA_ATENDIMENTO OUT",
                                                                 "@CD_CLINICA_ATENDIMENTO OUT",
                                                                 "@ID_EMPRESA",
@@ -187,30 +206,25 @@
                                                                 "@ID_OPT_STATUS",
                                                                 "@DH_CLINICA_ATENDIMENTO",
                                                                 "@DS_CLINICA_ATENDIMENTO")
-    If DBExecutar(sSqlText, DBParametro_Montar("SQ_CLINICA_ATENDIMENTO", iSQ_CLINICA_ATENDIMENTO, , ParameterDirection.InputOutput),
-                            DBParametro_Montar("CD_CLINICA_ATENDIMENTO", Nothing, , ParameterDirection.InputOutput),
-                            DBParametro_Montar("ID_EMPRESA", iID_EMPRESA_FILIAL),
-                            DBParametro_Montar("ID_PESSOA", iID_Pessoa),
-                            DBParametro_Montar("ID_PESSOA_PROFISSIONAL", iID_USUARIO),
-                            DBParametro_Montar("ID_PROCEDIMENTO", iID_Procedimento),
-                            DBParametro_Montar("ID_AGENDAMENTO", iID_AGENDAMENTO),
-                            DBParametro_Montar("ID_CONSULTORIO", iID_CONSULTORIO),
-                            DBParametro_Montar("ID_OPT_STATUS", eID_STATUS.GetHashCode()),
-                            DBParametro_Montar("DH_CLINICA_ATENDIMENTO", txtDataAgendamento.DateTime, SqlDbType.DateTime2),
-                            DBParametro_Montar("DS_CLINICA_ATENDIMENTO", rtbDescricao.Text, SqlDbType.Text)) Then
-      If DBTeveRetorno() Then
-        iSQ_CLINICA_ATENDIMENTO = DBRetorno(1)
-        sCD_CLINICA_ATENDIMENTO = DBRetorno(2)
-        bOk = True
+
+    If Async Then
+      DBExecutarAsync(sSqlText, Parametro)
+    Else
+      If DBExecutar(sSqlText, Parametro) Then
+        If DBTeveRetorno() Then
+          iSQ_CLINICA_ATENDIMENTO = DBRetorno(1)
+          sCD_CLINICA_ATENDIMENTO = DBRetorno(2)
+          bOk = True
+        End If
+
+        HabilitarBotoes()
+
+        If bGravarHistorico Then FNC_Historico(enOpcoes.Processo_Acao_Alteracao)
       End If
-
-      HabilitarBotoes()
-
-      If bGravarHistorico Then FNC_Historico(enOpcoes.Processo_Acao_Alteracao)
+    End If
 
 Sair:
-      Return bOk
-    End If
+    Return bOk
   End Function
 
   Private Sub HabilitarBotoes()
@@ -228,6 +242,18 @@ Sair:
       If Not Salvar(enOpcoes.StatusAtendimentoClinica_EmAtendimento.GetHashCode(), True) Then Exit Sub
     End If
 
+    If iID_Especialidade = cnt_Especialidade_Oftalmologia Then
+      Dim oForm As New frmCadastroAtendimentoOftalmologico
+
+      oForm.iID_CLINICA_ATENDIMENTO = iSQ_CLINICA_ATENDIMENTO
+
+      FNC_AbriTela(oForm, , True, True)
+    Else
+      Receituario()
+    End If
+  End Sub
+
+  Private Sub Receituario()
     Dim oForm As New frmCadastroAtendimentoReceituario
 
     oForm.Formatar()
@@ -521,5 +547,15 @@ Sair:
     Me.Width = oFormMDI.ClientSize.Width
     Me.Left = 0
     Me.Top = 0
+  End Sub
+
+  Private Sub rtbDescricao_TextChanged(sender As Object, e As EventArgs) Handles rtbDescricao.TextChanged
+    Salvar(enOpcoes.StatusAtendimentoClinica_EmAtendimento.GetHashCode(), False, False)
+  End Sub
+
+  Private Sub frmCadastroAtendimento_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
+    If e.KeyCode = Keys.F3 Then
+      Receituario()
+    End If
   End Sub
 End Class

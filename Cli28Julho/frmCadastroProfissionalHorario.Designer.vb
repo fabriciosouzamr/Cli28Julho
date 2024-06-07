@@ -60,10 +60,13 @@ Partial Class frmCadastroProfissionalHorario
         Me.txtData = New Infragistics.Win.UltraWinEditors.UltraDateTimeEditor()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.chkBloqueado = New System.Windows.Forms.CheckBox()
+        Me.txtIntervalo = New Infragistics.Win.UltraWinEditors.UltraNumericEditor()
+        Me.Label10 = New System.Windows.Forms.Label()
         CType(Me.grdListagem, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtQtdeProcedimento, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtQtdeRetorno, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtData, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.txtIntervalo, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'cboProfissional
@@ -87,7 +90,7 @@ Partial Class frmCadastroProfissionalHorario
         'cmdGravar
         '
         Me.cmdGravar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdGravar.Location = New System.Drawing.Point(586, 385)
+        Me.cmdGravar.Location = New System.Drawing.Point(586, 426)
         Me.cmdGravar.Name = "cmdGravar"
         Me.cmdGravar.Size = New System.Drawing.Size(75, 28)
         Me.cmdGravar.TabIndex = 203
@@ -97,7 +100,7 @@ Partial Class frmCadastroProfissionalHorario
         'cmdFechar
         '
         Me.cmdFechar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdFechar.Location = New System.Drawing.Point(667, 385)
+        Me.cmdFechar.Location = New System.Drawing.Point(667, 426)
         Me.cmdFechar.Name = "cmdFechar"
         Me.cmdFechar.Size = New System.Drawing.Size(75, 28)
         Me.cmdFechar.TabIndex = 204
@@ -160,7 +163,7 @@ Partial Class frmCadastroProfissionalHorario
         Me.grdListagem.DisplayLayout.ScrollBounds = Infragistics.Win.UltraWinGrid.ScrollBounds.ScrollToFill
         Me.grdListagem.DisplayLayout.ScrollStyle = Infragistics.Win.UltraWinGrid.ScrollStyle.Immediate
         Me.grdListagem.DisplayLayout.ViewStyleBand = Infragistics.Win.UltraWinGrid.ViewStyleBand.OutlookGroupBy
-        Me.grdListagem.Location = New System.Drawing.Point(5, 146)
+        Me.grdListagem.Location = New System.Drawing.Point(5, 187)
         Me.grdListagem.Name = "grdListagem"
         Me.grdListagem.Size = New System.Drawing.Size(737, 229)
         Me.grdListagem.TabIndex = 214
@@ -169,7 +172,7 @@ Partial Class frmCadastroProfissionalHorario
         'lblRListagemPessoa
         '
         Me.lblRListagemPessoa.AutoSize = True
-        Me.lblRListagemPessoa.Location = New System.Drawing.Point(5, 131)
+        Me.lblRListagemPessoa.Location = New System.Drawing.Point(5, 172)
         Me.lblRListagemPessoa.Name = "lblRListagemPessoa"
         Me.lblRListagemPessoa.Size = New System.Drawing.Size(106, 13)
         Me.lblRListagemPessoa.TabIndex = 213
@@ -197,7 +200,7 @@ Partial Class frmCadastroProfissionalHorario
         'cmdCopiarHorarioExames
         '
         Me.cmdCopiarHorarioExames.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdCopiarHorarioExames.Location = New System.Drawing.Point(5, 385)
+        Me.cmdCopiarHorarioExames.Location = New System.Drawing.Point(5, 426)
         Me.cmdCopiarHorarioExames.Name = "cmdCopiarHorarioExames"
         Me.cmdCopiarHorarioExames.Size = New System.Drawing.Size(215, 28)
         Me.cmdCopiarHorarioExames.TabIndex = 217
@@ -207,7 +210,7 @@ Partial Class frmCadastroProfissionalHorario
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(97, 89)
+        Me.Label9.Location = New System.Drawing.Point(185, 89)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(75, 13)
         Me.Label9.TabIndex = 219
@@ -215,7 +218,7 @@ Partial Class frmCadastroProfissionalHorario
         '
         'txtHoraFim
         '
-        Me.txtHoraFim.Location = New System.Drawing.Point(97, 104)
+        Me.txtHoraFim.Location = New System.Drawing.Point(185, 104)
         Me.txtHoraFim.Name = "txtHoraFim"
         Me.txtHoraFim.Size = New System.Drawing.Size(35, 20)
         Me.txtHoraFim.TabIndex = 221
@@ -240,7 +243,7 @@ Partial Class frmCadastroProfissionalHorario
         '
         Me.cboDiasSemana.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboDiasSemana.FormattingEnabled = True
-        Me.cboDiasSemana.Location = New System.Drawing.Point(178, 104)
+        Me.cboDiasSemana.Location = New System.Drawing.Point(266, 104)
         Me.cboDiasSemana.Name = "cboDiasSemana"
         Me.cboDiasSemana.Size = New System.Drawing.Size(108, 21)
         Me.cboDiasSemana.TabIndex = 245
@@ -248,7 +251,7 @@ Partial Class frmCadastroProfissionalHorario
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(178, 89)
+        Me.Label4.Location = New System.Drawing.Point(266, 89)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(85, 13)
         Me.Label4.TabIndex = 246
@@ -257,7 +260,7 @@ Partial Class frmCadastroProfissionalHorario
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(292, 89)
+        Me.Label12.Location = New System.Drawing.Point(380, 89)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(109, 13)
         Me.Label12.TabIndex = 248
@@ -265,7 +268,7 @@ Partial Class frmCadastroProfissionalHorario
         '
         'txtQtdeProcedimento
         '
-        Me.txtQtdeProcedimento.Location = New System.Drawing.Point(292, 104)
+        Me.txtQtdeProcedimento.Location = New System.Drawing.Point(380, 104)
         Me.txtQtdeProcedimento.MaskInput = "nnn"
         Me.txtQtdeProcedimento.MinValue = 0
         Me.txtQtdeProcedimento.Name = "txtQtdeProcedimento"
@@ -275,7 +278,7 @@ Partial Class frmCadastroProfissionalHorario
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(407, 89)
+        Me.Label5.Location = New System.Drawing.Point(495, 89)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(77, 13)
         Me.Label5.TabIndex = 250
@@ -283,7 +286,7 @@ Partial Class frmCadastroProfissionalHorario
         '
         'txtQtdeRetorno
         '
-        Me.txtQtdeRetorno.Location = New System.Drawing.Point(407, 104)
+        Me.txtQtdeRetorno.Location = New System.Drawing.Point(495, 104)
         Me.txtQtdeRetorno.MaskInput = "nnn"
         Me.txtQtdeRetorno.MinValue = 0
         Me.txtQtdeRetorno.Name = "txtQtdeRetorno"
@@ -294,7 +297,7 @@ Partial Class frmCadastroProfissionalHorario
         '
         Me.cboConsultorio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboConsultorio.FormattingEnabled = True
-        Me.cboConsultorio.Location = New System.Drawing.Point(490, 104)
+        Me.cboConsultorio.Location = New System.Drawing.Point(5, 145)
         Me.cboConsultorio.Name = "cboConsultorio"
         Me.cboConsultorio.Size = New System.Drawing.Size(108, 21)
         Me.cboConsultorio.TabIndex = 251
@@ -302,7 +305,7 @@ Partial Class frmCadastroProfissionalHorario
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(490, 89)
+        Me.Label6.Location = New System.Drawing.Point(5, 130)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(59, 13)
         Me.Label6.TabIndex = 252
@@ -312,7 +315,7 @@ Partial Class frmCadastroProfissionalHorario
         '
         Me.cboAtivo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboAtivo.FormattingEnabled = True
-        Me.cboAtivo.Location = New System.Drawing.Point(604, 104)
+        Me.cboAtivo.Location = New System.Drawing.Point(119, 145)
         Me.cboAtivo.Name = "cboAtivo"
         Me.cboAtivo.Size = New System.Drawing.Size(42, 21)
         Me.cboAtivo.TabIndex = 253
@@ -320,7 +323,7 @@ Partial Class frmCadastroProfissionalHorario
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(604, 89)
+        Me.Label7.Location = New System.Drawing.Point(119, 130)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(42, 13)
         Me.Label7.TabIndex = 254
@@ -329,7 +332,7 @@ Partial Class frmCadastroProfissionalHorario
         'txtData
         '
         Me.txtData.DateTime = New Date(2021, 2, 18, 0, 0, 0, 0)
-        Me.txtData.Location = New System.Drawing.Point(652, 104)
+        Me.txtData.Location = New System.Drawing.Point(167, 145)
         Me.txtData.Name = "txtData"
         Me.txtData.Size = New System.Drawing.Size(89, 21)
         Me.txtData.TabIndex = 255
@@ -338,7 +341,7 @@ Partial Class frmCadastroProfissionalHorario
         'Label8
         '
         Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(652, 89)
+        Me.Label8.Location = New System.Drawing.Point(167, 130)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(73, 13)
         Me.Label8.TabIndex = 256
@@ -347,18 +350,38 @@ Partial Class frmCadastroProfissionalHorario
         'chkBloqueado
         '
         Me.chkBloqueado.AutoSize = True
-        Me.chkBloqueado.Location = New System.Drawing.Point(664, 127)
+        Me.chkBloqueado.Location = New System.Drawing.Point(664, 149)
         Me.chkBloqueado.Name = "chkBloqueado"
         Me.chkBloqueado.Size = New System.Drawing.Size(77, 17)
         Me.chkBloqueado.TabIndex = 257
         Me.chkBloqueado.Text = "Bloqueado"
         Me.chkBloqueado.UseVisualStyleBackColor = True
         '
+        'txtIntervalo
+        '
+        Me.txtIntervalo.Location = New System.Drawing.Point(97, 104)
+        Me.txtIntervalo.MaskInput = "nnn"
+        Me.txtIntervalo.MinValue = 1
+        Me.txtIntervalo.Name = "txtIntervalo"
+        Me.txtIntervalo.Size = New System.Drawing.Size(50, 21)
+        Me.txtIntervalo.TabIndex = 259
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(97, 89)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(82, 13)
+        Me.Label10.TabIndex = 258
+        Me.Label10.Text = "Intervalo (Min.s)"
+        '
         'frmCadastroProfissionalHorario
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(751, 419)
+        Me.ClientSize = New System.Drawing.Size(751, 460)
+        Me.Controls.Add(Me.txtIntervalo)
+        Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.chkBloqueado)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.txtData)
@@ -393,6 +416,7 @@ Partial Class frmCadastroProfissionalHorario
         CType(Me.txtQtdeProcedimento, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtQtdeRetorno, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtData, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.txtIntervalo, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -424,4 +448,6 @@ Partial Class frmCadastroProfissionalHorario
     Friend WithEvents txtData As Infragistics.Win.UltraWinEditors.UltraDateTimeEditor
     Friend WithEvents Label8 As Label
     Friend WithEvents chkBloqueado As CheckBox
+    Friend WithEvents txtIntervalo As Infragistics.Win.UltraWinEditors.UltraNumericEditor
+    Friend WithEvents Label10 As Label
 End Class

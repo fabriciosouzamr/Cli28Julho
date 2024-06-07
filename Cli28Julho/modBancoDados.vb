@@ -221,26 +221,34 @@ Sair:
     End Try
   End Function
 
+  Public Function DBExecutarAsync(ByVal SqlText As String,
+                                  ByVal ParamArray Parametro() As DBParamentro) As Boolean
+    Return DBExecutar(SqlText, Nothing, True, Parametro)
+  End Function
+
   Public Function DBExecutar(ByVal SqlText As String,
                              ByVal ParamArray Parametro() As DBParamentro) As Boolean
-    Return DBExecutar(SqlText, Nothing, Parametro)
+    Return DBExecutar(SqlText, Nothing, False, Parametro)
   End Function
   Public Function DBExecutar(ByVal SqlText As String,
                              oConexaoQuery As System.Data.Common.DbConnection,
+                             Async As Boolean,
                              ByVal ParamArray Parametro() As DBParamentro) As Boolean
     Dim iLinhaAfetada As Integer
 
-    Return DBExecutar_LinhaAfetadas(SqlText, iLinhaAfetada, oConexaoQuery, Parametro)
+    Return DBExecutar_LinhaAfetadas(SqlText, iLinhaAfetada, oConexaoQuery, Async, Parametro)
   End Function
 
   Public Function DBExecutar_LinhaAfetadas(ByVal sSqlText As String,
                                            ByRef iLinhaAfetada As Integer,
+                                           Async As Boolean,
                                            ByVal ParamArray Parametro() As DBParamentro) As Boolean
-    Return DBExecutar_LinhaAfetadas(sSqlText, iLinhaAfetada, Nothing, Parametro)
+    Return DBExecutar_LinhaAfetadas(sSqlText, iLinhaAfetada, Nothing, Async, Parametro)
   End Function
   Public Function DBExecutar_LinhaAfetadas(ByVal sSqlText As String,
                                            ByRef iLinhaAfetada As Integer,
                                            oConexaoQuery As System.Data.Common.DbConnection,
+                                           Async As Boolean,
                                            ByVal ParamArray Parametro() As DBParamentro) As Boolean
     Dim oAux As DBParamentro
     Dim oCommand As DbCommand
@@ -264,7 +272,12 @@ Sair:
 
       If Parametro Is Nothing Then
         oCommand.CommandText = sSqlText
-        oCommand.ExecuteNonQuery()
+
+        If Async Then
+          oCommand.ExecuteNonQueryAsync()
+        Else
+          oCommand.ExecuteNonQuery()
+        End If
       Else
         oCommand.CommandText = sSqlText
         oCommand.Prepare()
@@ -306,7 +319,7 @@ Sair:
           oCommand.Parameters.Add(oParametro)
         Next
 
-        If bOutPutParametro Or bRetornoParametro Then
+        If (bOutPutParametro Or bRetornoParametro) AndAlso Not Async Then
           Dim iCont As Integer
           Dim oData As SqlDataReader
 
@@ -328,12 +341,16 @@ Sair:
 
           oData.Close()
           oData = Nothing
-        ElseIf bRetornoParametro Then
+        ElseIf bRetornoParametro AndAlso Not Async Then
           oRetorno = New Collection
 
           oRetorno.Add(oCommand.ExecuteScalar)
         Else
-          iLinhaAfetada = oCommand.ExecuteNonQuery()
+          If Async Then
+            oCommand.ExecuteNonQueryAsync()
+          Else
+            iLinhaAfetada = oCommand.ExecuteNonQuery()
+          End If
         End If
       End If
 

@@ -96,7 +96,7 @@ Public Class frmMDI
     oItem = sender
 
     sSqlText = "EXEC SP_CLINICA_SENHA_CHAMADA_UPD " & oItem.Tag & "," & iSenha_ContaCaixaAtendimento & "," & iID_USUARIO
-    DBExecutar(sSqlText, oConexao2)
+    DBExecutar(sSqlText, oConexao2, False)
 
     If iID_EMPRESA_FILIAL = iID_EMPRESA_MATRIZ Then
       iUnidade = 1

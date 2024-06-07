@@ -34,6 +34,7 @@ Partial Class frmConsultaMinhasFaturas
         Dim Appearance10 As Infragistics.Win.Appearance = New Infragistics.Win.Appearance()
         Dim Appearance11 As Infragistics.Win.Appearance = New Infragistics.Win.Appearance()
         Dim Appearance12 As Infragistics.Win.Appearance = New Infragistics.Win.Appearance()
+        Me.cmdPDF = New System.Windows.Forms.Button()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.txtPeriodoFinal = New Infragistics.Win.UltraWinEditors.UltraDateTimeEditor()
         Me.txtPeriodoInicial = New Infragistics.Win.UltraWinEditors.UltraDateTimeEditor()
@@ -48,14 +49,21 @@ Partial Class frmConsultaMinhasFaturas
         Me.optTotal = New System.Windows.Forms.RadioButton()
         Me.optExames = New System.Windows.Forms.RadioButton()
         Me.optConsultas = New System.Windows.Forms.RadioButton()
-        Me.cmdImprimir = New System.Windows.Forms.Button()
-        Me.cboTurno = New System.Windows.Forms.ComboBox()
-        Me.Label1 = New System.Windows.Forms.Label()
         CType(Me.txtPeriodoFinal, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtPeriodoInicial, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.grdListagem, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
+        '
+        'cmdPDF
+        '
+        Me.cmdPDF.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.cmdPDF.Location = New System.Drawing.Point(86, 362)
+        Me.cmdPDF.Name = "cmdPDF"
+        Me.cmdPDF.Size = New System.Drawing.Size(75, 28)
+        Me.cmdPDF.TabIndex = 359
+        Me.cmdPDF.Text = "     P.D.F."
+        Me.cmdPDF.UseVisualStyleBackColor = True
         '
         'Label7
         '
@@ -255,44 +263,13 @@ Partial Class frmConsultaMinhasFaturas
         Me.optConsultas.Text = "Consultas"
         Me.optConsultas.UseVisualStyleBackColor = True
         '
-        'cmdImprimir
-        '
-        Me.cmdImprimir.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.cmdImprimir.Location = New System.Drawing.Point(86, 362)
-        Me.cmdImprimir.Name = "cmdImprimir"
-        Me.cmdImprimir.Size = New System.Drawing.Size(75, 28)
-        Me.cmdImprimir.TabIndex = 361
-        Me.cmdImprimir.Text = "    Imprimir"
-        Me.cmdImprimir.UseVisualStyleBackColor = True
-        '
-        'cboTurno
-        '
-        Me.cboTurno.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.cboTurno.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cboTurno.FormattingEnabled = True
-        Me.cboTurno.Location = New System.Drawing.Point(376, 20)
-        Me.cboTurno.Name = "cboTurno"
-        Me.cboTurno.Size = New System.Drawing.Size(174, 24)
-        Me.cboTurno.TabIndex = 362
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(376, 5)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(35, 13)
-        Me.Label1.TabIndex = 363
-        Me.Label1.Text = "Turno"
-        '
         'frmConsultaMinhasFaturas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(987, 396)
-        Me.Controls.Add(Me.Label1)
-        Me.Controls.Add(Me.cboTurno)
-        Me.Controls.Add(Me.cmdImprimir)
         Me.Controls.Add(Me.Panel1)
+        Me.Controls.Add(Me.cmdPDF)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.txtPeriodoFinal)
         Me.Controls.Add(Me.txtPeriodoInicial)
@@ -316,6 +293,8 @@ Partial Class frmConsultaMinhasFaturas
         Me.PerformLayout()
 
     End Sub
+
+    Friend WithEvents cmdPDF As Button
     Friend WithEvents Label7 As Label
     Friend WithEvents txtPeriodoFinal As Infragistics.Win.UltraWinEditors.UltraDateTimeEditor
     Friend WithEvents txtPeriodoInicial As Infragistics.Win.UltraWinEditors.UltraDateTimeEditor
@@ -330,7 +309,4 @@ Partial Class frmConsultaMinhasFaturas
     Friend WithEvents optConsultas As RadioButton
     Friend WithEvents optTotal As RadioButton
     Friend WithEvents optExames As RadioButton
-    Friend WithEvents cmdImprimir As Button
-    Friend WithEvents cboTurno As ComboBox
-    Friend WithEvents Label1 As Label
 End Class
