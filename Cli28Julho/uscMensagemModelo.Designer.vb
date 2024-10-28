@@ -29,6 +29,8 @@ Partial Class uscMensagemModelo
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtCodigoUsuario = New System.Windows.Forms.TextBox()
         Me.chkAtivo = New System.Windows.Forms.CheckBox()
+        Me.txtCodigoDialogo = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label1
@@ -90,10 +92,28 @@ Partial Class uscMensagemModelo
         Me.chkAtivo.Text = "Ativo"
         Me.chkAtivo.UseVisualStyleBackColor = True
         '
+        'txtCodigoDialogo
+        '
+        Me.txtCodigoDialogo.Location = New System.Drawing.Point(307, 477)
+        Me.txtCodigoDialogo.Name = "txtCodigoDialogo"
+        Me.txtCodigoDialogo.Size = New System.Drawing.Size(300, 20)
+        Me.txtCodigoDialogo.TabIndex = 6
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(307, 462)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(92, 13)
+        Me.Label4.TabIndex = 7
+        Me.Label4.Text = "Código de dialógo"
+        '
         'uscMensagemModelo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.txtCodigoDialogo)
+        Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.chkAtivo)
         Me.Controls.Add(Me.txtCodigoUsuario)
         Me.Controls.Add(Me.Label3)
@@ -115,4 +135,6 @@ Partial Class uscMensagemModelo
     Friend WithEvents Label3 As Label
     Friend WithEvents txtCodigoUsuario As TextBox
     Friend WithEvents chkAtivo As CheckBox
+    Friend WithEvents txtCodigoDialogo As TextBox
+    Friend WithEvents Label4 As Label
 End Class

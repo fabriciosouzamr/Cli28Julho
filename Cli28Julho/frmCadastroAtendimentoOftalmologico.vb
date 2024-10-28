@@ -42,13 +42,13 @@
         If Not objDataTable_CampoVazio(oRow.Item("SQ_CLINICA_OFTAMOLOGIA")) Then
           iSQ_CLINICA_OFTAMOLOGIA = oRow.Item("SQ_CLINICA_OFTAMOLOGIA")
           txtValidade.Value = oRow.Item("DT_VALIDADE_RECEITA")
-          numParaLongeOdEsferico.Value = FNC_NVL(oRow.Item("NR_LONGEOD_ESFERICO"), 0)
-          numParaLongeOdCilindrico.Value = FNC_NVL(oRow.Item("NR_LONGEOD_CILINDRO"), 0)
-          numParaLongeOdEixo.Value = FNC_NVL(oRow.Item("NR_LONGEOD_EIXO"), 0)
-          numParaLongeOeEsferico.Value = FNC_NVL(oRow.Item("NR_LONGEOE_ESFERICO"), 0)
-          numParaLongeOeCilindrico.Value = FNC_NVL(oRow.Item("NR_LONGEOE_CILINDRO"), 0)
-          numParaLongeOeEixo.Value = FNC_NVL(oRow.Item("NR_LONGEOE_EIXO"), 0)
-          numParaPertoAOEsferico.Value = FNC_NVL(oRow.Item("NR_PERTOAO_ESFERICO"), 0)
+          numParaLongeOdEsferico.Text = FNC_NVL(oRow.Item("NR_LONGEOD_ESFERICO"), "")
+          numParaLongeOdCilindrico.Text = FNC_NVL(oRow.Item("NR_LONGEOD_CILINDRO"), "")
+          numParaLongeOdEixo.Text = FNC_NVL(oRow.Item("NR_LONGEOD_EIXO"), "")
+          numParaLongeOeEsferico.Text = FNC_NVL(oRow.Item("NR_LONGEOE_ESFERICO"), "")
+          numParaLongeOeCilindrico.Text = FNC_NVL(oRow.Item("NR_LONGEOE_CILINDRO"), "")
+          numParaLongeOeEixo.Text = FNC_NVL(oRow.Item("NR_LONGEOE_EIXO"), "")
+          numParaPertoAOEsferico.Text = FNC_NVL(oRow.Item("NR_PERTOAO_ESFERICO"), "")
           rtbObservacao.Text = FNC_NVL(oRow.Item("CM_OBSERVACAO"), "")
         Else
           txtValidade.Value = Now().Date
@@ -86,14 +86,14 @@
                             DBParametro_Montar("DH_CLINICA_OFTAMOLOGIA", txtDataReceituario.Value),
                             DBParametro_Montar("ID_CLINICA_ATENDIMENTO", iID_CLINICA_ATENDIMENTO),
                             DBParametro_Montar("DT_VALIDADE_RECEITA", txtValidade.Value),
-                            DBParametro_Montar("NR_LONGEOD_ESFERICO", numParaLongeOdEsferico.Value),
-                            DBParametro_Montar("NR_LONGEOD_CILINDRO", numParaLongeOdCilindrico.Value),
-                            DBParametro_Montar("NR_LONGEOD_EIXO", numParaLongeOdEixo.Value),
-                            DBParametro_Montar("NR_LONGEOE_ESFERICO", numParaLongeOeEsferico.Value),
-                            DBParametro_Montar("NR_LONGEOE_CILINDRO", numParaLongeOeCilindrico.Value),
-                            DBParametro_Montar("NR_LONGEOE_EIXO", numParaLongeOeEixo.Value),
-                            DBParametro_Montar("NR_PERTOAO_ESFERICO", numParaPertoAOEsferico.Value),
-                            DBParametro_Montar("CM_OBSERVACAO", rtbObservacao.Text, SqlDbType.Text)) Then
+                            DBParametro_Montar("NR_LONGEOD_ESFERICO", numParaLongeOdEsferico.Text),
+                            DBParametro_Montar("NR_LONGEOD_CILINDRO", numParaLongeOdCilindrico.Text),
+                            DBParametro_Montar("NR_LONGEOD_EIXO", numParaLongeOdEixo.Text),
+                            DBParametro_Montar("NR_LONGEOE_ESFERICO", numParaLongeOeEsferico.Text),
+                            DBParametro_Montar("NR_LONGEOE_CILINDRO", numParaLongeOeCilindrico.Text),
+                            DBParametro_Montar("NR_LONGEOE_EIXO", numParaLongeOeEixo.Text),
+                            DBParametro_Montar("NR_PERTOAO_ESFERICO", numParaPertoAOEsferico.Text),
+                            DBParametro_Montar("CM_OBSERVACAO", rtbObservacao.Text, SqlDbType.Text, , const_BancoDados_TamanhoComentario)) Then
       If DBTeveRetorno() Then
         iSQ_CLINICA_OFTAMOLOGIA = DBRetorno(1)
       End If

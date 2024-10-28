@@ -42,6 +42,7 @@
     lblProntuario.Text = ""
     lblIdade.Text = ""
 
+    Dim sTituloRelatorio As String = ">>>>>>>>>>>>> RELATÓRIO <<<<<<<<<<<<<< "
     Dim oData As DataTable
     Dim sSqlText As String
 
@@ -57,11 +58,13 @@
                       "CLATD.DH_CLINICA_ATENDIMENTO," &
                       "CLATD.ID_CONSULTORIO," &
                       "CLATD.ID_OPT_STATUS," &
-                      "PESSO.DS_PATH_IMAGEM" &
+                      "PESSO.DS_PATH_IMAGEM," &
+                      "REL.DS_RELATORIO" &
                " FROM TB_AGENDAMENTO AGEND" &
                 " INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = AGEND.ID_PESSOA" &
                  " LEFT JOIN TB_CLINICA_ATENDIMENTO	CLATD ON CLATD.ID_AGENDAMENTO = AGEND.SQ_AGENDAMENTO" &
                  " LEFT JOIN TB_PROCEDIMENTO PROCE ON PROCE.SQ_PROCEDIMENTO = ISNULL(CLATD.ID_PROCEDIMENTO, AGEND.ID_PROCEDIMENTO)" &
+                 " LEFT JOIN TB_CLINICA_RELATORIO REL ON REL.ID_CLINICA_ATENDIMENTO = CLATD.SQ_CLINICA_ATENDIMENTO" &
                " WHERE AGEND.SQ_AGENDAMENTO = " & iID_AGENDAMENTO
     oData = DBQuery(sSqlText)
 
@@ -82,6 +85,14 @@
         rtbDescricao.Text = oData.Rows(0).Item("DS_CLINICA_ATENDIMENTO")
         txtDataAgendamento.Value = oData.Rows(0).Item("DH_CLINICA_ATENDIMENTO")
         eStatus = oData.Rows(0).Item("ID_OPT_STATUS")
+
+        If rtbDescricao.Text.IndexOf(sTituloRelatorio) > -1 Then
+          rtbDescricao.Text = rtbDescricao.Text.Substring(0, rtbDescricao.Text.IndexOf(sTituloRelatorio))
+        End If
+
+        If Not FNC_CampoNulo(oData.Rows(0).Item("DS_RELATORIO")) Then
+          rtbDescricao.Text = rtbDescricao.Text & vbNewLine & vbNewLine & ">>>>>>>>>>>>> RELATÓRIO <<<<<<<<<<<<<< " & vbNewLine & oData.Rows(0).Item("DS_RELATORIO")
+        End If
       End If
 
       If Not FNC_CampoNulo(oData.Rows(0).Item("DS_PATH_IMAGEM")) Then
@@ -372,19 +383,19 @@ Sair:
     Dim iCont As Integer = 0
 
     Try
-      sSqlText = "SELECT CLATD.SQ_CLINICA_ATENDIMENTO," &
+      sSqlText = "Select CLATD.SQ_CLINICA_ATENDIMENTO," &
                        "CLATD.DH_CLINICA_ATENDIMENTO," &
                        "PROCE.CD_PROCEDIMENTO," &
                        "PROCE.NO_PROCEDIMENTO," &
                        "PESSO.NO_PESSOA NO_MEDICO," &
                        "CLATD.DS_CLINICA_ATENDIMENTO" &
                 " FROM TB_CLINICA_ATENDIMENTO CLATD" &
-                 " INNER JOIN TB_PROCEDIMENTO PROCE ON PROCE.SQ_PROCEDIMENTO = CLATD.ID_PROCEDIMENTO" &
-                 " INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = CLATD.ID_PESSOA_PROFISSIONAL" &
+                 " INNER JOIN TB_PROCEDIMENTO PROCE On PROCE.SQ_PROCEDIMENTO = CLATD.ID_PROCEDIMENTO" &
+                 " INNER JOIN TB_PESSOA PESSO On PESSO.SQ_PESSOA = CLATD.ID_PESSOA_PROFISSIONAL" &
                 " WHERE CLATD.ID_PESSOA_PROFISSIONAL = " & iID_USUARIO.ToString() &
-                  " AND CLATD.SQ_CLINICA_ATENDIMENTO NOT IN (" & iSQ_CLINICA_ATENDIMENTO.ToString() & ")" &
-                  " AND CLATD.ID_PESSOA = " & iID_Pessoa.ToString() &
-                  " AND CLATD.DS_CLINICA_ATENDIMENTO IS NOT NULL" &
+                  " And CLATD.SQ_CLINICA_ATENDIMENTO Not In (" & iSQ_CLINICA_ATENDIMENTO.ToString() & ")" &
+                  " And CLATD.ID_PESSOA = " & iID_Pessoa.ToString() &
+                  " And CLATD.DS_CLINICA_ATENDIMENTO Is Not NULL" &
                 " ORDER BY CLATD.DH_CLINICA_ATENDIMENTO DESC"
       oData = DBQuery(sSqlText)
 
@@ -404,7 +415,7 @@ Sair:
             .DESCRICAO = FNC_NVL(oRow.Item("DS_CLINICA_ATENDIMENTO"), "")
           End With
 
-          sSqlText = "SELECT 'Receituário : ' + CONVERT(VARCHAR, DT_LANCAMENTO, 103) DS_TITULO," +
+          sSqlText = "Select 'Receituário : ' + CONVERT(VARCHAR, DT_LANCAMENTO, 103) DS_TITULO," +
                              "DS_RECEITUARIO" +
                      " FROM TB_CLINICA_RECEITUARIO" +
                      " WHERE ID_CLINICA_ATENDIMENTO = " & oRow.Item("SQ_CLINICA_ATENDIMENTO")

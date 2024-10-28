@@ -33,19 +33,9 @@ Partial Class frmCadastroAtendimentoOftalmologico
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel4 = New System.Windows.Forms.Panel()
-        Me.numParaLongeOeEixo = New System.Windows.Forms.NumericUpDown()
-        Me.numParaLongeOeCilindrico = New System.Windows.Forms.NumericUpDown()
-        Me.numParaLongeOeEsferico = New System.Windows.Forms.NumericUpDown()
         Me.Panel3 = New System.Windows.Forms.Panel()
-        Me.numParaLongeOdEixo = New System.Windows.Forms.NumericUpDown()
-        Me.numParaLongeOdCilindrico = New System.Windows.Forms.NumericUpDown()
-        Me.numParaLongeOdEsferico = New System.Windows.Forms.NumericUpDown()
-        Me.numParaPertoAOEsferico = New System.Windows.Forms.NumericUpDown()
         Me.Panel2 = New System.Windows.Forms.Panel()
         Me.chkImprimir = New System.Windows.Forms.CheckBox()
-        Me.cmdFechar = New Cli28Julho.uscBotao()
-        Me.cmdImprimir = New Cli28Julho.uscBotao()
-        Me.cmdSalvar = New Cli28Julho.uscBotao()
         Me.lblPessoa = New System.Windows.Forms.Label()
         Me.lblProntuario = New System.Windows.Forms.Label()
         Me.txtDataReceituario = New Infragistics.Win.UltraWinEditors.UltraDateTimeEditor()
@@ -53,16 +43,19 @@ Partial Class frmCadastroAtendimentoOftalmologico
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.rtbObservacao = New System.Windows.Forms.RichTextBox()
+        Me.cmdFechar = New Cli28Julho.uscBotao()
+        Me.cmdImprimir = New Cli28Julho.uscBotao()
+        Me.cmdSalvar = New Cli28Julho.uscBotao()
+        Me.numParaLongeOdEsferico = New System.Windows.Forms.TextBox()
+        Me.numParaLongeOdCilindrico = New System.Windows.Forms.TextBox()
+        Me.numParaLongeOdEixo = New System.Windows.Forms.TextBox()
+        Me.numParaLongeOeEsferico = New System.Windows.Forms.TextBox()
+        Me.numParaLongeOeCilindrico = New System.Windows.Forms.TextBox()
+        Me.numParaLongeOeEixo = New System.Windows.Forms.TextBox()
+        Me.numParaPertoAOEsferico = New System.Windows.Forms.TextBox()
         Me.Panel1.SuspendLayout()
         Me.Panel4.SuspendLayout()
-        CType(Me.numParaLongeOeEixo, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.numParaLongeOeCilindrico, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.numParaLongeOeEsferico, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel3.SuspendLayout()
-        CType(Me.numParaLongeOdEixo, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.numParaLongeOdCilindrico, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.numParaLongeOdEsferico, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.numParaPertoAOEsferico, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel2.SuspendLayout()
         CType(Me.txtDataReceituario, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtValidade, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -153,9 +146,9 @@ Partial Class frmCadastroAtendimentoOftalmologico
         '
         'Panel1
         '
+        Me.Panel1.Controls.Add(Me.numParaPertoAOEsferico)
         Me.Panel1.Controls.Add(Me.Panel4)
         Me.Panel1.Controls.Add(Me.Panel3)
-        Me.Panel1.Controls.Add(Me.numParaPertoAOEsferico)
         Me.Panel1.Controls.Add(Me.Panel2)
         Me.Panel1.Controls.Add(Me.Label8)
         Me.Panel1.Controls.Add(Me.Label5)
@@ -175,36 +168,6 @@ Partial Class frmCadastroAtendimentoOftalmologico
         Me.Panel4.Size = New System.Drawing.Size(872, 60)
         Me.Panel4.TabIndex = 17
         '
-        'numParaLongeOeEixo
-        '
-        Me.numParaLongeOeEixo.DecimalPlaces = 2
-        Me.numParaLongeOeEixo.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.numParaLongeOeEixo.Location = New System.Drawing.Point(719, 13)
-        Me.numParaLongeOeEixo.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
-        Me.numParaLongeOeEixo.Name = "numParaLongeOeEixo"
-        Me.numParaLongeOeEixo.Size = New System.Drawing.Size(120, 39)
-        Me.numParaLongeOeEixo.TabIndex = 5
-        '
-        'numParaLongeOeCilindrico
-        '
-        Me.numParaLongeOeCilindrico.DecimalPlaces = 2
-        Me.numParaLongeOeCilindrico.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.numParaLongeOeCilindrico.Location = New System.Drawing.Point(558, 13)
-        Me.numParaLongeOeCilindrico.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
-        Me.numParaLongeOeCilindrico.Name = "numParaLongeOeCilindrico"
-        Me.numParaLongeOeCilindrico.Size = New System.Drawing.Size(120, 39)
-        Me.numParaLongeOeCilindrico.TabIndex = 4
-        '
-        'numParaLongeOeEsferico
-        '
-        Me.numParaLongeOeEsferico.DecimalPlaces = 2
-        Me.numParaLongeOeEsferico.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.numParaLongeOeEsferico.Location = New System.Drawing.Point(391, 13)
-        Me.numParaLongeOeEsferico.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
-        Me.numParaLongeOeEsferico.Name = "numParaLongeOeEsferico"
-        Me.numParaLongeOeEsferico.Size = New System.Drawing.Size(120, 39)
-        Me.numParaLongeOeEsferico.TabIndex = 3
-        '
         'Panel3
         '
         Me.Panel3.Controls.Add(Me.numParaLongeOdEixo)
@@ -216,47 +179,6 @@ Partial Class frmCadastroAtendimentoOftalmologico
         Me.Panel3.Name = "Panel3"
         Me.Panel3.Size = New System.Drawing.Size(872, 79)
         Me.Panel3.TabIndex = 16
-        '
-        'numParaLongeOdEixo
-        '
-        Me.numParaLongeOdEixo.DecimalPlaces = 2
-        Me.numParaLongeOdEixo.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.numParaLongeOdEixo.Location = New System.Drawing.Point(719, 25)
-        Me.numParaLongeOdEixo.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
-        Me.numParaLongeOdEixo.Minimum = New Decimal(New Integer() {1000, 0, 0, -2147483648})
-        Me.numParaLongeOdEixo.Name = "numParaLongeOdEixo"
-        Me.numParaLongeOdEixo.Size = New System.Drawing.Size(120, 39)
-        Me.numParaLongeOdEixo.TabIndex = 2
-        '
-        'numParaLongeOdCilindrico
-        '
-        Me.numParaLongeOdCilindrico.DecimalPlaces = 2
-        Me.numParaLongeOdCilindrico.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.numParaLongeOdCilindrico.Location = New System.Drawing.Point(558, 25)
-        Me.numParaLongeOdCilindrico.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
-        Me.numParaLongeOdCilindrico.Name = "numParaLongeOdCilindrico"
-        Me.numParaLongeOdCilindrico.Size = New System.Drawing.Size(120, 39)
-        Me.numParaLongeOdCilindrico.TabIndex = 1
-        '
-        'numParaLongeOdEsferico
-        '
-        Me.numParaLongeOdEsferico.DecimalPlaces = 2
-        Me.numParaLongeOdEsferico.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.numParaLongeOdEsferico.Location = New System.Drawing.Point(391, 25)
-        Me.numParaLongeOdEsferico.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
-        Me.numParaLongeOdEsferico.Name = "numParaLongeOdEsferico"
-        Me.numParaLongeOdEsferico.Size = New System.Drawing.Size(120, 39)
-        Me.numParaLongeOdEsferico.TabIndex = 0
-        '
-        'numParaPertoAOEsferico
-        '
-        Me.numParaPertoAOEsferico.DecimalPlaces = 2
-        Me.numParaPertoAOEsferico.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.numParaPertoAOEsferico.Location = New System.Drawing.Point(392, 213)
-        Me.numParaPertoAOEsferico.Minimum = New Decimal(New Integer() {100, 0, 0, -2147483648})
-        Me.numParaPertoAOEsferico.Name = "numParaPertoAOEsferico"
-        Me.numParaPertoAOEsferico.Size = New System.Drawing.Size(120, 39)
-        Me.numParaPertoAOEsferico.TabIndex = 6
         '
         'Panel2
         '
@@ -279,30 +201,6 @@ Partial Class frmCadastroAtendimentoOftalmologico
         Me.chkImprimir.Size = New System.Drawing.Size(15, 14)
         Me.chkImprimir.TabIndex = 182
         Me.chkImprimir.UseVisualStyleBackColor = True
-        '
-        'cmdFechar
-        '
-        Me.cmdFechar.AutoSize = True
-        Me.cmdFechar.Location = New System.Drawing.Point(779, 146)
-        Me.cmdFechar.Name = "cmdFechar"
-        Me.cmdFechar.Size = New System.Drawing.Size(16, 17)
-        Me.cmdFechar.TabIndex = 181
-        '
-        'cmdImprimir
-        '
-        Me.cmdImprimir.AutoSize = True
-        Me.cmdImprimir.Location = New System.Drawing.Point(779, 118)
-        Me.cmdImprimir.Name = "cmdImprimir"
-        Me.cmdImprimir.Size = New System.Drawing.Size(16, 17)
-        Me.cmdImprimir.TabIndex = 180
-        '
-        'cmdSalvar
-        '
-        Me.cmdSalvar.AutoSize = True
-        Me.cmdSalvar.Location = New System.Drawing.Point(779, 90)
-        Me.cmdSalvar.Name = "cmdSalvar"
-        Me.cmdSalvar.Size = New System.Drawing.Size(16, 17)
-        Me.cmdSalvar.TabIndex = 179
         '
         'lblPessoa
         '
@@ -366,8 +264,88 @@ Partial Class frmCadastroAtendimentoOftalmologico
         Me.rtbObservacao.Location = New System.Drawing.Point(55, 481)
         Me.rtbObservacao.Name = "rtbObservacao"
         Me.rtbObservacao.Size = New System.Drawing.Size(872, 141)
-        Me.rtbObservacao.TabIndex = 100
+        Me.rtbObservacao.TabIndex = 189
         Me.rtbObservacao.Text = ""
+        '
+        'cmdFechar
+        '
+        Me.cmdFechar.AutoSize = True
+        Me.cmdFechar.Location = New System.Drawing.Point(779, 146)
+        Me.cmdFechar.Name = "cmdFechar"
+        Me.cmdFechar.Size = New System.Drawing.Size(16, 17)
+        Me.cmdFechar.TabIndex = 181
+        '
+        'cmdImprimir
+        '
+        Me.cmdImprimir.AutoSize = True
+        Me.cmdImprimir.Location = New System.Drawing.Point(779, 118)
+        Me.cmdImprimir.Name = "cmdImprimir"
+        Me.cmdImprimir.Size = New System.Drawing.Size(16, 17)
+        Me.cmdImprimir.TabIndex = 180
+        '
+        'cmdSalvar
+        '
+        Me.cmdSalvar.AutoSize = True
+        Me.cmdSalvar.Location = New System.Drawing.Point(779, 90)
+        Me.cmdSalvar.Name = "cmdSalvar"
+        Me.cmdSalvar.Size = New System.Drawing.Size(16, 17)
+        Me.cmdSalvar.TabIndex = 179
+        '
+        'numParaLongeOdEsferico
+        '
+        Me.numParaLongeOdEsferico.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold)
+        Me.numParaLongeOdEsferico.Location = New System.Drawing.Point(391, 25)
+        Me.numParaLongeOdEsferico.Name = "numParaLongeOdEsferico"
+        Me.numParaLongeOdEsferico.Size = New System.Drawing.Size(120, 39)
+        Me.numParaLongeOdEsferico.TabIndex = 30
+        '
+        'numParaLongeOdCilindrico
+        '
+        Me.numParaLongeOdCilindrico.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold)
+        Me.numParaLongeOdCilindrico.Location = New System.Drawing.Point(558, 25)
+        Me.numParaLongeOdCilindrico.Name = "numParaLongeOdCilindrico"
+        Me.numParaLongeOdCilindrico.Size = New System.Drawing.Size(120, 39)
+        Me.numParaLongeOdCilindrico.TabIndex = 31
+        '
+        'numParaLongeOdEixo
+        '
+        Me.numParaLongeOdEixo.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold)
+        Me.numParaLongeOdEixo.Location = New System.Drawing.Point(719, 25)
+        Me.numParaLongeOdEixo.Name = "numParaLongeOdEixo"
+        Me.numParaLongeOdEixo.Size = New System.Drawing.Size(120, 39)
+        Me.numParaLongeOdEixo.TabIndex = 32
+        '
+        'numParaLongeOeEsferico
+        '
+        Me.numParaLongeOeEsferico.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold)
+        Me.numParaLongeOeEsferico.Location = New System.Drawing.Point(391, 13)
+        Me.numParaLongeOeEsferico.Name = "numParaLongeOeEsferico"
+        Me.numParaLongeOeEsferico.Size = New System.Drawing.Size(120, 39)
+        Me.numParaLongeOeEsferico.TabIndex = 40
+        '
+        'numParaLongeOeCilindrico
+        '
+        Me.numParaLongeOeCilindrico.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold)
+        Me.numParaLongeOeCilindrico.Location = New System.Drawing.Point(558, 13)
+        Me.numParaLongeOeCilindrico.Name = "numParaLongeOeCilindrico"
+        Me.numParaLongeOeCilindrico.Size = New System.Drawing.Size(120, 39)
+        Me.numParaLongeOeCilindrico.TabIndex = 41
+        '
+        'numParaLongeOeEixo
+        '
+        Me.numParaLongeOeEixo.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold)
+        Me.numParaLongeOeEixo.Location = New System.Drawing.Point(719, 13)
+        Me.numParaLongeOeEixo.Name = "numParaLongeOeEixo"
+        Me.numParaLongeOeEixo.Size = New System.Drawing.Size(120, 39)
+        Me.numParaLongeOeEixo.TabIndex = 42
+        '
+        'numParaPertoAOEsferico
+        '
+        Me.numParaPertoAOEsferico.Font = New System.Drawing.Font("Arial", 20.25!, System.Drawing.FontStyle.Bold)
+        Me.numParaPertoAOEsferico.Location = New System.Drawing.Point(392, 213)
+        Me.numParaPertoAOEsferico.Name = "numParaPertoAOEsferico"
+        Me.numParaPertoAOEsferico.Size = New System.Drawing.Size(120, 39)
+        Me.numParaPertoAOEsferico.TabIndex = 50
         '
         'frmCadastroAtendimentoOftalmologico
         '
@@ -395,15 +373,8 @@ Partial Class frmCadastroAtendimentoOftalmologico
         Me.Panel1.PerformLayout()
         Me.Panel4.ResumeLayout(False)
         Me.Panel4.PerformLayout()
-        CType(Me.numParaLongeOeEixo, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.numParaLongeOeCilindrico, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.numParaLongeOeEsferico, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel3.ResumeLayout(False)
         Me.Panel3.PerformLayout()
-        CType(Me.numParaLongeOdEixo, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.numParaLongeOdCilindrico, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.numParaLongeOdEsferico, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.numParaPertoAOEsferico, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
         CType(Me.txtDataReceituario, System.ComponentModel.ISupportInitialize).EndInit()
@@ -423,13 +394,6 @@ Partial Class frmCadastroAtendimentoOftalmologico
     Friend WithEvents Label8 As Label
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Panel2 As Panel
-    Friend WithEvents numParaPertoAOEsferico As NumericUpDown
-    Friend WithEvents numParaLongeOeEixo As NumericUpDown
-    Friend WithEvents numParaLongeOeCilindrico As NumericUpDown
-    Friend WithEvents numParaLongeOeEsferico As NumericUpDown
-    Friend WithEvents numParaLongeOdEixo As NumericUpDown
-    Friend WithEvents numParaLongeOdCilindrico As NumericUpDown
-    Friend WithEvents numParaLongeOdEsferico As NumericUpDown
     Friend WithEvents Panel3 As Panel
     Friend WithEvents Panel4 As Panel
     Friend WithEvents chkImprimir As CheckBox
@@ -443,4 +407,11 @@ Partial Class frmCadastroAtendimentoOftalmologico
     Friend WithEvents Label9 As Label
     Friend WithEvents Label10 As Label
     Friend WithEvents rtbObservacao As RichTextBox
+    Friend WithEvents numParaLongeOdEsferico As TextBox
+    Friend WithEvents numParaLongeOeEixo As TextBox
+    Friend WithEvents numParaLongeOeCilindrico As TextBox
+    Friend WithEvents numParaLongeOeEsferico As TextBox
+    Friend WithEvents numParaLongeOdEixo As TextBox
+    Friend WithEvents numParaLongeOdCilindrico As TextBox
+    Friend WithEvents numParaPertoAOEsferico As TextBox
 End Class

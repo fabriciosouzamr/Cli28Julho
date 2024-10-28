@@ -17,6 +17,7 @@
       richMensagem.Text = FNC_NVL(oData.Rows(0).Item("DS_MENSAGEM_MODELO"), "")
       txtImagemMensagem.Text = FNC_NVL(oData.Rows(0).Item("DS_PATH_IMAGEM"), "")
       txtCodigoUsuario.Text = FNC_NVL(oData.Rows(0).Item("CD_USUARIO"), "")
+      txtCodigoDialogo.Text = FNC_NVL(oData.Rows(0).Item("CD_DIALOGO"), "")
       chkAtivo.Checked = (FNC_NVL(oData.Rows(0).Item("TP_ATIVO"), "N") = "S")
     End If
 
@@ -35,11 +36,13 @@
                " SET DS_MENSAGEM_MODELO = @DS_MENSAGEM_MODELO," +
                     "DS_PATH_IMAGEM = @DS_PATH_IMAGEM," +
                     "CD_USUARIO = @CD_USUARIO," +
+                    "CD_DIALOGO= @CD_DIALOGO," +
                     "TP_ATIVO = @TP_ATIVO" &
                " WHERE CD_MENSAGEM_MODELO = @CD_MENSAGEM_MODELO"
     DBExecutar(sSqlText, DBParametro_Montar("DS_MENSAGEM_MODELO", richMensagem.Text, , , 8000),
                          DBParametro_Montar("DS_PATH_IMAGEM", txtImagemMensagem.Text, , , 8000),
                          DBParametro_Montar("CD_USUARIO", txtCodigoUsuario.Text),
+                         DBParametro_Montar("CD_DIALOGO", txtCodigoDialogo.Text),
                          DBParametro_Montar("CD_MENSAGEM_MODELO", _CodigoMensagem),
                          DBParametro_Montar("TP_ATIVO", IIf(chkAtivo.Checked, "S", "N")))
   End Sub

@@ -10,6 +10,7 @@ Public Class frmConsultaMinhasFaturas
   Const const_GridListagem_NO_CONVENIO As Integer = 6
   Const const_GridListagem_VL_REPASSE As Integer = 7
   Const const_GridListagem_NO_TURNO As Integer = 8
+  Const const_GridListagem_NO_PESSOA_VENDA As Integer = 9
 
   Dim oDBGrid As New UltraWinDataSource.UltraDataSource
   Dim sSqlText As String
@@ -29,6 +30,7 @@ Public Class frmConsultaMinhasFaturas
     objGrid_Coluna_Add(grdListagem, "Convênio", 100)
     objGrid_Coluna_Add(grdListagem, "Valor Prestador(a)", 100)
     objGrid_Coluna_Add(grdListagem, "Turno", 100)
+    objGrid_Coluna_Add(grdListagem, "Pessoa Venda", 100)
 
     ComboBox_Carregar(cboTurno, enSql.Turno)
 
@@ -50,13 +52,14 @@ Public Class frmConsultaMinhasFaturas
     sSqlText = $"SELECT CLVND.CD_CLINICA_VENDA,
                         AGEND.DH_AGENDAMENTO,
                         AGEND.CD_AGENDAMENTO,
-                        PESSO.NO_PESSOA,
+	                      PESSOAPACIENTE.NO_PESSOA AS NOMEPACIENTE,
                         PESSO_PROFI.NO_PESSOA NO_PESSOA_PROFISSIONAL,
                         PROCE.NO_PROCEDIMENTO,
                         ISNULL(IIF(CLVND.ID_ORCAMENTO_CLIENTE IS NOT NULL, 'Exames', TPCST.NO_TIPO_CONSULTA), 'Venda Direta') NO_TIPO_ATENDIMENTO,
                         CONVE.NO_CONVENIO,
                         CVDPC.VL_REPASSE,
-                        TUR.NO_TURNO
+                        TUR.NO_TURNO,
+                        PESSO.NO_PESSOA
                   FROM TB_CLINICA_VENDA CLVND
                    INNER JOIN TB_CLINICA_VENDA_PROCEDIMENTO CVDPC ON CVDPC.ID_CLINICA_VENDA = CLVND.SQ_CLINICA_VENDA
                    INNER JOIN TB_PESSOA PESSO ON PESSO.SQ_PESSOA = CLVND.ID_PESSOA
@@ -64,6 +67,7 @@ Public Class frmConsultaMinhasFaturas
                    INNER JOIN TB_PROCEDIMENTO PROCE ON PROCE.SQ_PROCEDIMENTO = CVDPC.ID_PROCEDIMENTO
                    INNER JOIN TB_AGENDAMENTO AGEND ON (AGEND.SQ_AGENDAMENTO = CVDPC.ID_AGENDAMENTO OR AGEND.ID_CLINICA_VENDA_PROCEDIMENTO = CVDPC.SQ_CLINICA_VENDA_PROCEDIMENTO)
                    INNER JOIN TB_CONVENIO CONVE ON CONVE.SQ_CONVENIO = AGEND.ID_CONVENIO
+                    LEFT JOIN TB_PESSOA PESSOAPACIENTE ON PESSOAPACIENTE.SQ_PESSOA = AGEND.ID_PESSOA
                     LEFT JOIN TB_TIPO_CONSULTA TPCST ON TPCST.SQ_TIPO_CONSULTA = AGEND.ID_TIPO_CONSULTA
                     LEFT JOIN TB_TURNO TUR ON dbo.FC_DATAHORA_MONTAR(GETDATE(), FORMAT(AGEND.DH_AGENDAMENTO, 'HH:mm:ss')) >= dbo.FC_DATAHORA_MONTAR(GETDATE(), TUR.HR_INICIO)
 	                                        AND dbo.FC_DATAHORA_MONTAR(GETDATE(), FORMAT(AGEND.DH_AGENDAMENTO, 'HH:mm:ss')) <= dbo.FC_DATAHORA_MONTAR(GETDATE(), TUR.HR_FIM)
@@ -100,7 +104,8 @@ Public Class frmConsultaMinhasFaturas
                                     const_GridListagem_NO_TIPO_ATENDIMENTO,
                                     const_GridListagem_NO_CONVENIO,
                                     const_GridListagem_VL_REPASSE,
-                                    const_GridListagem_NO_TURNO})
+                                    const_GridListagem_NO_TURNO,
+                                    const_GridListagem_NO_PESSOA_VENDA})
     objGrid_ExibirTotal(grdListagem, New Integer() {const_GridListagem_VL_REPASSE})
   End Sub
 
