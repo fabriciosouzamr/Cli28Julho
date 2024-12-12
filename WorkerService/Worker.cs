@@ -17,7 +17,7 @@ namespace WorkerService
     {
       Console.WriteLine("Iniciou");
 
-      modChatGuru oChatGuru = new modChatGuru();
+      modChatGuru oChatGuru = new();
 
       while (!stoppingToken.IsCancellationRequested)
       {
@@ -26,7 +26,7 @@ namespace WorkerService
           if (DateTime.Now.Date >= new DateTime(2022,8,31,0,0,0)) 
           {
             if (conn == null)
-              conn = new System.Data.SqlClient.SqlConnection("server=192.168.254.220\\SQLEXPRESS;database=Cli28Julho;Connection Timeout=0;uid=sa;pwd=clinica2828");
+              conn = new System.Data.SqlClient.SqlConnection("server=192.168.254.226\\SQLEXPRESS;database=Cli28Julho;Connection Timeout=0;uid=sa;pwd=clinica2828");
 
             if (conn.State != System.Data.ConnectionState.Open)
               conn.Open();
@@ -36,6 +36,7 @@ namespace WorkerService
             string DS_MENSAGEM_MODELO = "";
             string DS_PATH_IMAGEM = "";
             string CD_USUARIO = "";
+            string CD_DIALOGO = "";
             bool TP_ATIVO = false;
             string Texto = "";
             string Historico = "";
@@ -48,7 +49,7 @@ namespace WorkerService
 
             NR_DIA_CONFIRMACAO_AGENDAMENTO = Convert.ToInt16(oData.Rows[0]["NR_DIA_CONFIRMACAO_AGENDAMENTO"]);
             NR_INTERVALO_ENVIO_MENSAGEM = Convert.ToInt16(oData.Rows[0]["NR_INTERVALO_ENVIO_MENSAGEM"]);
-
+            
             modSisVida.MontarEnviar(conn);
 
             if (DateTime.Now.Hour >= 7)
@@ -77,14 +78,16 @@ namespace WorkerService
               {
                 if (!String.IsNullOrEmpty(row["CD_NUMERO"].ToString()))
                 {
+                  bool add = VerificarNotificacaoHoje(int.Parse(row["SQ_PESSOA"].ToString()), conn);
+
                   if (Convert.ToInt32(row["QT_EXAMES"]) == 0)
                   {
-                    Modelo(conn, "AGRADECA", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref TP_ATIVO);
+                    Modelo(conn, "AGRADECA", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref TP_ATIVO);
                     Historico = "Notificação: Mens Agradecimento(SEM Exames)";
                   }
                   else
                   {
-                    Modelo(conn, "AGRADECEXM", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref TP_ATIVO);
+                    Modelo(conn, "AGRADECEXM", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref TP_ATIVO);
                     Historico = "Notificação: Mens Agradecimento(COM Exames)";
                   }
 
@@ -94,11 +97,15 @@ namespace WorkerService
                     Texto = Texto.Replace("[NomePaciente]", row["NO_PESSOA"].ToString());
                     Texto = Texto.Replace("[DataAtendimento]", row["DH_FIM_ATENDIMENTO"].ToString());
 
-                    await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", row["DS_PATH_IMAGEM_MENSAGEM"].ToString(), CD_USUARIO, "6303d8bd5605f2ba42548ea1");
+                    bool enviado = await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", row["DS_PATH_IMAGEM_MENSAGEM"].ToString(), CD_USUARIO, CD_DIALOGO, add);
 
-                    sSqlText = "INSERT INTO TB_HISTORICO (ID_EMPRESA, ID_OPT_PROCESSO, ID_OPT_ACAO, ID_USUARIO, ID_REGISTRO, DT_HISTORICO, DS_HISTORICO, DS_FILTRO, CD_VERSAO_SISTEMA, NO_COMPUTADOR_NOME, CD_HISTORICO, ID_OPT_ERRO)" +
-                               " VALUES (@ID_EMPRESA, @ID_OPT_PROCESSO, @ID_OPT_ACAO, @ID_USUARIO, @ID_REGISTRO, @DT_HISTORICO, @DS_HISTORICO, @DS_FILTRO, @CD_VERSAO_SISTEMA, @NO_COMPUTADOR_NOME, @CD_HISTORICO, @ID_OPT_ERRO)";
-                    Util.Executar(conn, sSqlText, new Util.DBParamentro[] { Util.DBParametro_Montar("ID_EMPRESA", 2), /* Praça - Clínica de 28 de Julho */
+                    if (enviado)
+                    {
+                      GravarNotificacaoHoje(int.Parse(row["SQ_PESSOA"].ToString()), conn);
+
+                      sSqlText = "INSERT INTO TB_HISTORICO (ID_EMPRESA, ID_OPT_PROCESSO, ID_OPT_ACAO, ID_USUARIO, ID_REGISTRO, DT_HISTORICO, DS_HISTORICO, DS_FILTRO, CD_VERSAO_SISTEMA, NO_COMPUTADOR_NOME, CD_HISTORICO, ID_OPT_ERRO)" +
+                                 " VALUES (@ID_EMPRESA, @ID_OPT_PROCESSO, @ID_OPT_ACAO, @ID_USUARIO, @ID_REGISTRO, @DT_HISTORICO, @DS_HISTORICO, @DS_FILTRO, @CD_VERSAO_SISTEMA, @NO_COMPUTADOR_NOME, @CD_HISTORICO, @ID_OPT_ERRO)";
+                      Util.Executar(conn, sSqlText, new Util.DBParamentro[] { Util.DBParametro_Montar("ID_EMPRESA", 2), /* Praça - Clínica de 28 de Julho */
                                                                         Util.DBParametro_Montar("ID_OPT_PROCESSO", 520 /* Clínica - Atendimento Médico */),
                                                                         Util.DBParametro_Montar("ID_OPT_ACAO", 829 /* Notificado */),
                                                                         Util.DBParametro_Montar("ID_USUARIO", 1),
@@ -110,6 +117,7 @@ namespace WorkerService
                                                                         Util.DBParametro_Montar("NO_COMPUTADOR_NOME", ""),
                                                                         Util.DBParametro_Montar("CD_HISTORICO", row["CD_CLINICA_ATENDIMENTO"]),
                                                                         Util.DBParametro_Montar("ID_OPT_ERRO", "")});
+                    }
 
                     Thread.Sleep(1000);
                   }
@@ -119,7 +127,7 @@ namespace WorkerService
 
             if (DateTime.Now.Hour >= 9)
             {
-              Modelo(conn, "NIVER", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref TP_ATIVO);
+              Modelo(conn, "NIVER", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref TP_ATIVO);
 
               if (TP_ATIVO)
               {
@@ -129,9 +137,7 @@ namespace WorkerService
                              " LEFT JOIN TB_HISTORICO HISTO ON HISTO.ID_REGISTRO = PESSO.SQ_PESSOA" +
                                                          " AND HISTO.ID_OPT_ACAO = 829" +
                            " WHERE PESSO.DT_NASC_ABERTURA IS NOT NULL" +
-                             " AND MONTH(PESSO.DT_NASC_ABERTURA) = MONTH(GETDATE())" +
-                             " AND DAY(PESSO.DT_NASC_ABERTURA) = DAY(GETDATE())" +
-                             " AND HISTO.SQ_HISTORICO IS NULL";
+                             " AND PESSO.SQ_PESSOA = 14569";
                 oData = Util.Query(conn, sSqlText);
 
                 foreach (DataRow row in oData.Rows)
@@ -144,15 +150,18 @@ namespace WorkerService
 
                     if (!String.IsNullOrEmpty(row["CD_NUMERO"].ToString()))
                     {
+                      bool add = VerificarNotificacaoHoje(int.Parse(row["SQ_PESSOA"].ToString()), conn);
+                      bool enviado = false;
+
                       try
                       {
                         if (DS_PATH_IMAGEM.Trim() == "")
                         {
-                          await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", "", CD_USUARIO);
+                          enviado = await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", "", CD_USUARIO, CD_DIALOGO, add);
                         }
                         else
                         {
-                          await oChatGuru.EnviarAsync("", row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), Texto, DS_PATH_IMAGEM, CD_USUARIO);
+                          enviado = await oChatGuru.EnviarAsync("", row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), Texto, DS_PATH_IMAGEM, CD_USUARIO, CD_DIALOGO, add);
                         }
                       }
                       catch (Exception Ex)
@@ -160,9 +169,13 @@ namespace WorkerService
                         var erro = Ex.Message;
                       }
 
-                      sSqlText = "INSERT INTO TB_HISTORICO (ID_EMPRESA, ID_OPT_PROCESSO, ID_OPT_ACAO, ID_USUARIO, ID_REGISTRO, DT_HISTORICO, DS_HISTORICO, DS_FILTRO, CD_VERSAO_SISTEMA, NO_COMPUTADOR_NOME, CD_HISTORICO, ID_OPT_ERRO)" +
+                      if (enviado)
+                      {
+                        GravarNotificacaoHoje(int.Parse(row["SQ_PESSOA"].ToString()), conn);
+
+                        sSqlText = "INSERT INTO TB_HISTORICO (ID_EMPRESA, ID_OPT_PROCESSO, ID_OPT_ACAO, ID_USUARIO, ID_REGISTRO, DT_HISTORICO, DS_HISTORICO, DS_FILTRO, CD_VERSAO_SISTEMA, NO_COMPUTADOR_NOME, CD_HISTORICO, ID_OPT_ERRO)" +
                                  " VALUES (@ID_EMPRESA, @ID_OPT_PROCESSO, @ID_OPT_ACAO, @ID_USUARIO, @ID_REGISTRO, @DT_HISTORICO, @DS_HISTORICO, @DS_FILTRO, @CD_VERSAO_SISTEMA, @NO_COMPUTADOR_NOME, @CD_HISTORICO, @ID_OPT_ERRO)";
-                      Util.Executar(conn, sSqlText, new Util.DBParamentro[] { Util.DBParametro_Montar("ID_EMPRESA", 2), /* Praça - Clínica de 28 de Julho */
+                        Util.Executar(conn, sSqlText, new Util.DBParamentro[] { Util.DBParametro_Montar("ID_EMPRESA", 2), /* Praça - Clínica de 28 de Julho */
                                                                             Util.DBParametro_Montar("ID_OPT_PROCESSO", 488 /* Cadastro - Cadastro de Paciente */),
                                                                             Util.DBParametro_Montar("ID_OPT_ACAO", 829 /* Notificação por WhatsApp */),
                                                                             Util.DBParametro_Montar("ID_USUARIO", 1),
@@ -174,6 +187,7 @@ namespace WorkerService
                                                                             Util.DBParametro_Montar("NO_COMPUTADOR_NOME", ""),
                                                                             Util.DBParametro_Montar("CD_HISTORICO", row["CD_PESSOA"]),
                                                                             Util.DBParametro_Montar("ID_OPT_ERRO", "")});
+                      }
                     }
 
                     Thread.Sleep(1000);
@@ -182,11 +196,12 @@ namespace WorkerService
               }
             }
 
-            Modelo(conn, "CANCAGENDA", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref TP_ATIVO);
+            Modelo(conn, "CANCAGENDA", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref TP_ATIVO);
 
             if (TP_ATIVO)
             {
               sSqlText = "SELECT AGEND.SQ_AGENDAMENTO," +
+                                "AGEND.ID_PESSOA," +
                                 "AGEND.CD_AGENDAMENTO," +
                                 "PESSO.NO_PESSOA," +
                                 "PSPRF.NO_PESSOA NO_PESSOA_PROFISSIONAL," +
@@ -225,6 +240,8 @@ namespace WorkerService
 
                 if (!String.IsNullOrEmpty(row["CD_NUMERO"].ToString()))
                 {
+                  bool add = VerificarNotificacaoHoje(int.Parse(row["ID_PESSOA"].ToString()), conn);
+
                   Texto = DS_MENSAGEM_MODELO;
                   Texto = Texto.Replace("[NomePaciente]", row["NO_PESSOA"].ToString());
                   Texto = Texto.Replace("[DiaAgendamento]", row["DT_AGENDAMENTO"].ToString());
@@ -234,11 +251,15 @@ namespace WorkerService
                   Texto = Texto.Replace("[EnderecoUnidade]", row["DS_ENDERECO"].ToString());
                   Texto = Texto.Replace("[Consultorio]", row["NO_CONSULTORIO"].ToString());
 
-                  await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", DS_PATH_IMAGEM, CD_USUARIO);
+                  bool enviado = await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", DS_PATH_IMAGEM, CD_USUARIO, CD_DIALOGO, add);
 
-                  sSqlText = "INSERT INTO TB_HISTORICO (ID_EMPRESA, ID_OPT_PROCESSO, ID_OPT_ACAO, ID_USUARIO, ID_REGISTRO, DT_HISTORICO, DS_HISTORICO, DS_FILTRO, CD_VERSAO_SISTEMA, NO_COMPUTADOR_NOME, CD_HISTORICO, ID_OPT_ERRO)" +
-                             " VALUES (@ID_EMPRESA, @ID_OPT_PROCESSO, @ID_OPT_ACAO, @ID_USUARIO, @ID_REGISTRO, @DT_HISTORICO, @DS_HISTORICO, @DS_FILTRO, @CD_VERSAO_SISTEMA, @NO_COMPUTADOR_NOME, @CD_HISTORICO, @ID_OPT_ERRO)";
-                  Util.Executar(conn, sSqlText, new Util.DBParamentro[] { Util.DBParametro_Montar("ID_EMPRESA", 2), /* Praça - Clínica de 28 de Julho */
+                  if (enviado)
+                  {
+                    GravarNotificacaoHoje(int.Parse(row["ID_PESSOA"].ToString()), conn);
+
+                    sSqlText = "INSERT INTO TB_HISTORICO (ID_EMPRESA, ID_OPT_PROCESSO, ID_OPT_ACAO, ID_USUARIO, ID_REGISTRO, DT_HISTORICO, DS_HISTORICO, DS_FILTRO, CD_VERSAO_SISTEMA, NO_COMPUTADOR_NOME, CD_HISTORICO, ID_OPT_ERRO)" +
+                               " VALUES (@ID_EMPRESA, @ID_OPT_PROCESSO, @ID_OPT_ACAO, @ID_USUARIO, @ID_REGISTRO, @DT_HISTORICO, @DS_HISTORICO, @DS_FILTRO, @CD_VERSAO_SISTEMA, @NO_COMPUTADOR_NOME, @CD_HISTORICO, @ID_OPT_ERRO)";
+                    Util.Executar(conn, sSqlText, new Util.DBParamentro[] { Util.DBParametro_Montar("ID_EMPRESA", 2), /* Praça - Clínica de 28 de Julho */
                                                                         Util.DBParametro_Montar("ID_OPT_PROCESSO", 519 /* Clínica - Agendamento */),
                                                                         Util.DBParametro_Montar("ID_OPT_ACAO", 101 /* Notificado - Cancelamento */),
                                                                         Util.DBParametro_Montar("ID_USUARIO", 1),
@@ -250,6 +271,7 @@ namespace WorkerService
                                                                         Util.DBParametro_Montar("NO_COMPUTADOR_NOME", ""),
                                                                         Util.DBParametro_Montar("CD_HISTORICO", row["CD_AGENDAMENTO"]),
                                                                         Util.DBParametro_Montar("ID_OPT_ERRO", "")});
+                  }
 
                   Thread.Sleep(1000);
                 }
@@ -259,6 +281,7 @@ namespace WorkerService
             bool enviar = false;
 
             sSqlText = "SELECT AGEND.SQ_AGENDAMENTO," +
+                              "AGEND.ID_PESSOA," +
                               "AGEND.CD_AGENDAMENTO," +
                               "PESSO.NO_PESSOA," +
                               "PSPRF.NO_PESSOA NO_PESSOA_PROFISSIONAL," +
@@ -313,17 +336,11 @@ namespace WorkerService
                                                                                                                                          " AND SDE.ID_PESSOA = AGEND.ID_PESSOA_PROFISSIONAL" +
                                                                                                                                          " AND SDE.CD_OPCAO = DATEPART(W, AGEND.DH_AGENDAMENTO)" +
                                                                                                                                          " AND SDE.NR_TURNO = IIF(DATEPART(HOUR, AGEND.DH_AGENDAMENTO) > 12, 2, 1)" +
-                       " WHERE (CAST(AGEND.DH_INLCUSAO AS DATE) = CAST(GETDATE() AS DATE) OR" +
-                              " CAST(GETDATE() AS DATE) = CAST(DATEADD(DAY, -3, AGEND.DH_AGENDAMENTO) AS DATE) OR" +
-                              " CAST(GETDATE() AS DATE) = CAST(DATEADD(DAY, -1, AGEND.DH_AGENDAMENTO) AS DATE) OR" +
-                              " CAST(GETDATE() AS DATE) = CAST(AGEND.DH_AGENDAMENTO AS DATE))" +
-                         " AND CAST(AGEND.DH_INLCUSAO AS DATE) >= '06/11/2022 00:00:00'" +
-                         " AND CAST(AGEND.DH_AGENDAMENTO AS DATE) >= CAST(GETDATE() AS DATE)" +
-                         " AND AGEND.DH_CHEGADA IS NULL" +
-                         " AND AGEND.ID_OPT_STATUS IN (38)" +
+                       " WHERE AGEND.SQ_AGENDAMENTO=779499" +
                          " AND HISTO.SQ_HISTORICO IS NULL" +
                        " GROUP BY AGEND.CD_AGENDAMENTO," +
                                  "AGEND.SQ_AGENDAMENTO," +
+                                 "AGEND.ID_PESSOA," +
                                  "PESSO.NO_PESSOA," +
                                  "PSPRF.NO_PESSOA," +
                                  "EMPRE.NO_PESSOA," +
@@ -365,10 +382,12 @@ namespace WorkerService
                     break;
                 }
 
-                Modelo(conn, row["CD_MODELO"].ToString(), ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref TP_ATIVO);
+                Modelo(conn, row["CD_MODELO"].ToString(), ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref TP_ATIVO);
 
                 if (enviar && (!String.IsNullOrEmpty(row["CD_NUMERO"].ToString())) && TP_ATIVO)
                 {
+                  bool enviouNotificacaoHoje = VerificarNotificacaoHoje(int.Parse(row["ID_PESSOA"].ToString()), conn);
+
                   Texto = DS_MENSAGEM_MODELO;
                   Texto = Texto.Replace("[NomePaciente]", row["NO_PESSOA"].ToString());
                   Texto = Texto.Replace("[DiaAgendamento]", row["DT_AGENDAMENTO"].ToString());
@@ -378,11 +397,20 @@ namespace WorkerService
                   Texto = Texto.Replace("[EnderecoUnidade]", row["DS_ENDERECO"].ToString());
                   Texto = Texto.Replace("[Consultorio]", row["NO_CONSULTORIO"].ToString());
 
-                  await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", DS_PATH_IMAGEM, CD_USUARIO);
+                  await oChatGuru.chat_update_custom_fields("Nome", row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString());
+                  await oChatGuru.chat_update_custom_fields("DiaAgendamento", row["DT_AGENDAMENTO"].ToString(), row["CD_NUMERO"].ToString());
+                  await oChatGuru.chat_update_custom_fields("HoraAgendamento", row["HR_INICIO"].ToString(), row["CD_NUMERO"].ToString());
+                  await oChatGuru.chat_update_custom_fields("EnderecoUnidade", row["DS_ENDERECO"].ToString(), row["CD_NUMERO"].ToString());
 
-                  sSqlText = "INSERT INTO TB_HISTORICO (ID_EMPRESA, ID_OPT_PROCESSO, ID_OPT_ACAO, ID_USUARIO, ID_REGISTRO, DT_HISTORICO, DS_HISTORICO, DS_FILTRO, CD_VERSAO_SISTEMA, NO_COMPUTADOR_NOME, CD_HISTORICO, ID_OPT_ERRO)" +
-                             " VALUES (@ID_EMPRESA, @ID_OPT_PROCESSO, @ID_OPT_ACAO, @ID_USUARIO, @ID_REGISTRO, @DT_HISTORICO, @DS_HISTORICO, @DS_FILTRO, @CD_VERSAO_SISTEMA, @NO_COMPUTADOR_NOME, @CD_HISTORICO, @ID_OPT_ERRO)";
-                  Util.Executar(conn, sSqlText, new Util.DBParamentro[] { Util.DBParametro_Montar("ID_EMPRESA", 2), /* Praça - Clínica de 28 de Julho */
+                  bool enviado = await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", DS_PATH_IMAGEM, CD_USUARIO, CD_DIALOGO, !enviouNotificacaoHoje);
+
+                  if (enviado)
+                  {
+                    GravarNotificacaoHoje(int.Parse(row["ID_PESSOA"].ToString()), conn);
+
+                    sSqlText = "INSERT INTO TB_HISTORICO (ID_EMPRESA, ID_OPT_PROCESSO, ID_OPT_ACAO, ID_USUARIO, ID_REGISTRO, DT_HISTORICO, DS_HISTORICO, DS_FILTRO, CD_VERSAO_SISTEMA, NO_COMPUTADOR_NOME, CD_HISTORICO, ID_OPT_ERRO)" +
+                               " VALUES (@ID_EMPRESA, @ID_OPT_PROCESSO, @ID_OPT_ACAO, @ID_USUARIO, @ID_REGISTRO, @DT_HISTORICO, @DS_HISTORICO, @DS_FILTRO, @CD_VERSAO_SISTEMA, @NO_COMPUTADOR_NOME, @CD_HISTORICO, @ID_OPT_ERRO)";
+                    Util.Executar(conn, sSqlText, new Util.DBParamentro[] { Util.DBParametro_Montar("ID_EMPRESA", 2), /* Praça - Clínica de 28 de Julho */
                                                                         Util.DBParametro_Montar("ID_OPT_PROCESSO", 519 /* Clínica - Agendamento */),
                                                                         Util.DBParametro_Montar("ID_OPT_ACAO", 829 /* Notificado */),
                                                                         Util.DBParametro_Montar("ID_USUARIO", 1),
@@ -394,6 +422,7 @@ namespace WorkerService
                                                                         Util.DBParametro_Montar("NO_COMPUTADOR_NOME", ""),
                                                                         Util.DBParametro_Montar("CD_HISTORICO", row["CD_AGENDAMENTO"]),
                                                                         Util.DBParametro_Montar("ID_OPT_ERRO", "")});
+                  }
                 }
 
                 Thread.Sleep(1000);
@@ -410,18 +439,35 @@ namespace WorkerService
       }
     }
 
-    void Modelo(System.Data.SqlClient.SqlConnection conn, string CD_MENSAGEM_MODELO, ref string DS_MENSAGEM_MODELO, ref string DS_PATH_IMAGEM, ref string CD_USUARIO, ref bool TP_ATIVO)
+    bool VerificarNotificacaoHoje(int iID_PESSOA, System.Data.SqlClient.SqlConnection conn)
+    {
+      string sql = $"SELECT COUNT(*) FROM TB_PESSOA WHERE SQ_PESSOA = {iID_PESSOA} AND CAST(DH_NOTIFICACAO AS DATE) = CAST(GETDATE() AS DATE)";
+
+      DataTable dt = Util.Query(conn, sql);
+
+      return dt.Rows.Count > 0;
+    }
+
+    void GravarNotificacaoHoje(int iID_PESSOA, System.Data.SqlClient.SqlConnection conn)
+    {
+      string sql = $"EXEC SP_PESSOA_NOTIFICACAO_UPD @ID_PESSOA";
+
+      Util.Executar(conn, sql, new Util.DBParamentro[] {  Util.DBParametro_Montar("ID_PESSOA", iID_PESSOA) });
+    }
+
+    void Modelo(System.Data.SqlClient.SqlConnection conn, string CD_MENSAGEM_MODELO, ref string DS_MENSAGEM_MODELO, ref string DS_PATH_IMAGEM, ref string CD_USUARIO, ref string CD_DIALOGO, ref bool TP_ATIVO)
     {
       try
       {
         DataTable oData = null;
         string sSqlText = "";
-        sSqlText = "SELECT DS_MENSAGEM_MODELO, DS_PATH_IMAGEM, CD_USUARIO, TP_ATIVO FROM TB_MENSAGEM_MODELO WHERE CD_MENSAGEM_MODELO = '" + CD_MENSAGEM_MODELO + "'";
+        sSqlText = "SELECT DS_MENSAGEM_MODELO, DS_PATH_IMAGEM, CD_USUARIO, CD_DIALOGO, TP_ATIVO FROM TB_MENSAGEM_MODELO WHERE CD_MENSAGEM_MODELO = '" + CD_MENSAGEM_MODELO + "'";
         oData = Util.Query(conn, sSqlText);
 
         DS_MENSAGEM_MODELO = oData.Rows[0]["DS_MENSAGEM_MODELO"].ToString();
         DS_PATH_IMAGEM = oData.Rows[0]["DS_PATH_IMAGEM"].ToString();
         CD_USUARIO = oData.Rows[0]["CD_USUARIO"].ToString();
+        CD_DIALOGO = oData.Rows[0]["CD_DIALOGO"].ToString();
         TP_ATIVO = oData.Rows[0]["TP_ATIVO"].ToString() == "S";
       }
       catch (Exception)

@@ -15,13 +15,14 @@ Public Class uscPaciente
 
   Const const_GridEndereco_SQ_ENDERECO As Integer = 0
   Const const_GridEndereco_TipoEndereco As Integer = 1
-  Const const_GridEndereco_Logradouro As Integer = 2
-  Const const_GridEndereco_Numero As Integer = 3
-  Const const_GridEndereco_Bairro As Integer = 4
-  Const const_GridEndereco_Cidade As Integer = 5
-  Const const_GridEndereco_CEP As Integer = 6
-  Const const_GridEndereco_Complemento As Integer = 7
-  Const const_GridEndereco_Ativo As Integer = 8
+  Const const_GridEndereco_Cep As Integer = 2
+  Const const_GridEndereco_BuscaCep As Integer = 3
+  Const const_GridEndereco_Logradouro As Integer = 4
+  Const const_GridEndereco_Numero As Integer = 5
+  Const const_GridEndereco_Bairro As Integer = 6
+  Const const_GridEndereco_Cidade As Integer = 7
+  Const const_GridEndereco_Complemento As Integer = 8
+  Const const_GridEndereco_Ativo As Integer = 9
 
   Dim oDBEndereco As New UltraWinDataSource.UltraDataSource
 
@@ -85,11 +86,12 @@ Public Class uscPaciente
     objGrid_Inicializar(grdEndereco, AllowAddNew.FixedAddRowOnTop, oDBEndereco, UltraWinGrid.CellClickAction.RowSelect, , DefaultableBoolean.True, False, , , , True)
     objGrid_Coluna_Add(grdEndereco, "SQ_ENDERECO", 0)
     objGrid_Coluna_Add(grdEndereco, "Tipo de Endereço", 200, , True, , FNC_CarregarLista(enTipoCadastro.TipoEndereco))
+    objGrid_Coluna_Add(grdEndereco, "C.E.P.", 80, , True)
+    objGrid_Coluna_Add(grdEndereco, "...", 30, , True, ColumnStyle.Button)
     objGrid_Coluna_Add(grdEndereco, "Logradouro", 300, , True)
     objGrid_Coluna_Add(grdEndereco, "Número", 100, , True)
     objGrid_Coluna_Add(grdEndereco, "Bairro", 200, , True)
     objGrid_Coluna_Add(grdEndereco, "Cidade", 200, , True, , FNC_CarregarLista(enTipoCadastro.Cidade))
-    objGrid_Coluna_Add(grdEndereco, "C.E.P.", 100, , True)
     objGrid_Coluna_Add(grdEndereco, "Complemento", 200, , True)
     objGrid_Coluna_Add(grdEndereco, "Ativo", 80, , True, ColumnStyle.CheckBox)
     objGrid_Configuracao_Carregar(grdEndereco, "grdEndereco")
@@ -448,6 +450,13 @@ Public Class uscPaciente
       FNC_Mensagem("Para informar o Número de Carteira do Convênio é preciso selecionar o convênio")
       Exit Sub
     End If
+    For Each row As UltraGridRow In grdEndereco.Rows
+      If FNC_CampoNulo(row.Cells(const_GridEndereco_CEP).Value) OrElse
+         FNC_SoNumero(row.Cells(const_GridEndereco_CEP).Value).Length <> 8 Then
+        FNC_Mensagem("Informe um CEP válido para todos os endereços informados")
+        Exit Sub
+      End If
+    Next
 
     Dim oCPF As New clsValida_CNPJ_CPF
 
@@ -574,7 +583,7 @@ Public Class uscPaciente
                                  DBParametro_Montar("NO_BAIRRO", .Cells(const_GridEndereco_Bairro).Value),
                                  DBParametro_Montar("NR_LOGRADOURO", .Cells(const_GridEndereco_Numero).Value),
                                  DBParametro_Montar("DS_COMPLEMENTO", .Cells(const_GridEndereco_Complemento).Value),
-                                 DBParametro_Montar("CD_CEP", .Cells(const_GridEndereco_CEP).Value),
+                                 DBParametro_Montar("CD_CEP", FNC_SoNumero(.Cells(const_GridEndereco_CEP).Value)),
                                  DBParametro_Montar("IC_ATIVO", objGrid_CheckCol_Valor(grdEndereco, const_GridEndereco_Ativo, iCont)))
           End With
         Next
@@ -859,6 +868,12 @@ Erro:
       e.Cancel = True
       Exit Sub
     End If
+    If FNC_CampoNulo(e.Row.Cells(const_GridEndereco_CEP).Value) OrElse
+       FNC_SoNumero(e.Row.Cells(const_GridEndereco_CEP).Value).Length <> 8 Then
+      FNC_Mensagem("É preciso selecionar um CEP válido")
+      e.Cancel = True
+      Exit Sub
+    End If
     If objGrid_Coluna_ProcurarValor(grdEndereco,
                                     FNC_GerarArray(const_GridEndereco_Cidade, e.Row.Cells(const_GridEndereco_Cidade).Value,
                                                    const_GridEndereco_Bairro, e.Row.Cells(const_GridEndereco_Bairro).Value,
@@ -1044,6 +1059,24 @@ Erro:
       oForm.iProcessso = enOpcoes.Processo_Historico_Cadastro_CadastroPaciente.GetHashCode()
       oForm.iID_REGISTRO = iID_PESSOA
       FNC_AbriTela(oForm, , True, True)
+    End If
+  End Sub
+
+  Private Sub grdEndereco_ClickCellButton(sender As Object, e As CellEventArgs) Handles grdEndereco.ClickCellButton
+    Dim dadosCep = modServicosExterno.BuscarCEP(e.Cell.Row.Cells(const_GridEndereco_Cep).Value)
+
+    If dadosCep.RetornoBusca Then
+      Dim sCidade = DBQuery_ValorUnico("SELECT SQ_CIDADE FROM VW_CIDADE WHERE NO_CIDADE = " & FNC_QuotedStr(dadosCep.Cidade) & " AND CD_UF = " & FNC_QuotedStr(dadosCep.Estado), 0)
+
+      e.Cell.Row.Cells(const_GridEndereco_Logradouro).Value = dadosCep.Logradouro
+      e.Cell.Row.Cells(const_GridEndereco_Bairro).Value = dadosCep.Bairro
+      e.Cell.Row.Cells(const_GridEndereco_Complemento).Value = dadosCep.Complemento
+
+      If sCidade IsNot Nothing AndAlso Not String.IsNullOrEmpty(sCidade) And IsNumeric(sCidade) Then
+        e.Cell.Row.Cells(const_GridEndereco_Cidade).Value = sCidade
+      End If
+    Else
+      FNC_Mensagem(dadosCep.MensagemRetorno)
     End If
   End Sub
 End Class

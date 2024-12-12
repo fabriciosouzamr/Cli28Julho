@@ -17,26 +17,21 @@ namespace WorkerService
     public string sKey = "UPKZPO18E49W2I2J8NPUVYOF6T0MUYGYV71X1S8S4N3OUV3FYFDU8R4UN16STVZN";
     public string sAccountId = "625ea934822c38492819b7bf";
     public string sPhoneId = "625eaafbbb25ea2c81b31a4e";
+    public string sUrl = "https://s15.chatguru.app/api/v1";
 
     public readonly ILogger<Worker> _logger;
 
     cResponse oresponse = new cResponse();
 
-    public async Task<bool> EnviarAsync(string sMensagem,
-                       string sNome,
-                       string sNumero,
-                       string sTitulo,
-                       string sArquivo,
-                       string sUsuario,
-                       string sDialogo = "")
+    public async Task<bool> EnviarAsync(string sMensagem, string sNome, string sNumero, string sTitulo, string sArquivo, string sUsuario, string sDialogo = "", bool add = false)
     {
       //sNumero = "+55 (73) 91553135";
 
-      if (sNumero.Substring(0, 3) == "+55")
+      if (sNumero.StartsWith("+55") || sNumero.StartsWith("55"))
       {
         try
         {
-          await message_send(sMensagem, sNome, sNumero, sTitulo, sArquivo, sUsuario, sDialogo);
+          await message_send(sMensagem, sNome, sNumero, sTitulo, sArquivo, sUsuario, sDialogo, add);
 
           if (oresponse == null)
           {
@@ -67,13 +62,14 @@ namespace WorkerService
                                   string sTitulo,
                                   string sArquivo,
                                   string sUsuario,
-                                  string sDialogo = "")
+                                  string sDialogo = "",
+                                  bool add = false)
     {
       bool Ok = false;
 
       try
       {
-        await messag(sMensagem, sNome, sNumero, sTitulo, sArquivo, sUsuario, sDialogo);
+        await messag(sMensagem, sNome, sNumero, sTitulo, sArquivo, sUsuario, sDialogo, add);
 
         Ok = true;
       }
@@ -85,7 +81,7 @@ namespace WorkerService
       return Ok;
     }
 
-    async Task<bool> messag(string sMensagem, string sNome, string sNumero, string sTitulo, string sArquivo, string sUsuario, string sDialogo = "")
+    async Task<bool> messag(string sMensagem, string sNome, string sNumero, string sTitulo, string sArquivo, string sUsuario, string sDialogo = "", bool add = false)
     {
       bool Ok = false;
 
@@ -97,16 +93,11 @@ namespace WorkerService
 
         if ((sMensagem.Trim() != ""))
         {
-          if ((sUsuario.Trim() == "") || (1==1))
+          if (!add && (sUsuario.Trim() == ""))
           {
-            sLink = "https://s15.chatguru.app/api/v1?key=" + sKey +
-                                                    "&account_id=" + sAccountId +
-                                                    "&phone_id=" + sPhoneId +
-                                                    "&action=message_send" +
-                                                    "&userid=" + sUsuario +
-                                                    "&send_date=" + DateTime.Now.ToString("yyyy-MM-dd HH:MM") +
-                                                    "&text=" + sMensagem +
-                                                    "&chat_number=" + sNumero;
+            string userid = string.IsNullOrEmpty(sUsuario) ? string.Empty : $"&userid={sUsuario}";
+
+            sLink = $"{sUrl}?key={sKey}&account_id={sAccountId}&phone_id={sPhoneId}&action=message_send{userid}&text={sMensagem}&chat_number={sNumero}";
 
             if (sDialogo!="")
             {
@@ -145,7 +136,7 @@ namespace WorkerService
             switch (oresponse.code)
             {
               case 400:
-                await chat_add(sMensagem, sNome, sNumero, sUsuario);
+                await chat_add(sMensagem, sNome, sNumero, sUsuario, sDialogo);
                 break;
             }
           }
@@ -179,13 +170,13 @@ namespace WorkerService
       {
         string sLink = "";
 
-        sLink = "https://s15.chatguru.app/api/v1?key=" + sKey +
-                                                "&account_id=" + sAccountId +
-                                                "&phone_id=" + sPhoneId +
-                                                "&action=message_file_send&" +
-                                                "&file_url=" + sArquivo +
-                                                "&caption=" + sTitulo +
-                                                "&chat_number=" + sNumero;
+        sLink = sUrl + "?key=" + sKey +
+                       "&account_id=" + sAccountId +
+                       "&phone_id=" + sPhoneId +
+                       "&action=message_file_send&" +
+                       "&file_url=" + sArquivo +
+                       "&caption=" + sTitulo +
+                       "&chat_number=" + sNumero;
 
         using (HttpClient httpClient = new HttpClient())
         {
@@ -232,21 +223,15 @@ namespace WorkerService
       {
         string sLink = "";
 
-        sLink = "https://s15.chatguru.app/api/v1?key=" + sKey +
-                                                "&account_id=" + sAccountId +
-                                                "&phone_id=" + sPhoneId +
-                                                "&action=chat_add" +
-                                                "&userid=" + sUsuario +
-                                                "&name=" + sNome +
-                                                "&text=" + sMensagem +
-                                                "&chat_number=" + sNumero;
-
-        if (sDialogo != "")
-        {
-          sLink = sLink + "&dialog_id=" + sDialogo;
-        }
-
-        if (sUsuario != "") { sLink = sLink + "&user_id=" + sUsuario; }
+        sLink = sUrl + "?key=" + sKey +
+                       "&account_id=" + sAccountId +
+                       "&phone_id=" + sPhoneId +
+                       "&action=chat_add" +
+                       "&userid=" + sUsuario +
+                       "&name=" + sNome +
+                       "&dialog_id=" + sDialogo + 
+                       "&text=" + sMensagem +
+                       "&chat_number=" + sNumero;
 
         using (HttpClient httpClient = new HttpClient())
         {
@@ -256,6 +241,52 @@ namespace WorkerService
             Escrever(DateTime.Now.ToString() + " - " + sLink);
             Escrever(apiResponse);
             Escrever("--------------------------------------------------------------------------------");
+
+            while (true)
+            {
+              try
+              {
+                oresponse = JsonConvert.DeserializeObject<cResponse>(apiResponse);
+
+                if (oresponse != null) break;
+              }
+              catch (Exception Ex)
+              {
+                var erro = Ex.Message;
+              }
+            }
+          }
+        }
+      }
+      catch (Exception Ex)
+      {
+        var erro = Ex.Message;
+        //      FNC_Mensagem(ex.Message)
+      }
+
+      return oresponse;
+    }
+
+    public async Task<cResponse> chat_update_custom_fields(string sCampo, string sValor, string sNumero)
+    {
+      oresponse = null;
+
+      try
+      {
+        string sLink = "";
+
+        sLink = sUrl + "?key=" + sKey +
+                       "&account_id=" + sAccountId +
+                       "&phone_id=" + sPhoneId +
+                       "&action=chat_update_custom_fields" +
+                       "&chat_number=" + sNumero +
+                       "&field__" + sCampo + "=" + sValor;
+
+        using (HttpClient httpClient = new HttpClient())
+        {
+          using (var response = await httpClient.PostAsync(sLink, new StringContent("")))
+          {
+            string apiResponse = await response.Content.ReadAsStringAsync();
 
             while (true)
             {

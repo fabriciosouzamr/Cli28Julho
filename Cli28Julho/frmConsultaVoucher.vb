@@ -117,6 +117,10 @@ Public Class frmConsultaVoucher
                                                            const_GridListagem_DH_VOUHCER,
                                                            const_GridListagem_DH_ULTIMA_MOVIMENTACAO,
                                                            const_GridListagem_DH_CANCELADO})
+    objGrid_ExibirTotal(grdListagem, New Integer() {const_GridListagem_VL_VOUCHER,
+                                                    const_GridListagem_VL_SALDO,
+                                                    const_GridListagem_VL_CANCELADO})
+
   End Sub
 
   Private Sub cmdPDF_Click(sender As Object, e As EventArgs) Handles cmdPDF.Click

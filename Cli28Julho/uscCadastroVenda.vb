@@ -277,6 +277,11 @@ Public Class uscCadastroVenda
         Exit Sub
       End If
     Next
+    If Not FNC_Permissao(enPermissao.PERM_VenderSemFecharCaixaAnterior).bPermissao AndAlso
+       DBQuery_ValorUnico("SELECT COUNT(*) FROM VW_CLINICA_VENDA_PENDENTEFECHARCAIXA WHERE ID_CONTAFINANCEIRA = " & cboContaFinanceira.SelectedValue) > 0 Then
+      FNC_Mensagem("É preciso fechar o caixa do dia anterior para seguir essa venda")
+      Exit Sub
+    End If
 
     Dim oLancaContasReceberPagar_Venda As clsLancaContasReceberPagar_Venda()
 

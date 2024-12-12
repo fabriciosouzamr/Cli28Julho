@@ -9,6 +9,68 @@ Imports NET_API_STATUS = System.UInt32
 
 Imports System.Drawing.Printing
 Imports System.Net
+Imports System.Web.Script.Serialization
+
+Module modServicosExterno
+  Public Class DadosCep
+    Public Sub New(_cep As String)
+      RetornoBusca = False
+      Cep = _cep
+    End Sub
+
+    Public Cep As String
+    Public Logradouro As String
+    Public Complemento As String
+    Public Bairro As String
+    Public Cidade As String
+    Public Estado As String
+
+    Public RetornoBusca As Boolean
+    Public MensagemRetorno As String
+  End Class
+
+  Public Function BuscarCEP(cep As String) As DadosCep
+    Dim url As String = "https://viacep.com.br/ws/"
+
+    If Not String.IsNullOrEmpty(FNC_ConfiguracaoAplicacao("UrlBuscaCep")) Then
+      url = FNC_ConfiguracaoAplicacao("UrlBuscaCep")
+    End If
+
+    url = String.Format("{0}/{1}/json/", url, cep)
+    Dim dadosCep As New DadosCep(cep)
+
+    If String.IsNullOrEmpty(cep) OrElse FNC_SoNumero(cep).Length <> 8 Then
+      dadosCep.RetornoBusca = "É preciso informar um CEP válido"
+    Else
+      Try
+        Dim request As HttpWebRequest = CType(WebRequest.Create(url), HttpWebRequest)
+        request.Method = "GET"
+        Dim response As HttpWebResponse = CType(request.GetResponse(), HttpWebResponse)
+        Dim stream As New StreamReader(response.GetResponseStream())
+        Dim jsonResponse As String = stream.ReadToEnd()
+        Dim serializer As New JavaScriptSerializer()
+        Dim endereco As Dictionary(Of String, Object) = serializer.Deserialize(Of Dictionary(Of String, Object))(jsonResponse)
+
+        If endereco.Count = 1 AndAlso endereco.FirstOrDefault().Key = "erro" Then
+          dadosCep.MensagemRetorno = "CEP não encontrado"
+        Else
+          dadosCep.Cep = endereco("cep")
+          dadosCep.Logradouro = endereco("logradouro")
+          dadosCep.Complemento = endereco("complemento")
+          dadosCep.Bairro = endereco("bairro")
+          dadosCep.Cidade = endereco("localidade")
+          dadosCep.Estado = endereco("uf")
+
+          dadosCep.RetornoBusca = True
+        End If
+      Catch ex As Exception
+        dadosCep.MensagemRetorno = $"{ex.Message} {IIf(ex.InnerException Is Nothing, "", $" - {ex.InnerException.Message}")}"
+      End Try
+    End If
+
+    Return dadosCep
+  End Function
+End Module
 
 Module modFuncao
   Private Declare Auto Function GetPrivateProfileString Lib "Kernel32" (ByVal lpAppName As String, ByVal lpKeyName As String, ByVal lpDefault As String, ByVal lpReturnedString As StringBuilder, ByVal nSize As Integer, ByVal lpFileName As String) As Integer

@@ -54,26 +54,19 @@ Public Class frmCadastroVenda_Fechamento
   Private Sub Pesquisar()
     Dim sSqlText As String
 
-    sSqlText = "SELECT MVFNC.SQ_MOVFINANCEIRA," &
-                      "CLVND.SQ_CLINICA_VENDA," &
-                      "CLVND.CD_CLINICA_VENDA," &
-                      "CLVND.DH_VENDA," &
-                      "TPDOC.NO_TIPO_DOCUMENTO," &
-                      "MVFNP.CD_DOCUMENTO," &
-                      "MVFNP.DT_VENCIMENTO," &
-                      "MVFNP.VL_PARCELA" &
-                " FROM TB_CLINICA_VENDA CLVND" &
-                 " INNER JOIN TB_MOVFINANCEIRA	MVFNC ON MVFNC.ID_CLINICA_VENDA = CLVND.SQ_CLINICA_VENDA" &
-                 " INNER JOIN TB_MOVFINANCEIRAPARCELA MVFNP ON MVFNP.ID_MOVFINANCEIRA = MVFNC.SQ_MOVFINANCEIRA" &
-                 " INNER JOIN TB_TIPO_DOCUMENTO TPDOC ON TPDOC.SQ_TIPO_DOCUMENTO = MVFNP.ID_TIPO_DOCUMENTO" &
-                " WHERE CLVND.ID_CLINICA_VENDA_FECHAMENTO IS NULL" &
-                  " AND CLVND.DH_CANCELAR IS NULL" &
-                  " AND CLVND.ID_CONTAFINANCEIRA = " & FNC_NuloZero(cboContaFinanceira.SelectedValue) &
-                  " AND CLVND.ID_OPT_STATUS = " & enOpcoes.StatusVendaClinica_Lancado.GetHashCode() &
-                  " AND MVFNC.ID_OPT_TIPOMOVFINANCEIRA = " & enOpcoes.TipoMovimentacaoFinanceiraRecebePagar_ContasReceber.GetHashCode() &
-                " ORDER BY CLVND.CD_CLINICA_VENDA," &
-                          "TPDOC.NO_TIPO_DOCUMENTO," &
-                          "MVFNP.CD_DOCUMENTO"
+    sSqlText = "SELECT SQ_MOVFINANCEIRA," &
+                      "SQ_CLINICA_VENDA," &
+                      "CD_CLINICA_VENDA," &
+                      "DH_VENDA," &
+                      "NO_TIPO_DOCUMENTO," &
+                      "CD_DOCUMENTO," &
+                      "DT_VENCIMENTO," &
+                      "VL_PARCELA" &
+                " FROM VW_CLINICA_VENDA_PENDENTEFECHARCAIXA" &
+                " WHERE ID_CONTAFINANCEIRA = " & FNC_NuloZero(cboContaFinanceira.SelectedValue) &
+                " ORDER BY CD_CLINICA_VENDA," &
+                          "NO_TIPO_DOCUMENTO," &
+                          "CD_DOCUMENTO"
     objGrid_Carregar(grdListagem, sSqlText, New Integer() {const_GridListagem_SQ_MOVFINANCEIRA,
                                                            const_GridListagem_SQ_CLINICA_VENDA,
                                                            const_GridListagem_CD_CLINICA_VENDA,
@@ -83,21 +76,14 @@ Public Class frmCadastroVenda_Fechamento
                                                            const_GridListagem_DT_VENCIMENTO,
                                                            const_GridListagem_VL_PARCELA})
 
-    sSqlText = "SELECT TPDOC.NO_TIPO_DOCUMENTO," &
-                      "SUM(MVFNP.VL_PARCELA) VL_PARCELA," &
-                      "MIN(CLVND.DH_VENDA)," &
-                      "MAX(CLVND.DH_VENDA)" &
-               " FROM TB_CLINICA_VENDA CLVND" &
-                " INNER JOIN TB_MOVFINANCEIRA	MVFNC ON MVFNC.ID_CLINICA_VENDA = CLVND.SQ_CLINICA_VENDA" &
-                " INNER JOIN TB_MOVFINANCEIRAPARCELA MVFNP ON MVFNP.ID_MOVFINANCEIRA = MVFNC.SQ_MOVFINANCEIRA" &
-                " INNER JOIN TB_TIPO_DOCUMENTO TPDOC ON TPDOC.SQ_TIPO_DOCUMENTO = MVFNP.ID_TIPO_DOCUMENTO" &
-                " WHERE CLVND.ID_CLINICA_VENDA_FECHAMENTO IS NULL" &
-                  " AND CLVND.DH_CANCELAR IS NULL" &
-                  " AND CLVND.ID_CONTAFINANCEIRA = " & FNC_NuloZero(cboContaFinanceira.SelectedValue) &
-                  " AND CLVND.ID_OPT_STATUS = " & enOpcoes.StatusVendaClinica_Lancado.GetHashCode() &
-                  " AND MVFNC.ID_OPT_TIPOMOVFINANCEIRA = " & enOpcoes.TipoMovimentacaoFinanceiraRecebePagar_ContasReceber.GetHashCode() &
-               " GROUP BY TPDOC.NO_TIPO_DOCUMENTO" &
-               " ORDER BY TPDOC.NO_TIPO_DOCUMENTO"
+    sSqlText = "SELECT NO_TIPO_DOCUMENTO," &
+                      "SUM(VL_PARCELA) VL_PARCELA," &
+                      "MIN(DH_VENDA)," &
+                      "MAX(DH_VENDA)" &
+               " FROM VW_CLINICA_VENDA_PENDENTEFECHARCAIXA" &
+                " WHERE ID_CONTAFINANCEIRA = " & FNC_NuloZero(cboContaFinanceira.SelectedValue) &
+               " GROUP BY NO_TIPO_DOCUMENTO" &
+               " ORDER BY NO_TIPO_DOCUMENTO"
     objGrid_Carregar(grdResultado, sSqlText, New Integer() {const_GridResultado_NO_TIPO_DOCUMENTO,
                                                             const_GridResultado_VL_TIPO_DOCUMENTO,
                                                             const_GridResultado_DH_VENDA_INI,

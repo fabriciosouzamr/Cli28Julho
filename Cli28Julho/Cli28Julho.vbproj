@@ -1248,7 +1248,6 @@
     <Compile Include="uscVoucher.vb">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WebService.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmCadastroAtendimentoFaturamentoAlterar.resx">
