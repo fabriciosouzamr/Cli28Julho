@@ -32,9 +32,9 @@ Module modServicosExterno
   Public Function BuscarCEP(cep As String) As DadosCep
     Dim url As String = "https://viacep.com.br/ws/"
 
-    If Not String.IsNullOrEmpty(FNC_ConfiguracaoAplicacao("UrlBuscaCep")) Then
-      url = FNC_ConfiguracaoAplicacao("UrlBuscaCep")
-    End If
+    'If Not String.IsNullOrEmpty(FNC_ConfiguracaoAplicacao("UrlBuscaCep")) Then
+    '  url = FNC_ConfiguracaoAplicacao("UrlBuscaCep")
+    'End If
 
     url = String.Format("{0}/{1}/json/", url, cep)
     Dim dadosCep As New DadosCep(cep)
