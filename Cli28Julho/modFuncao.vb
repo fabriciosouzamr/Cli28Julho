@@ -40,7 +40,7 @@ Module modServicosExterno
     Dim dadosCep As New DadosCep(cep)
 
     If String.IsNullOrEmpty(cep) OrElse FNC_SoNumero(cep).Length <> 8 Then
-      dadosCep.RetornoBusca = "É preciso informar um CEP válido"
+      dadosCep.MensagemRetorno = "É preciso informar um CEP válido"
     Else
       Try
         Dim request As HttpWebRequest = CType(WebRequest.Create(url), HttpWebRequest)

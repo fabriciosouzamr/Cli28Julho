@@ -323,7 +323,7 @@ Public Class uscPaciente
                           "ED.NO_BAIRRO," &
                           "ED.NR_LOGRADOURO," &
                           "ED.ID_CIDADE," &
-                          "ED.CD_CEP," &
+                          "[dbo].[FC_FormatarCEP](ED.CD_CEP) CD_CEP," &
                           "ED.DS_COMPLEMENTO," &
                           "IIF(ED.IC_ATIVO='S', 1, 0)" &
                    " FROM TB_ENDERECO ED" &

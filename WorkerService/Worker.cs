@@ -336,7 +336,7 @@ namespace WorkerService
                                                                                                                                          " AND SDE.ID_PESSOA = AGEND.ID_PESSOA_PROFISSIONAL" +
                                                                                                                                          " AND SDE.CD_OPCAO = DATEPART(W, AGEND.DH_AGENDAMENTO)" +
                                                                                                                                          " AND SDE.NR_TURNO = IIF(DATEPART(HOUR, AGEND.DH_AGENDAMENTO) > 12, 2, 1)" +
-                       " WHERE AGEND.SQ_AGENDAMENTO=779499" +
+                       " WHERE AGEND.SQ_AGENDAMENTO=779502" +
                          " AND HISTO.SQ_HISTORICO IS NULL" +
                        " GROUP BY AGEND.CD_AGENDAMENTO," +
                                  "AGEND.SQ_AGENDAMENTO," +
