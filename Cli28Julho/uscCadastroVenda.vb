@@ -278,7 +278,7 @@ Public Class uscCadastroVenda
       End If
     Next
     If Not FNC_Permissao(enPermissao.PERM_VenderSemFecharCaixaAnterior).bPermissao AndAlso
-       DBQuery_ValorUnico("SELECT COUNT(*) FROM VW_CLINICA_VENDA_PENDENTEFECHARCAIXA WHERE ID_CONTAFINANCEIRA = " & cboContaFinanceira.SelectedValue) > 0 Then
+       DBQuery_ValorUnico($"SELECT COUNT(*) FROM VW_CLINICA_VENDA_PENDENTEFECHARCAIXA WHERE ID_CONTAFINANCEIRA = {cboContaFinanceira.SelectedValue} AND CAST(DH_VENDA AS DATE) < CAST(GETDATE() AS DATE)") > 0 Then
       FNC_Mensagem("É preciso fechar o caixa do dia anterior para seguir essa venda")
       Exit Sub
     End If

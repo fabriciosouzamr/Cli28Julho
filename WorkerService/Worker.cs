@@ -222,6 +222,8 @@ namespace WorkerService
                           " INNER JOIN TB_HISTORICO HSTAG ON HSTAG.ID_OPT_PROCESSO = 519" +
                                                        " AND HSTAG.ID_OPT_ACAO = 469" +
                                                        " AND CAST(HSTAG.DT_HISTORICO AS DATE) = CAST(GETDATE() AS DATE)" +
+                          " INNER JOIN TB_CANALMARCACAO CNN ON CNN.SQ_CANALMARCACAO = AGEND.ID_CANALMARCACAO" +
+                                                      " AND CNN.TP_ENVIAR_NOTIFICACAO_WHATSAPP = 'S'" +
                            " LEFT JOIN VW_ENDERECO_PRIMEIRO ENDER ON ENDER.ID_TIPO_ENDERECO = 2" +
                                                                " AND ENDER.ID_PESSOA = AGEND.ID_EMPRESA" +
                            " LEFT JOIN TB_HISTORICO HISTO ON HISTO.ID_REGISTRO = AGEND.SQ_AGENDAMENTO" +
@@ -302,6 +304,8 @@ namespace WorkerService
                         " INNER JOIN TB_PESSOA PSPRF ON PSPRF.SQ_PESSOA = AGEND.ID_PESSOA_PROFISSIONAL" +
                         " INNER JOIN TB_PESSOA EMPRE ON EMPRE.SQ_PESSOA = AGEND.ID_EMPRESA" +
                         " INNER JOIN (SELECT ID_PESSOA, IC_WHATSAPP, MAX(CD_NUMERO) CD_NUMERO FROM TB_PESSOA_TELEFONE WHERE IC_WHATSAPP = 'S' GROUP BY ID_PESSOA, IC_WHATSAPP) PSTEL ON PSTEL.ID_PESSOA = PESSO.SQ_PESSOA" +
+                        " INNER JOIN TB_CANALMARCACAO CNN ON CNN.SQ_CANALMARCACAO = AGEND.ID_CANALMARCACAO" +
+                                                    " AND CNN.TP_ENVIAR_NOTIFICACAO_WHATSAPP = 'S'" +
                          " LEFT JOIN TB_CONSULTORIO CONSL ON CONSL.SQ_CONSULTORIO = AGEND.ID_CONSULTORIO" +
                          " LEFT JOIN TB_PESSOA_HORARIO PSHHR ON PSHHR.SQ_PESSOA_HORARIO = AGEND.ID_PESSOA_HORARIO" +
                          " LEFT JOIN TB_HISTORICO HISTO ON HISTO.ID_REGISTRO = AGEND.SQ_AGENDAMENTO" +
@@ -336,8 +340,7 @@ namespace WorkerService
                                                                                                                                          " AND SDE.ID_PESSOA = AGEND.ID_PESSOA_PROFISSIONAL" +
                                                                                                                                          " AND SDE.CD_OPCAO = DATEPART(W, AGEND.DH_AGENDAMENTO)" +
                                                                                                                                          " AND SDE.NR_TURNO = IIF(DATEPART(HOUR, AGEND.DH_AGENDAMENTO) > 12, 2, 1)" +
-                       " WHERE AGEND.SQ_AGENDAMENTO=779502" +
-                         " AND HISTO.SQ_HISTORICO IS NULL" +
+                       " WHERE HISTO.SQ_HISTORICO IS NULL" +
                        " GROUP BY AGEND.CD_AGENDAMENTO," +
                                  "AGEND.SQ_AGENDAMENTO," +
                                  "AGEND.ID_PESSOA," +

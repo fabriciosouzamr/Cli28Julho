@@ -386,6 +386,7 @@ Public Class frmListaGeral
 
   Const const_GridCanalMarcacao_SQ_CANALMARCACAO As Integer = 0
   Const const_GridCanalMarcacao_NO_CANALMARCACAO As Integer = 1
+  Const const_GridCanalMarcacao_TP_ENVIAR_NOTIFICACAO_WHATSAPP As Integer = 2
 
   Const const_GridCaixaAtendimento_SQ_CAIXA_ATENDIMENTO As Integer = 0
   Const const_GridCaixaAtendimento_NO_CAIXA_ATENDIMENTO As Integer = 1
@@ -1154,6 +1155,7 @@ Public Class frmListaGeral
         lblRotuloListagem.Text = "Cadastro de Canal de Marcação"
         objGrid_Coluna_Add(grdListagem, "SQ_CANALMARCACAO", 0)
         objGrid_Coluna_Add(grdListagem, "Mome do Canal de Marcação", 400, , True, , , , , , 100)
+        objGrid_Coluna_Add(grdListagem, "Notif. WhatsApp", 130, , True, ColumnStyle.CheckBox,,,,,,,,,,,,,,,, False)
       Case enListagemGeral_TipoTela.CadastroCaixaAtendimento
         Me.Text = "Cadastro de Caixa Atendimento"
 
@@ -1328,11 +1330,13 @@ Public Class frmListaGeral
                                                                const_GridProfissao_NomeProfissao})
       Case enListagemGeral_TipoTela.CadastroCanalMarcacao
         sSqlText = "SELECT SQ_CANALMARCACAO," &
-                          "NO_CANALMARCACAO" &
+                          "NO_CANALMARCACAO," &
+                          "IIF(TP_ENVIAR_NOTIFICACAO_WHATSAPP = 'S', 1, 0) TP_ENVIAR_NOTIFICACAO_WHATSAPP" &
                    " FROM TB_CANALMARCACAO" &
                    " ORDER BY NO_CANALMARCACAO"
         objGrid_Carregar(grdListagem, sSqlText, New Integer() {const_GridCanalMarcacao_SQ_CANALMARCACAO,
-                                                               const_GridCanalMarcacao_NO_CANALMARCACAO})
+                                                               const_GridCanalMarcacao_NO_CANALMARCACAO,
+                                                               const_GridCanalMarcacao_TP_ENVIAR_NOTIFICACAO_WHATSAPP})
       Case enListagemGeral_TipoTela.CadastroGrupoProcedimento
         sSqlText = "SELECT SQ_GRUPOPROCEDIMENTO," &
                           "NO_GRUPOPROCEDIMENTO," &
@@ -2455,12 +2459,16 @@ Public Class frmListaGeral
         End If
       Case enListagemGeral_TipoTela.CadastroCanalMarcacao
         If FNC_CampoNulo(objGrid_Valor(grdListagem, const_GridCanalMarcacao_SQ_CANALMARCACAO, e.Row.Index)) Then
-          sSqlText = DBMontar_Insert("TB_CANALMARCACAO", TipoCampoFixo.DadoCriacao, "NO_CANALMARCACAO", "@NO_CANALMARCACAO")
-          bPesquisar = DBExecutar(sSqlText, DBParametro_Montar("NO_CANALMARCACAO", Trim(objGrid_Valor(grdListagem, const_GridCanalMarcacao_NO_CANALMARCACAO, e.Row.Index))))
+          sSqlText = DBMontar_Insert("TB_CANALMARCACAO", TipoCampoFixo.DadoCriacao, "NO_CANALMARCACAO", "@NO_CANALMARCACAO",
+                                                                                    "TP_ENVIAR_NOTIFICACAO_WHATSAPP", "@TP_ENVIAR_NOTIFICACAO_WHATSAPP")
+          bPesquisar = DBExecutar(sSqlText, DBParametro_Montar("NO_CANALMARCACAO", Trim(objGrid_Valor(grdListagem, const_GridCanalMarcacao_NO_CANALMARCACAO, e.Row.Index))),
+                                            DBParametro_Montar("TP_ENVIAR_NOTIFICACAO_WHATSAPP", objGrid_CheckCol_Valor(grdListagem, const_GridCanalMarcacao_TP_ENVIAR_NOTIFICACAO_WHATSAPP, e.Row.Index)))
         Else
-          sSqlText = DBMontar_Update("TB_CANALMARCACAO", FNC_GerarArray("NO_CANALMARCACAO", "@NO_CANALMARCACAO"),
+          sSqlText = DBMontar_Update("TB_CANALMARCACAO", FNC_GerarArray("NO_CANALMARCACAO", "@NO_CANALMARCACAO",
+                                                                        "TP_ENVIAR_NOTIFICACAO_WHATSAPP", "@TP_ENVIAR_NOTIFICACAO_WHATSAPP"),
                                                          FNC_GerarArray("SQ_CANALMARCACAO", "@SQ_CANALMARCACAO"))
           bPesquisar = DBExecutar(sSqlText, DBParametro_Montar("NO_CANALMARCACAO", Trim(objGrid_Valor(grdListagem, const_GridCanalMarcacao_NO_CANALMARCACAO, e.Row.Index))),
+                                            DBParametro_Montar("TP_ENVIAR_NOTIFICACAO_WHATSAPP", objGrid_CheckCol_Valor(grdListagem, const_GridCanalMarcacao_TP_ENVIAR_NOTIFICACAO_WHATSAPP, e.Row.Index)),
                                             DBParametro_Montar("SQ_CANALMARCACAO", objGrid_Valor(grdListagem, const_GridCanalMarcacao_SQ_CANALMARCACAO, e.Row.Index)))
         End If
       Case enListagemGeral_TipoTela.CadastroClassificacaoExame
