@@ -488,4 +488,25 @@
       FNC_Mensagem("ERRO: " & ex.Message)
     End Try
   End Sub
+
+  Private Sub cmdSolicitarManutenacao_Click(sender As Object, e As EventArgs) Handles cmdSolicitarManutenacao.Click
+    Dim sURL As String
+
+    If Not ComboBox_Selecionado(cboConsultorio) Then
+      FNC_Mensagem("Selecione o consultório")
+      Exit Sub
+    End If
+
+    Try
+      sURL = sSISTEMA_LlinkChamarGeral.Replace("[frase1]", "Atenção!") _
+                                      .Replace("[frase12", "precisa de assistência") _
+                                      .Replace("[Consultorio]", cboConsultorio.SelectedItem(enComboBox_Consultorio.CD_CONSULTORIO))
+
+      FNC_URL_Executar(sURL)
+
+      FNC_Mensagem("Solicitação realizada com sucesso!")
+    Catch ex As Exception
+      FNC_Mensagem("ERRO: " & ex.Message)
+    End Try
+  End Sub
 End Class

@@ -12,7 +12,6 @@ Public Class frmLancaContasReceberPagar
   Public iID_PEDIDO As Integer
   Public iID_ORDEMSERVICO As Integer
   Public iSQ_MOVFINANCEIRA As Integer
-  Public iSQ_VOUCHER As Integer
 
   Public bVoucher As Boolean
   Public bAlteracaoSimples As Boolean
@@ -79,6 +78,7 @@ Public Class frmLancaContasReceberPagar
   Dim iID_CONTABILIZACAO As Integer
   Dim iID_CONDICAOPAGAMENTO As Integer
   Dim bEncerrar As Boolean
+  Dim iSQ_VOUCHER As Integer
 
   Private Sub frmLancaContasReceberPagar_Load(sender As Object, e As EventArgs) Handles MyBase.Load
     Dim sSqlText As String
@@ -925,14 +925,14 @@ Public Class frmLancaContasReceberPagar
         End If
       End If
 
-      If bVoucher Then
+      If bVoucher AndAlso iSQ_VOUCHER = 0 Then
         sSqlText = DBMontar_SP("SP_VOUCHER_INS", False, "@SQ_VOUCHER OUT",
                                                         "@ID_EMPRESA",
                                                         "@ID_PESSOA",
                                                         "@ID_MOVFINANCEIRA",
                                                         "@VL_VOUCHER",
                                                         "@ID_USUARIO")
-        If DBExecutar(sSqlText, DBParametro_Montar("SQ_VOUCHER", 0, , ParameterDirection.InputOutput),
+        If DBExecutar(sSqlText, DBParametro_Montar("SQ_VOUCHER", iSQ_VOUCHER, , ParameterDirection.InputOutput),
                                 DBParametro_Montar("ID_EMPRESA", iID_EMPRESA_MATRIZ),
                                 DBParametro_Montar("ID_PESSOA", psqPessoa.ID_Pessoa),
                                 DBParametro_Montar("ID_MOVFINANCEIRA", iSQ_MOVFINANCEIRA),

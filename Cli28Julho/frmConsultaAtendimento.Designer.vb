@@ -50,6 +50,7 @@ Partial Class frmConsultaAtendimento
         Me.oConsultaAtendimento_Item01 = New Cli28Julho.uscConsultaAtendimento_Item()
         Me.cmdFechar = New Cli28Julho.uscBotao()
         Me.cmdAtendimentosRealizados = New Cli28Julho.uscBotao()
+        Me.cmdSolicitarAssistencia = New System.Windows.Forms.Button()
         CType(Me.txtDataPesquisa, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picGeral, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -193,9 +194,9 @@ Partial Class frmConsultaAtendimento
         'cmdAtualizar
         '
         Me.cmdAtualizar.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cmdAtualizar.Location = New System.Drawing.Point(589, 15)
+        Me.cmdAtualizar.Location = New System.Drawing.Point(520, 15)
         Me.cmdAtualizar.Name = "cmdAtualizar"
-        Me.cmdAtualizar.Size = New System.Drawing.Size(119, 30)
+        Me.cmdAtualizar.Size = New System.Drawing.Size(118, 30)
         Me.cmdAtualizar.TabIndex = 303
         Me.cmdAtualizar.Text = "Atualizar"
         Me.cmdAtualizar.UseVisualStyleBackColor = True
@@ -324,12 +325,23 @@ Partial Class frmConsultaAtendimento
         Me.cmdAtendimentosRealizados.Size = New System.Drawing.Size(16, 17)
         Me.cmdAtendimentosRealizados.TabIndex = 127
         '
+        'cmdSolicitarAssistencia
+        '
+        Me.cmdSolicitarAssistencia.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Bold)
+        Me.cmdSolicitarAssistencia.Location = New System.Drawing.Point(645, 15)
+        Me.cmdSolicitarAssistencia.Name = "cmdSolicitarAssistencia"
+        Me.cmdSolicitarAssistencia.Size = New System.Drawing.Size(180, 30)
+        Me.cmdSolicitarAssistencia.TabIndex = 357
+        Me.cmdSolicitarAssistencia.Text = "Solicitar Assistência"
+        Me.cmdSolicitarAssistencia.UseVisualStyleBackColor = True
+        '
         'frmConsultaAtendimento
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
         Me.ClientSize = New System.Drawing.Size(1302, 749)
+        Me.Controls.Add(Me.cmdSolicitarAssistencia)
         Me.Controls.Add(Me.cmdAtualizar)
         Me.Controls.Add(Me.chkAtendidos)
         Me.Controls.Add(Me.chkFiltroRetorno)
@@ -395,4 +407,5 @@ Partial Class frmConsultaAtendimento
     Friend WithEvents chkFiltroRetorno As CheckBox
     Friend WithEvents chkAtendidos As CheckBox
     Friend WithEvents cmdAtualizar As Button
+    Friend WithEvents cmdSolicitarAssistencia As Button
 End Class

@@ -125,6 +125,7 @@ Partial Class frmCadastroAtendimentoExecucao
         Me.cmdAtualizar = New Cli28Julho.uscBotao()
         Me.cboConsultorio = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.cmdSolicitarManutenacao = New System.Windows.Forms.Button()
         CType(Me.picGeral, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtDataPesquisa, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -959,7 +960,7 @@ Partial Class frmCadastroAtendimentoExecucao
         Me.cboConsultorio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cboConsultorio.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cboConsultorio.FormattingEnabled = True
-        Me.cboConsultorio.Location = New System.Drawing.Point(1007, 52)
+        Me.cboConsultorio.Location = New System.Drawing.Point(1007, 68)
         Me.cboConsultorio.Name = "cboConsultorio"
         Me.cboConsultorio.Size = New System.Drawing.Size(195, 24)
         Me.cboConsultorio.TabIndex = 354
@@ -967,17 +968,27 @@ Partial Class frmCadastroAtendimentoExecucao
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(1007, 36)
+        Me.Label2.Location = New System.Drawing.Point(1007, 52)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(59, 13)
         Me.Label2.TabIndex = 355
         Me.Label2.Text = "Consultório"
+        '
+        'cmdSolicitarManutenacao
+        '
+        Me.cmdSolicitarManutenacao.Location = New System.Drawing.Point(1007, 12)
+        Me.cmdSolicitarManutenacao.Name = "cmdSolicitarManutenacao"
+        Me.cmdSolicitarManutenacao.Size = New System.Drawing.Size(195, 23)
+        Me.cmdSolicitarManutenacao.TabIndex = 356
+        Me.cmdSolicitarManutenacao.Text = "Solicitar Manutenação"
+        Me.cmdSolicitarManutenacao.UseVisualStyleBackColor = True
         '
         'frmCadastroAtendimentoExecucao
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1295, 616)
+        Me.Controls.Add(Me.cmdSolicitarManutenacao)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.cboConsultorio)
         Me.Controls.Add(Me.psqProcedimento)
@@ -1192,4 +1203,5 @@ Partial Class frmCadastroAtendimentoExecucao
   Friend WithEvents psqProcedimento As uscPesqProcedimento
     Friend WithEvents cboConsultorio As ComboBox
     Friend WithEvents Label2 As Label
+    Friend WithEvents cmdSolicitarManutenacao As Button
 End Class

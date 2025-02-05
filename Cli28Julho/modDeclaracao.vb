@@ -2484,6 +2484,7 @@ Public Module modDeclaracao
   Public sSISTEMA_PathBackupDB As String = "C:\SisMattos\"
   Public sSISTEMA_LinkWhatsApp_WEB As String = ""
   Public sSISTEMA_LlinkChamarCliente As String
+  Public sSISTEMA_LlinkChamarGeral As String
   Public sSISTEMA_LlinkChamarSenha As String
   Public sSISTEMA_UltimaVersao As String
 

@@ -511,4 +511,33 @@ Public Class frmConsultaAtendimento
     Me.Left = 0
     Me.Top = 0
   End Sub
+
+  Private Sub cmdSolicitarManutenacao_Click(sender As Object, e As EventArgs) Handles cmdSolicitarAssistencia.Click
+    Dim sURL As String
+    Dim iUnidade As Integer
+
+    If Not ComboBox_Selecionado(cboConsultorio) Then
+      FNC_Mensagem("Selecione o consultório")
+      Exit Sub
+    End If
+
+    If iID_EMPRESA_FILIAL = iID_EMPRESA_MATRIZ Then
+      iUnidade = 1
+    Else
+      iUnidade = 2
+    End If
+
+    Try
+      sURL = sSISTEMA_LlinkChamarGeral.Replace("[frase1]", "Atenção!") _
+                                      .Replace("[frase2]", Uri.EscapeDataString("precisa de assistência")) _
+                                      .Replace("[Unidade]", iUnidade) _
+                                      .Replace("[Consultorio]", cboConsultorio.SelectedItem(enComboBox_Consultorio.CD_CONSULTORIO))
+
+      FNC_URL_Executar(sURL)
+
+      FNC_Mensagem("Solicitação realizada com sucesso!")
+    Catch ex As Exception
+      FNC_Mensagem("ERRO: " & ex.Message)
+    End Try
+  End Sub
 End Class

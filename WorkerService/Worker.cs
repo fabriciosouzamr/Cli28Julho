@@ -26,7 +26,7 @@ namespace WorkerService
           if (DateTime.Now.Date >= new DateTime(2022,8,31,0,0,0)) 
           {
             if (conn == null)
-              conn = new System.Data.SqlClient.SqlConnection("server=192.168.254.226\\SQLEXPRESS;database=Cli28Julho;Connection Timeout=0;uid=sa;pwd=clinica2828");
+              conn = new System.Data.SqlClient.SqlConnection("server=192.168.254.220\\SQLEXPRESS;database=Cli28Julho;Connection Timeout=0;uid=sa;pwd=clinica2828");
 
             if (conn.State != System.Data.ConnectionState.Open)
               conn.Open();
@@ -50,7 +50,7 @@ namespace WorkerService
             NR_DIA_CONFIRMACAO_AGENDAMENTO = Convert.ToInt16(oData.Rows[0]["NR_DIA_CONFIRMACAO_AGENDAMENTO"]);
             NR_INTERVALO_ENVIO_MENSAGEM = Convert.ToInt16(oData.Rows[0]["NR_INTERVALO_ENVIO_MENSAGEM"]);
             
-            modSisVida.MontarEnviar(conn);
+            //modSisVida.MontarEnviar(conn);
 
             if (DateTime.Now.Hour >= 7)
             {
@@ -58,6 +58,7 @@ namespace WorkerService
                                          "CVATD.SQ_CLINICA_ATENDIMENTO," +
                                          "CONVERT(CHAR, CVATD.DH_FIM_ATENDIMENTO, 103) DH_FIM_ATENDIMENTO," +
                                          "PESSO.NO_PESSOA," +
+                                         "PESSO.SQ_PESSOA," +
                                          "ISNULL(PSCFG.DS_PATH_IMAGEM_MENSAGEM, '') DS_PATH_IMAGEM_MENSAGEM," +
                                          "dbo.FC_Formatar_NUMERO_WHATSAPP(PSTEL.CD_NUMERO) CD_NUMERO," +
                                          "ISNULL(EXAME.QT_EXAMES, 0) QT_EXAMES" +
@@ -78,8 +79,6 @@ namespace WorkerService
               {
                 if (!String.IsNullOrEmpty(row["CD_NUMERO"].ToString()))
                 {
-                  bool add = VerificarNotificacaoHoje(int.Parse(row["SQ_PESSOA"].ToString()), conn);
-
                   if (Convert.ToInt32(row["QT_EXAMES"]) == 0)
                   {
                     Modelo(conn, "AGRADECA", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref TP_ATIVO);
@@ -93,6 +92,8 @@ namespace WorkerService
 
                   if (TP_ATIVO)
                   {
+                    bool add = VerificarNotificacaoHoje(int.Parse(row["SQ_PESSOA"].ToString()), conn);
+
                     Texto = DS_MENSAGEM_MODELO;
                     Texto = Texto.Replace("[NomePaciente]", row["NO_PESSOA"].ToString());
                     Texto = Texto.Replace("[DataAtendimento]", row["DH_FIM_ATENDIMENTO"].ToString());
@@ -340,7 +341,10 @@ namespace WorkerService
                                                                                                                                          " AND SDE.ID_PESSOA = AGEND.ID_PESSOA_PROFISSIONAL" +
                                                                                                                                          " AND SDE.CD_OPCAO = DATEPART(W, AGEND.DH_AGENDAMENTO)" +
                                                                                                                                          " AND SDE.NR_TURNO = IIF(DATEPART(HOUR, AGEND.DH_AGENDAMENTO) > 12, 2, 1)" +
-                       " WHERE HISTO.SQ_HISTORICO IS NULL" +
+                       " WHERE AGEND.ID_TIPO_CONSULTA IN (1, 3) " +
+                       "   AND AGEND.ID_OPT_STATUS IN (38) " +
+                       "   AND AGEND.DH_AGENDAMENTO >= '08/01/2025 23:00:00' " +
+                       "   AND HISTO.SQ_HISTORICO IS NULL" +
                        " GROUP BY AGEND.CD_AGENDAMENTO," +
                                  "AGEND.SQ_AGENDAMENTO," +
                                  "AGEND.ID_PESSOA," +
@@ -358,7 +362,7 @@ namespace WorkerService
                                      "IIF(CAST(GETDATE() AS DATE) = CAST(DATEADD(DAY, -3, AGEND.DH_AGENDAMENTO) AS DATE), 'CONFIRM3D'," +
                                          "IIF(CAST(GETDATE() AS DATE) = CAST(DATEADD(DAY, -1, AGEND.DH_AGENDAMENTO) AS DATE), 'CONFIRM1D'," +
                                              "IIF(CAST(GETDATE() AS DATE) = CAST(AGEND.DH_AGENDAMENTO AS DATE), 'CONFIRMND', ''))))";
-            sSqlText = "SELECT DISTINCT * FROM (" + sSqlText + ") X";
+            sSqlText = "SELECT DISTINCT * FROM (" + sSqlText + ") X WHERE CD_MODELO = 'CONFIRMINC'";
             oData = Util.Query(conn, sSqlText);
 
             foreach (DataRow row in oData.Rows)
