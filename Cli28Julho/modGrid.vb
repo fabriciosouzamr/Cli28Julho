@@ -1464,11 +1464,12 @@ Sair:
   Public Function objGrid_CalcularTotalColuna(ByVal oGrid As UltraGrid,
                                                 Optional Coluna As Integer = -1,
                                                 Optional TipoCalculoTotal As grdTipoCalculoTotal = grdTipoCalculoTotal.SomarValor,
-                                                Optional ByVal Filtro() As Object = Nothing) As Double
+                                                Optional ByVal Filtro() As Object = Nothing,
+                                                Optional CasasDecimais As Integer = 4) As Double
     Dim iCont01 As Integer
     Dim iCont02 As Integer
     Dim Quantidade As Double = 0
-    Dim bAchou As Boolean = False
+    Dim bAchou As Boolean
 
     For iCont01 = 0 To oGrid.Rows.Count - 1
       If Filtro Is Nothing Then
@@ -1501,7 +1502,7 @@ Sair:
       End If
     Next
 
-    Return Math.Round(Quantidade, 4)
+    Return Math.Round(Quantidade, CasasDecimais)
   End Function
 
   Public Function objGrid_ListarSelecionados(ByVal oGrid As UltraGrid,

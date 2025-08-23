@@ -87,6 +87,8 @@ Partial Class frmMensagem
         Me.chkQuemNaoFezExamesNovamente = New System.Windows.Forms.CheckBox()
         Me.psqExamePrescrito = New Cli28Julho.uscPesqProcedimento()
         Me.psqProcedimento = New Cli28Julho.uscPesqProcedimento()
+        Me.txtKeyZap = New System.Windows.Forms.TextBox()
+        Me.Label25 = New System.Windows.Forms.Label()
         CType(Me.txtDataAgendamentoFinal, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtDataAgendamentoInicial, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtDataNascimentoFinal, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -710,11 +712,30 @@ Partial Class frmMensagem
         Me.psqProcedimento.Size = New System.Drawing.Size(395, 36)
         Me.psqProcedimento.TabIndex = 216
         '
+        'txtKeyZap
+        '
+        Me.txtKeyZap.Location = New System.Drawing.Point(891, 533)
+        Me.txtKeyZap.Name = "txtKeyZap"
+        Me.txtKeyZap.Size = New System.Drawing.Size(224, 20)
+        Me.txtKeyZap.TabIndex = 284
+        Me.txtKeyZap.Text = "654a72cc60122c0d0c384ac6"
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Location = New System.Drawing.Point(888, 517)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(38, 13)
+        Me.Label25.TabIndex = 285
+        Me.Label25.Text = "Chave"
+        '
         'frmMensagem
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1122, 560)
+        Me.Controls.Add(Me.Label25)
+        Me.Controls.Add(Me.txtKeyZap)
         Me.Controls.Add(Me.chkQuemNaoFezExamesNovamente)
         Me.Controls.Add(Me.Label24)
         Me.Controls.Add(Me.txtCodigoUsuario)
@@ -862,4 +883,6 @@ Partial Class frmMensagem
     Friend WithEvents txtCodigoUsuario As TextBox
     Friend WithEvents Label24 As Label
     Friend WithEvents chkQuemNaoFezExamesNovamente As CheckBox
+    Friend WithEvents txtKeyZap As TextBox
+    Friend WithEvents Label25 As Label
 End Class

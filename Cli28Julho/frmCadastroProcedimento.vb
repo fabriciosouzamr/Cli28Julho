@@ -47,7 +47,8 @@ Public Class frmCadastroProcedimento
                                                          "@DS_INTEGRACAO_EXAME",
                                                          "@CD_INTEGRACAO_MATERIAL",
                                                          "@DS_INTEGRACAO_MATERIAL",
-                                                         "@IC_ATIVO")
+                                                         "@IC_ATIVO",
+                                                         "@IC_GERAR_CP_POR_AGENDAMENTO")
 
     If DBExecutar(sSqlText, DBParametro_Montar("SQ_PROCEDIMENTO", iSQ_PROCEDIMENTO, , ParameterDirection.InputOutput),
                             DBParametro_Montar("ID_TABELAPROCEDIMENTO", cboTabelaProcedimento.SelectedValue),
@@ -66,7 +67,8 @@ Public Class frmCadastroProcedimento
                             DBParametro_Montar("DS_INTEGRACAO_EXAME", Trim(txtSisVida_DescricaoExame.Text)),
                             DBParametro_Montar("CD_INTEGRACAO_MATERIAL", Trim(txtSisVida_CodigoMaterial.Text)),
                             DBParametro_Montar("DS_INTEGRACAO_MATERIAL", Trim(txtSisVida_DescricaoMaterial.Text)),
-                            DBParametro_Montar("IC_ATIVO", IIf(chkAtivo.Checked, "S", "N"))) Then
+                            DBParametro_Montar("IC_ATIVO", IIf(chkAtivo.Checked, "S", "N")),
+                            DBParametro_Montar("IC_GERAR_CP_POR_AGENDAMENTO", IIf(chkGerarContasPagarAgendamento.Checked, "S", "N"))) Then
       If DBTeveRetorno() Then
         iSQ_PROCEDIMENTO = DBRetorno(1)
       End If
@@ -146,6 +148,7 @@ Public Class frmCadastroProcedimento
       txtNomeProcedimento.Text = .Item("NO_PROCEDIMENTO")
       chkAtivo.Checked = (.Item("IC_ATIVO") = "S")
       chkGeraExameCitologico.Checked = (.Item("IC_GERA_CLINICA_EXAME_CITOLOGICO") = "S")
+      chkGerarContasPagarAgendamento.Checked = (.Item("IC_GERAR_CP_POR_AGENDAMENTO") = "S")
       txtSisVida_CodigoExame.Text = FNC_NVL(.Item("CD_INTEGRACAO_EXAME"), "")
       txtSisVida_DescricaoExame.Text = FNC_NVL(.Item("DS_INTEGRACAO_EXAME"), "")
       txtSisVida_CodigoMaterial.Text = FNC_NVL(.Item("CD_INTEGRACAO_MATERIAL"), "")

@@ -207,28 +207,46 @@ Public Class frmLancaContasReceberPagar_Venda
 
     ValorDesconto = txtValorDesconto.Value + txtValorDescontoSupervisor.Value
 
-    For iCont = 0 To grdParcela.Rows.Count - 1
-      oLancaContasReceberPagar_Venda(iCont) = New clsLancaContasReceberPagar_Venda
-      With oLancaContasReceberPagar_Venda(iCont)
-        .ID_FORMAPAGAMETO = objGrid_Valor(grdParcela, const_GridParcela_ID_FORMAPAGAMETO, iCont)
+    If grdParcela.Rows.Count > 0 Then
+      For iCont = 0 To grdParcela.Rows.Count - 1
+        oLancaContasReceberPagar_Venda(iCont) = New clsLancaContasReceberPagar_Venda
+        With oLancaContasReceberPagar_Venda(iCont)
+          .ID_FORMAPAGAMETO = objGrid_Valor(grdParcela, const_GridParcela_ID_FORMAPAGAMETO, iCont)
+          .ID_DOCUMENTOFINANCEIRO = 0
+          .ID_OPT_STATUS = enOpcoes.StatusMovimentacaoFinanceira_Aberta.GetHashCode()
+          .ID_BANCO = objGrid_Valor(grdParcela, const_GridParcela_ID_BANCO, iCont, 0)
+          .ID_EMITENTE = objGrid_Valor(grdParcela, const_GridParcela_ID_EMITENTE, iCont, 0)
+          .ID_TIPODOCUMENTO = objGrid_Valor(grdParcela, const_GridParcela_ID_TIPODOCUMENTO, iCont, 0)
+          .ID_CONDICAOPAGAMENTO = objGrid_Valor(grdParcela, const_GridParcela_ID_CONDICAOPAGAMENTO, iCont, 0)
+          .CodigoParcela = objGrid_Valor(grdParcela, const_GridParcela_CodigoParcela, iCont, "")
+          .DataVencimento = objGrid_Valor(grdParcela, const_GridParcela_DataVencimento, iCont)
+          .ValorParcela = Val(objGrid_Valor(grdParcela, const_GridParcela_ValorParcela, iCont, 0))
+          .CodigoDocumento = objGrid_Valor(grdParcela, const_GridParcela_CodigoDocumento, iCont, "")
+          .DataDocumento = objGrid_Valor(grdParcela, const_GridParcela_DataDocumento, iCont, DateTime.Now)
+          .NumeroAgencia = objGrid_Valor(grdParcela, const_GridParcela_NumeroAgencia, iCont, 0)
+          .NumeroConta = objGrid_Valor(grdParcela, const_GridParcela_NumeroConta, iCont, 0)
+          .NumeroConta_Digito = objGrid_Valor(grdParcela, const_GridParcela_NumeroConta_Digito, iCont, 0)
+          .DescricaoDocumento = objGrid_Valor(grdParcela, const_GridParcela_DescricaoDocumento, iCont, "")
+          .TaxaCompensacao = Val(objGrid_Valor(grdParcela, const_GridParcela_TaxaCompensacao, iCont, 0))
+        End With
+      Next
+    ElseIf txtValorVoucher.Value > 0 Then
+      ReDim oLancaContasReceberPagar_Venda(0)
+
+      oLancaContasReceberPagar_Venda(0) = New clsLancaContasReceberPagar_Venda
+      With oLancaContasReceberPagar_Venda(0)
+        .ID_FORMAPAGAMETO = 0
         .ID_DOCUMENTOFINANCEIRO = 0
         .ID_OPT_STATUS = enOpcoes.StatusMovimentacaoFinanceira_Aberta.GetHashCode()
-        .ID_BANCO = objGrid_Valor(grdParcela, const_GridParcela_ID_BANCO, iCont, 0)
-        .ID_EMITENTE = objGrid_Valor(grdParcela, const_GridParcela_ID_EMITENTE, iCont, 0)
-        .ID_TIPODOCUMENTO = objGrid_Valor(grdParcela, const_GridParcela_ID_TIPODOCUMENTO, iCont, 0)
-        .ID_CONDICAOPAGAMENTO = objGrid_Valor(grdParcela, const_GridParcela_ID_CONDICAOPAGAMENTO, iCont, 0)
-        .CodigoParcela = objGrid_Valor(grdParcela, const_GridParcela_CodigoParcela, iCont, "")
-        .DataVencimento = objGrid_Valor(grdParcela, const_GridParcela_DataVencimento, iCont)
-        .ValorParcela = Val(objGrid_Valor(grdParcela, const_GridParcela_ValorParcela, iCont, 0))
-        .CodigoDocumento = objGrid_Valor(grdParcela, const_GridParcela_CodigoDocumento, iCont, "")
-        .DataDocumento = objGrid_Valor(grdParcela, const_GridParcela_DataDocumento, iCont, DateTime.Now)
-        .NumeroAgencia = objGrid_Valor(grdParcela, const_GridParcela_NumeroAgencia, iCont, 0)
-        .NumeroConta = objGrid_Valor(grdParcela, const_GridParcela_NumeroConta, iCont, 0)
-        .NumeroConta_Digito = objGrid_Valor(grdParcela, const_GridParcela_NumeroConta_Digito, iCont, 0)
-        .DescricaoDocumento = objGrid_Valor(grdParcela, const_GridParcela_DescricaoDocumento, iCont, "")
-        .TaxaCompensacao = Val(objGrid_Valor(grdParcela, const_GridParcela_TaxaCompensacao, iCont, 0))
+        .ID_BANCO = 0
+        .ID_EMITENTE = 0
+        .ID_TIPODOCUMENTO = 0
+        .ID_CONDICAOPAGAMENTO = 0
+        .CodigoParcela = "01/01"
+        .DataVencimento = DateTime.Now
+        .ValorParcela = txtValorVoucher.Value
       End With
-    Next
+    End If
 
     Close()
   End Sub

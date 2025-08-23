@@ -22,6 +22,7 @@ Partial Class uscMensagemModelo
     'Não o modifique usando o editor de códigos.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.richMensagem = New System.Windows.Forms.RichTextBox()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -31,6 +32,9 @@ Partial Class uscMensagemModelo
         Me.chkAtivo = New System.Windows.Forms.CheckBox()
         Me.txtCodigoDialogo = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtKeyChatGuru = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SuspendLayout()
         '
         'Label1
@@ -63,7 +67,7 @@ Partial Class uscMensagemModelo
         '
         Me.txtImagemMensagem.Location = New System.Drawing.Point(1, 435)
         Me.txtImagemMensagem.Name = "txtImagemMensagem"
-        Me.txtImagemMensagem.Size = New System.Drawing.Size(800, 20)
+        Me.txtImagemMensagem.Size = New System.Drawing.Size(736, 20)
         Me.txtImagemMensagem.TabIndex = 2
         '
         'Label3
@@ -77,15 +81,15 @@ Partial Class uscMensagemModelo
         '
         'txtCodigoUsuario
         '
-        Me.txtCodigoUsuario.Location = New System.Drawing.Point(1, 476)
+        Me.txtCodigoUsuario.Location = New System.Drawing.Point(-5, 477)
         Me.txtCodigoUsuario.Name = "txtCodigoUsuario"
-        Me.txtCodigoUsuario.Size = New System.Drawing.Size(300, 20)
+        Me.txtCodigoUsuario.Size = New System.Drawing.Size(260, 20)
         Me.txtCodigoUsuario.TabIndex = 3
         '
         'chkAtivo
         '
         Me.chkAtivo.AutoSize = True
-        Me.chkAtivo.Location = New System.Drawing.Point(751, 476)
+        Me.chkAtivo.Location = New System.Drawing.Point(751, 437)
         Me.chkAtivo.Name = "chkAtivo"
         Me.chkAtivo.Size = New System.Drawing.Size(50, 17)
         Me.chkAtivo.TabIndex = 5
@@ -94,24 +98,42 @@ Partial Class uscMensagemModelo
         '
         'txtCodigoDialogo
         '
-        Me.txtCodigoDialogo.Location = New System.Drawing.Point(307, 477)
+        Me.txtCodigoDialogo.Location = New System.Drawing.Point(261, 477)
         Me.txtCodigoDialogo.Name = "txtCodigoDialogo"
-        Me.txtCodigoDialogo.Size = New System.Drawing.Size(300, 20)
+        Me.txtCodigoDialogo.Size = New System.Drawing.Size(260, 20)
         Me.txtCodigoDialogo.TabIndex = 6
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(307, 462)
+        Me.Label4.Location = New System.Drawing.Point(261, 462)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(92, 13)
         Me.Label4.TabIndex = 7
         Me.Label4.Text = "Código de dialógo"
         '
+        'txtKeyChatGuru
+        '
+        Me.txtKeyChatGuru.Location = New System.Drawing.Point(527, 477)
+        Me.txtKeyChatGuru.Name = "txtKeyChatGuru"
+        Me.txtKeyChatGuru.Size = New System.Drawing.Size(274, 20)
+        Me.txtKeyChatGuru.TabIndex = 8
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(527, 462)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(73, 13)
+        Me.Label5.TabIndex = 9
+        Me.Label5.Text = "Key ChatGuru"
+        '
         'uscMensagemModelo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.txtKeyChatGuru)
         Me.Controls.Add(Me.txtCodigoDialogo)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.chkAtivo)
@@ -137,4 +159,7 @@ Partial Class uscMensagemModelo
     Friend WithEvents chkAtivo As CheckBox
     Friend WithEvents txtCodigoDialogo As TextBox
     Friend WithEvents Label4 As Label
+    Friend WithEvents txtKeyChatGuru As TextBox
+    Friend WithEvents Label5 As Label
+    Friend WithEvents ToolTip1 As ToolTip
 End Class

@@ -14,7 +14,8 @@ namespace WorkerService
 
   public class modChatGuru
   {
-    public string sKey = "UPKZPO18E49W2I2J8NPUVYOF6T0MUYGYV71X1S8S4N3OUV3FYFDU8R4UN16STVZN";
+    private string sKeyPadrao = "UPKZPO18E49W2I2J8NPUVYOF6T0MUYGYV71X1S8S4N3OUV3FYFDU8R4UN16STVZN";
+    private string sKey = "UPKZPO18E49W2I2J8NPUVYOF6T0MUYGYV71X1S8S4N3OUV3FYFDU8R4UN16STVZN";
     public string sAccountId = "625ea934822c38492819b7bf";
     public string sPhoneId = "625eaafbbb25ea2c81b31a4e";
     public string sUrl = "https://s15.chatguru.app/api/v1";
@@ -22,6 +23,17 @@ namespace WorkerService
     public readonly ILogger<Worker> _logger;
 
     cResponse oresponse = new cResponse();
+
+    public string Key 
+    { get
+      {
+        return sKey;
+      }
+      set
+      {
+        sKey = string.IsNullOrEmpty(value) ? sKeyPadrao : value;
+      }
+    }
 
     public async Task<bool> EnviarAsync(string sMensagem, string sNome, string sNumero, string sTitulo, string sArquivo, string sUsuario, string sDialogo = "", bool add = false)
     {

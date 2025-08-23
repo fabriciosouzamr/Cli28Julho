@@ -68,6 +68,7 @@ Partial Class frmCadastroProcedimento
         Me.Label11 = New System.Windows.Forms.Label()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.Label13 = New System.Windows.Forms.Label()
+        Me.chkGerarContasPagarAgendamento = New System.Windows.Forms.CheckBox()
         CType(Me.grdEspecialidade, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -361,7 +362,7 @@ Partial Class frmCadastroProcedimento
         Me.psqExecutor.ID_Pessoa = 0
         Me.psqExecutor.LabelVisivel = True
         Me.psqExecutor.Location = New System.Drawing.Point(445, 87)
-        Me.psqExecutor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.psqExecutor.Margin = New System.Windows.Forms.Padding(4)
         Me.psqExecutor.Name = "psqExecutor"
         Me.psqExecutor.PesquisarPessoa = True
         Me.psqExecutor.Rotulo = "Executor"
@@ -377,10 +378,10 @@ Partial Class frmCadastroProcedimento
         Me.txtSisVida_CodigoExame.Size = New System.Drawing.Size(180, 20)
         Me.txtSisVida_CodigoExame.TabIndex = 217
         '
-        'txtSisVida_DescicaoExame
+        'txtSisVida_DescricaoExame
         '
         Me.txtSisVida_DescricaoExame.Location = New System.Drawing.Point(191, 228)
-        Me.txtSisVida_DescricaoExame.Name = "txtSisVida_DescicaoExame"
+        Me.txtSisVida_DescricaoExame.Name = "txtSisVida_DescricaoExame"
         Me.txtSisVida_DescricaoExame.Size = New System.Drawing.Size(180, 20)
         Me.txtSisVida_DescricaoExame.TabIndex = 218
         '
@@ -434,12 +435,23 @@ Partial Class frmCadastroProcedimento
         Me.Label13.TabIndex = 224
         Me.Label13.Text = "SisVida - Descrição Material"
         '
+        'chkGerarContasPagarAgendamento
+        '
+        Me.chkGerarContasPagarAgendamento.AutoSize = True
+        Me.chkGerarContasPagarAgendamento.Location = New System.Drawing.Point(545, 130)
+        Me.chkGerarContasPagarAgendamento.Name = "chkGerarContasPagarAgendamento"
+        Me.chkGerarContasPagarAgendamento.Size = New System.Drawing.Size(206, 17)
+        Me.chkGerarContasPagarAgendamento.TabIndex = 225
+        Me.chkGerarContasPagarAgendamento.Text = "Gerar Contas Pagar por Agendamento"
+        Me.chkGerarContasPagarAgendamento.UseVisualStyleBackColor = True
+        '
         'frmCadastroProcedimento
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(763, 580)
         Me.ControlBox = False
+        Me.Controls.Add(Me.chkGerarContasPagarAgendamento)
         Me.Controls.Add(Me.Label13)
         Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.Label11)
@@ -517,4 +529,5 @@ Partial Class frmCadastroProcedimento
     Friend WithEvents Label11 As Label
     Friend WithEvents Label12 As Label
     Friend WithEvents Label13 As Label
+    Friend WithEvents chkGerarContasPagarAgendamento As CheckBox
 End Class

@@ -25,6 +25,11 @@ Public Class modChatGuru
                          sArquivo As String,
                          sUsuario As String,
                          Optional sDialogo As String = "") As Boolean
+    If String.IsNullOrEmpty(sKey.Trim()) Then
+      FNC_Mensagem("Informe a chave")
+      Return False
+    End If
+
     If sNumero.Substring(0, 3) = "+55" Then
       Try
         message_send(sMensagem, sNome, sNumero, sTitulo, sArquivo, sUsuario, sDialogo)

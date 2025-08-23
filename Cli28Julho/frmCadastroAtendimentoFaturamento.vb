@@ -5,6 +5,7 @@ Public Class frmCadastroAtendimentoFaturamento
   Dim oItens_Faturar() As cCadastroAtendimentoFaturamento_Item
 
   Dim iSQ_MOVFINANCEIRA As Integer
+  Dim iMedicoPrestadorListado As Integer
 
   Public Sub Formatar()
     picGeral.Image = Image.FromFile(FNC_ConfiguracaoTela(enOpcoes.ConfiguracaoTela_Atendimento_Medico_Faturamento))
@@ -116,6 +117,12 @@ Public Class frmCadastroAtendimentoFaturamento
                " ORDER BY DT_VENCIMENTO"
     oData = DBQuery(sSqlText)
 
+    If iMedicoPrestadorListado <> cboMedicoPrestador.SelectedValue Then
+      oItens_Faturar = Nothing
+    End If
+
+    iMedicoPrestadorListado = cboMedicoPrestador.SelectedValue
+
     oItens_Pendentes = Nothing
 
     If Not objDataTable_Vazio(oData) Then
@@ -149,6 +156,7 @@ Public Class frmCadastroAtendimentoFaturamento
     vsbFaturar.Value = 1
 
     ListarPendentes()
+    ListarFaturar()
   End Sub
 
   Private Function Itens_Pendentes_Carregado() As Boolean
@@ -287,7 +295,13 @@ Public Class frmCadastroAtendimentoFaturamento
 
     iSQ_MOVFINANCEIRA = 0
 
-    MoverItem(oLabel.Tag)
+    Dim iSQ_CLINICA_VENDA_PROCEDIMENTO As Integer = 0
+
+    If oLabel IsNot Nothing AndAlso oLabel.Tag IsNot Nothing Then
+      iSQ_CLINICA_VENDA_PROCEDIMENTO = oLabel.Tag
+    End If
+
+    MoverItem(iSQ_CLINICA_VENDA_PROCEDIMENTO)
   End Sub
 
   Private Sub MoverItem(iSQ_CLINICA_VENDA_PROCEDIMENTO As Integer)
@@ -482,8 +496,11 @@ Public Class frmCadastroAtendimentoFaturamento
 
       LimparFaturar(True)
       oItens_Faturar = Nothing
+      oItens_Pendentes = Nothing
 
       iSQ_MOVFINANCEIRA = oForm.iSQ_MOVFINANCEIRA
+
+      CarregarMovimentacaoFinanceira()
     End If
   End Sub
 
@@ -579,16 +596,21 @@ Public Class frmCadastroAtendimentoFaturamento
   End Function
 
   Private Sub cboMedicoPrestador_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cboMedicoPrestador.SelectedIndexChanged
+    CarregarMovimentacaoFinanceira()
+  End Sub
+
+  Private Sub CarregarMovimentacaoFinanceira()
     Dim SqlText As String
 
     If cboMedicoPrestador.SelectedIndex = -1 Then
       cboMovimentacaoFinanceira.DataSource = Nothing
     Else
-      SqlText = $"SELECT SQ_MOVFINANCEIRA, CONCAT(CD_MOVFINANCEIRA,  ' - ', CONVERT(CHAR, DT_MOVIMENTACAO, 103)) DS_MOVFINANCEIRA
-                   FROM TB_MOVFINANCEIRA
-                   WHERE ID_OPT_STATUS = {enOpcoes.StatusMovimentacaoFinanceira_Aberta.GetHashCode()}
-                     AND ID_PESSOA = {cboMedicoPrestador.SelectedValue}
-                   ORDER BY DT_MOVIMENTACAO"
+      SqlText = $"SELECT DISTINCT MF.SQ_MOVFINANCEIRA, CONCAT(MF.CD_MOVFINANCEIRA,  ' - ', CONVERT(CHAR, MF.DT_MOVIMENTACAO, 103)) DS_MOVFINANCEIRA
+                   FROM TB_MOVFINANCEIRA MF
+                    INNER JOIN TB_MOVFINANCEIRAPARCELA MP ON MP.ID_MOVFINANCEIRA = MF.SQ_MOVFINANCEIRA
+                                                   AND MP.ID_OPT_STATUS = {enOpcoes.StatusMovimentacaoFinanceira_Aberta.GetHashCode()}
+                   WHERE MF.ID_PESSOA = {cboMedicoPrestador.SelectedValue} 
+                   ORDER BY CONCAT(MF.CD_MOVFINANCEIRA,  ' - ', CONVERT(CHAR, MF.DT_MOVIMENTACAO, 103))"
       DBComboBox_Carregar(cboMovimentacaoFinanceira, SqlText)
     End If
 

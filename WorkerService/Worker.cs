@@ -37,6 +37,7 @@ namespace WorkerService
             string DS_PATH_IMAGEM = "";
             string CD_USUARIO = "";
             string CD_DIALOGO = "";
+            string CD_KEY = "";
             bool TP_ATIVO = false;
             string Texto = "";
             string Historico = "";
@@ -81,12 +82,12 @@ namespace WorkerService
                 {
                   if (Convert.ToInt32(row["QT_EXAMES"]) == 0)
                   {
-                    Modelo(conn, "AGRADECA", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref TP_ATIVO);
+                    Modelo(conn, "AGRADECA", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref CD_KEY, ref TP_ATIVO);
                     Historico = "Notificação: Mens Agradecimento(SEM Exames)";
                   }
                   else
                   {
-                    Modelo(conn, "AGRADECEXM", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref TP_ATIVO);
+                    Modelo(conn, "AGRADECEXM", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref CD_KEY, ref TP_ATIVO);
                     Historico = "Notificação: Mens Agradecimento(COM Exames)";
                   }
 
@@ -98,6 +99,7 @@ namespace WorkerService
                     Texto = Texto.Replace("[NomePaciente]", row["NO_PESSOA"].ToString());
                     Texto = Texto.Replace("[DataAtendimento]", row["DH_FIM_ATENDIMENTO"].ToString());
 
+                    oChatGuru.Key = CD_KEY;
                     bool enviado = await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", row["DS_PATH_IMAGEM_MENSAGEM"].ToString(), CD_USUARIO, CD_DIALOGO, add);
 
                     if (enviado)
@@ -128,7 +130,7 @@ namespace WorkerService
 
             if (DateTime.Now.Hour >= 9)
             {
-              Modelo(conn, "NIVER", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref TP_ATIVO);
+              Modelo(conn, "NIVER", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref CD_KEY, ref TP_ATIVO);
 
               if (TP_ATIVO)
               {
@@ -156,6 +158,7 @@ namespace WorkerService
 
                       try
                       {
+                        oChatGuru.Key = CD_KEY;
                         if (DS_PATH_IMAGEM.Trim() == "")
                         {
                           enviado = await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", "", CD_USUARIO, CD_DIALOGO, add);
@@ -197,7 +200,7 @@ namespace WorkerService
               }
             }
 
-            Modelo(conn, "CANCAGENDA", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref TP_ATIVO);
+            Modelo(conn, "CANCAGENDA", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref CD_KEY, ref TP_ATIVO);
 
             if (TP_ATIVO)
             {
@@ -254,6 +257,7 @@ namespace WorkerService
                   Texto = Texto.Replace("[EnderecoUnidade]", row["DS_ENDERECO"].ToString());
                   Texto = Texto.Replace("[Consultorio]", row["NO_CONSULTORIO"].ToString());
 
+                  oChatGuru.Key = CD_KEY;
                   bool enviado = await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", DS_PATH_IMAGEM, CD_USUARIO, CD_DIALOGO, add);
 
                   if (enviado)
@@ -389,7 +393,7 @@ namespace WorkerService
                     break;
                 }
 
-                Modelo(conn, row["CD_MODELO"].ToString(), ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref TP_ATIVO);
+                Modelo(conn, row["CD_MODELO"].ToString(), ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref CD_KEY, ref TP_ATIVO);
 
                 if (enviar && (!String.IsNullOrEmpty(row["CD_NUMERO"].ToString())) && TP_ATIVO)
                 {
@@ -409,6 +413,7 @@ namespace WorkerService
                   await oChatGuru.chat_update_custom_fields("HoraAgendamento", row["HR_INICIO"].ToString(), row["CD_NUMERO"].ToString());
                   await oChatGuru.chat_update_custom_fields("EnderecoUnidade", row["DS_ENDERECO"].ToString(), row["CD_NUMERO"].ToString());
 
+                  oChatGuru.Key = CD_KEY;
                   bool enviado = await oChatGuru.EnviarAsync(Texto, row["NO_PESSOA"].ToString(), row["CD_NUMERO"].ToString(), "", DS_PATH_IMAGEM, CD_USUARIO, CD_DIALOGO, !enviouNotificacaoHoje);
 
                   if (enviado)
@@ -462,19 +467,21 @@ namespace WorkerService
       Util.Executar(conn, sql, new Util.DBParamentro[] {  Util.DBParametro_Montar("ID_PESSOA", iID_PESSOA) });
     }
 
-    void Modelo(System.Data.SqlClient.SqlConnection conn, string CD_MENSAGEM_MODELO, ref string DS_MENSAGEM_MODELO, ref string DS_PATH_IMAGEM, ref string CD_USUARIO, ref string CD_DIALOGO, ref bool TP_ATIVO)
+    void Modelo(System.Data.SqlClient.SqlConnection conn, string CD_MENSAGEM_MODELO, ref string DS_MENSAGEM_MODELO, ref string DS_PATH_IMAGEM, ref string CD_USUARIO, ref string CD_DIALOGO, ref string CD_KEY, ref bool TP_ATIVO)
     {
       try
       {
         DataTable oData = null;
         string sSqlText = "";
-        sSqlText = "SELECT DS_MENSAGEM_MODELO, DS_PATH_IMAGEM, CD_USUARIO, CD_DIALOGO, TP_ATIVO FROM TB_MENSAGEM_MODELO WHERE CD_MENSAGEM_MODELO = '" + CD_MENSAGEM_MODELO + "'";
+        sSqlText = "SELECT DS_MENSAGEM_MODELO, DS_PATH_IMAGEM, CD_USUARIO, CD_DIALOGO, TP_ATIVO, CD_KEY FROM TB_MENSAGEM_MODELO WHERE CD_MENSAGEM_MODELO = '" + CD_MENSAGEM_MODELO + "'";
         oData = Util.Query(conn, sSqlText);
 
         DS_MENSAGEM_MODELO = oData.Rows[0]["DS_MENSAGEM_MODELO"].ToString();
         DS_PATH_IMAGEM = oData.Rows[0]["DS_PATH_IMAGEM"].ToString();
         CD_USUARIO = oData.Rows[0]["CD_USUARIO"].ToString();
         CD_DIALOGO = oData.Rows[0]["CD_DIALOGO"].ToString();
+        CD_KEY = oData.Rows[0]["CD_KEY"] == DBNull.Value ? string.Empty : oData.Rows[0]["CD_KEY"].ToString();
+
         TP_ATIVO = oData.Rows[0]["TP_ATIVO"].ToString() == "S";
       }
       catch (Exception)

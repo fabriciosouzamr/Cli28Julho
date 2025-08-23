@@ -453,10 +453,10 @@ Public Class frmLancaContasReceberPagar
   End Sub
 
   Private Sub GridParcela_TotalValor()
-    lblValorTotalParcela.Text = "Valor Total das Parcelas: R$ " & FormatCurrency(objGrid_CalcularTotalColuna(grdParcela, const_GridParcela_ValorParcela), 2)
+    lblValorTotalParcela.Text = "Valor Total das Parcelas: R$ " & FormatCurrency(objGrid_CalcularTotalColuna(grdParcela, const_GridParcela_ValorParcela, ,, 2), 2)
     lblValorTotalParcela.Tag = objGrid_CalcularTotalColuna(grdParcela, const_GridParcela_ValorParcela)
 
-    lblValorTotalPendente.Text = "Valor Total Pendente: R$ " & FormatCurrency(objGrid_CalcularTotalColuna(grdParcela, const_GridParcela_ValorTotalAPagar), 2)
+    lblValorTotalPendente.Text = "Valor Total Pendente: R$ " & FormatCurrency(objGrid_CalcularTotalColuna(grdParcela, const_GridParcela_ValorTotalAPagar,,, 2), 2)
     lblValorTotalPendente.Tag = objGrid_CalcularTotalColuna(grdParcela, const_GridParcela_ValorTotalAPagar)
   End Sub
 

@@ -355,6 +355,7 @@ Public Class frmMensagem
     Next
 
     For iCont_01 = 1 To Lista.Count
+      oChatGuru.sKey = txtKeyZap.Text
       oChatGuru.Enviar(rtbWahtsApp.Text,
                        Split(Lista(iCont_01), "#")(0).Trim(),
                        Split(Lista(iCont_01), "#")(1),
@@ -377,6 +378,7 @@ Public Class frmMensagem
     End If
 
     Try
+      oChatGuru.sKey = txtKeyZap.Text
       oChatGuru.Enviar(rtbWahtsApp.Text, "Clínica 28 Julho - TI", txtNumeroZap.Text,
                                                                   txtTituloLinkArquivo.Text,
                                                                   txtLinkArquivo.Text,
@@ -419,4 +421,8 @@ Public Class frmMensagem
     txtDataSemAgendamentoInicial.Enabled = (Not chkQuemNaoFezExamesNovamente.Checked)
     txtDataSemAgendamentoFinal.Enabled = (Not chkQuemNaoFezExamesNovamente.Checked)
   End Sub
+
+    Private Sub cmdSMS_PreVisualizacao_Click(sender As Object, e As EventArgs) Handles cmdSMS_PreVisualizacao.Click
+
+    End Sub
 End Class
