@@ -69,9 +69,10 @@ Module modBancoDados
   Public Function DBConectar(Optional sStringDeConecao01 As String = "StringDeConecao",
                              Optional sStringDeConecao02 As String = "",
                              Optional bValidarConexao As Boolean = False,
-                             Optional ByRef oConexaoConectar As SqlConnection = Nothing) As Boolean
+                             Optional ByRef oConexaoConectar As SqlConnection = Nothing,
+                             Optional ByRef stringConection As String = Nothing) As Boolean
     Dim bOk As Boolean = True
-    Dim sString As String
+    Dim sString As String = String.Empty
     Dim sSenha As String
 
     Try
@@ -129,6 +130,7 @@ Module modBancoDados
     End Try
 
 Sair:
+    stringConection = sString
     Return bOk
   End Function
 
@@ -185,34 +187,45 @@ Sair:
     Return FNC_NVL(oRet, ValorPadrao)
   End Function
 
-  Public Function DBQuery(sSqlText As String, Optional oConexaoQuery As System.Data.Common.DbConnection = Nothing) As DataTable
+  Public Function DBQuery(sSqlText As String,
+                          Optional oConexaoQuery As System.Data.Common.DbConnection = Nothing,
+                          Optional ForcaoReconexao As Boolean = False) As DataTable
     Dim oSqlDataAdapter As DbDataAdapter = Nothing
     Dim oDataSet As New DataSet
     Dim oData As DataTable
+    Dim stringConection As String
 
     Try
-      If oConexaoQuery Is Nothing Then
+      If oConexaoQuery Is Nothing Or ForcaoReconexao Then
         oConexaoDBQuery.Close()
         oConexaoDBQuery.Open()
         oConexaoQuery = oConexao
       End If
 
-      DBConectar(sDBStringDeConecao01, sDBStringDeConecao02, True, oConexaoQuery)
+      DBConectar(sDBStringDeConecao01, sDBStringDeConecao02, True, oConexaoQuery, stringConection)
 
       If TypeOf oConexaoQuery Is System.Data.SqlClient.SqlConnection Then
-        oSqlDataAdapter = New SqlDataAdapter(sSqlText, oConexaoQuery)
+        Using con = New SqlConnection(stringConection)
+          con.Open()
+          oSqlDataAdapter = New SqlDataAdapter(sSqlText, con)
+          oSqlDataAdapter.SelectCommand.CommandTimeout = 0
+          oSqlDataAdapter.Fill(oDataSet)
+          oData = oDataSet.Tables(0)
+
+          oDataSet.Dispose()
+          oSqlDataAdapter.Dispose()
+        End Using
       ElseIf TypeOf oConexaoQuery Is System.Data.OleDb.OleDbConnection Then
-        oSqlDataAdapter = New OleDb.OleDbDataAdapter(sSqlText, oConexaoQuery)
-        'ElseIf TypeOf oConexaoQuery Is FirebirdSql.Data.FirebirdClient.FbConnection Then
-        '  oSqlDataAdapter = New FirebirdSql.Data.FirebirdClient.FbDataAdapter(sSqlText, oConexaoQuery)
+        Using con = New OleDb.OleDbConnection(stringConection)
+          con.Open()
+          oSqlDataAdapter = New OleDb.OleDbDataAdapter(sSqlText, con)
+          oSqlDataAdapter.Fill(oDataSet)
+          oData = oDataSet.Tables(0)
+
+          oDataSet.Dispose()
+          oSqlDataAdapter.Dispose()
+        End Using
       End If
-
-      oSqlDataAdapter.SelectCommand.CommandTimeout = 0
-      oSqlDataAdapter.Fill(oDataSet)
-      oData = oDataSet.Tables(0)
-
-      oDataSet.Dispose()
-      oSqlDataAdapter.Dispose()
 
       Return oData
     Catch ex As Exception
@@ -256,109 +269,113 @@ Sair:
     Dim bOutPutParametro As Boolean
     Dim bRetornoParametro As Boolean
     Dim sAux As String = ""
+    Dim stringConection As String
 
     Try
-      DBConectar(sDBStringDeConecao01, sDBStringDeConecao02, True, oConexaoQuery)
+      DBConectar(sDBStringDeConecao01, sDBStringDeConecao02, True, oConexaoQuery, stringConection)
 
-      oCommand = New SqlCommand
-      oCommand = oConexao.CreateCommand()
-      oCommand.CommandTimeout = iDB_TimeOut
-      oCommand.CommandTimeout = 0
+      Using con = New SqlConnection(stringConection)
+        con.Open()
+        oCommand = New SqlCommand
+        oCommand = con.CreateCommand()
+        oCommand.CommandTimeout = iDB_TimeOut
+        oCommand.CommandTimeout = 0
 
-      If bUsarTransacao Then oCommand.Transaction = oTrans
+        If bUsarTransacao Then oCommand.Transaction = oTrans
 
-      oCommand.CommandType = oTipoComando
-      oTipoComando = CommandType.Text
+        oCommand.CommandType = oTipoComando
+        oTipoComando = CommandType.Text
 
-      If Parametro Is Nothing Then
-        oCommand.CommandText = sSqlText
+        If Parametro Is Nothing Then
+          oCommand.CommandText = sSqlText
 
-        If Async Then
-          oCommand.ExecuteNonQueryAsync()
-        Else
-          oCommand.ExecuteNonQuery()
-        End If
-      Else
-        oCommand.CommandText = sSqlText
-        oCommand.Prepare()
-
-        For Each oAux In Parametro
-          If oAux.Tipo <> SqlDbType.Image Then
-            'FNC_Str_Adicionar(sAux, oAux.Nome & " = " & IIf(FNC_CampoNulo(oAux.Valor), "NULL", oAux.Valor) & " | ", vbCrLf)
-          End If
-
-          Select Case oAux.Direcao
-            Case ParameterDirection.InputOutput, ParameterDirection.Output
-              bOutPutParametro = True
-            Case ParameterDirection.ReturnValue
-              bRetornoParametro = True
-          End Select
-
-          oParametro = New SqlParameter
-          oParametro = oCommand.CreateParameter
-
-          With oParametro
-            .ParameterName = oAux.Nome
-            .Direction = oAux.Direcao
-
-            If oAux.Tipo = SqlDbType.Image Then
-              .SqlDbType = oAux.Tipo
-            End If
-
-            If oAux.Valor Is Nothing Then
-              .Value = System.DBNull.Value
-            Else
-              .Value = oAux.Valor
-            End If
-
-            If oAux.Tamanho <> 0 Then
-              .Size = oAux.Tamanho
-            End If
-          End With
-
-          oCommand.Parameters.Add(oParametro)
-        Next
-
-        If (bOutPutParametro Or bRetornoParametro) AndAlso Not Async Then
-          Dim iCont As Integer
-          Dim oData As SqlDataReader
-
-          oData = oCommand.ExecuteReader()
-
-          iLinhaAfetada = oData.RecordsAffected
-
-          oRetorno = New Collection
-
-          For iCont = 0 To oCommand.Parameters.Count - 1
-            If oCommand.Parameters(iCont).Direction = ParameterDirection.Output Or
-               oCommand.Parameters(iCont).Direction = ParameterDirection.InputOutput Or
-               oCommand.Parameters(iCont).Direction = ParameterDirection.ReturnValue Then
-              oRetorno.Add(oCommand.Parameters(iCont).Value)
-            End If
-          Next
-
-          oCommand.Dispose()
-
-          oData.Close()
-          oData = Nothing
-        ElseIf bRetornoParametro AndAlso Not Async Then
-          oRetorno = New Collection
-
-          oRetorno.Add(oCommand.ExecuteScalar)
-        Else
           If Async Then
             oCommand.ExecuteNonQueryAsync()
           Else
-            iLinhaAfetada = oCommand.ExecuteNonQuery()
+            oCommand.ExecuteNonQuery()
+          End If
+        Else
+          oCommand.CommandText = sSqlText
+          oCommand.Prepare()
+
+          For Each oAux In Parametro
+            If oAux.Tipo <> SqlDbType.Image Then
+              'FNC_Str_Adicionar(sAux, oAux.Nome & " = " & IIf(FNC_CampoNulo(oAux.Valor), "NULL", oAux.Valor) & " | ", vbCrLf)
+            End If
+
+            Select Case oAux.Direcao
+              Case ParameterDirection.InputOutput, ParameterDirection.Output
+                bOutPutParametro = True
+              Case ParameterDirection.ReturnValue
+                bRetornoParametro = True
+            End Select
+
+            oParametro = New SqlParameter
+            oParametro = oCommand.CreateParameter
+
+            With oParametro
+              .ParameterName = oAux.Nome
+              .Direction = oAux.Direcao
+
+              If oAux.Tipo = SqlDbType.Image Then
+                .SqlDbType = oAux.Tipo
+              End If
+
+              If oAux.Valor Is Nothing Then
+                .Value = System.DBNull.Value
+              Else
+                .Value = oAux.Valor
+              End If
+
+              If oAux.Tamanho <> 0 Then
+                .Size = oAux.Tamanho
+              End If
+            End With
+
+            oCommand.Parameters.Add(oParametro)
+          Next
+
+          If (bOutPutParametro Or bRetornoParametro) AndAlso Not Async Then
+            Dim iCont As Integer
+            Dim oData As SqlDataReader
+
+            oData = oCommand.ExecuteReader()
+
+            iLinhaAfetada = oData.RecordsAffected
+
+            oRetorno = New Collection
+
+            For iCont = 0 To oCommand.Parameters.Count - 1
+              If oCommand.Parameters(iCont).Direction = ParameterDirection.Output Or
+                 oCommand.Parameters(iCont).Direction = ParameterDirection.InputOutput Or
+                 oCommand.Parameters(iCont).Direction = ParameterDirection.ReturnValue Then
+                oRetorno.Add(oCommand.Parameters(iCont).Value)
+              End If
+            Next
+
+            oCommand.Dispose()
+
+            oData.Close()
+            oData = Nothing
+          ElseIf bRetornoParametro AndAlso Not Async Then
+            oRetorno = New Collection
+
+            oRetorno.Add(oCommand.ExecuteScalar)
+          Else
+            If Async Then
+              oCommand.ExecuteNonQueryAsync()
+            Else
+              iLinhaAfetada = oCommand.ExecuteNonQuery()
+            End If
           End If
         End If
-      End If
 
-      oTipoComando = CommandType.Text
+        oTipoComando = CommandType.Text
 
-      Return True
+        Return True
 
-      Exit Function
+        Exit Function
+      End Using
     Catch eDB As SqlException
       MsgErr = eDB.Message
       Call Erro_Tratar("MOD_DB.DBExecutar_LinhaAfetadas (OracleException)", sSqlText)

@@ -81,7 +81,7 @@ namespace WorkerService
                 if (!String.IsNullOrEmpty(row["CD_NUMERO"].ToString()))
                 {
                   if (Convert.ToInt32(row["QT_EXAMES"]) == 0)
-                  {
+                   {
                     Modelo(conn, "AGRADECA", ref DS_MENSAGEM_MODELO, ref DS_PATH_IMAGEM, ref CD_USUARIO, ref CD_DIALOGO, ref CD_KEY, ref TP_ATIVO);
                     Historico = "Notificação: Mens Agradecimento(SEM Exames)";
                   }
@@ -347,7 +347,7 @@ namespace WorkerService
                                                                                                                                          " AND SDE.NR_TURNO = IIF(DATEPART(HOUR, AGEND.DH_AGENDAMENTO) > 12, 2, 1)" +
                        " WHERE AGEND.ID_TIPO_CONSULTA IN (1, 3) " +
                        "   AND AGEND.ID_OPT_STATUS IN (38) " +
-                       "   AND AGEND.DH_AGENDAMENTO >= '08/01/2025 23:00:00' " +
+                       "   AND AGEND.DH_AGENDAMENTO >= '02/10/2025 23:00:00' " +
                        "   AND HISTO.SQ_HISTORICO IS NULL" +
                        " GROUP BY AGEND.CD_AGENDAMENTO," +
                                  "AGEND.SQ_AGENDAMENTO," +

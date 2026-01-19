@@ -240,7 +240,7 @@ Public Class frmLancaContasReceberPagar_Venda
         .ID_OPT_STATUS = enOpcoes.StatusMovimentacaoFinanceira_Aberta.GetHashCode()
         .ID_BANCO = 0
         .ID_EMITENTE = 0
-        .ID_TIPODOCUMENTO = 0
+        .ID_TIPODOCUMENTO = 13
         .ID_CONDICAOPAGAMENTO = 0
         .CodigoParcela = "01/01"
         .DataVencimento = DateTime.Now
